@@ -1,0 +1,55 @@
+services:
+  # Backend API service
+  - type: web
+    name: issuematch-api
+    env: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: FIREBASE_CREDENTIALS_PATH
+        value: app/services/keys.json
+      - key: GOOGLE_AI_STUDIO_API_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PROJECT_NAME
+        value: "OS Contribution Matchmaker"
+      - key: API_V1_STR
+        value: "/api/v1"
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+
+  # Frontend service
+  - type: web
+    name: issuematch-frontend
+    env: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm start
+    envVars:
+      - key: NEXT_PUBLIC_APP_URL
+        fromService:
+          name: issuematch-frontend
+          type: web
+          property: url
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          name: issuematch-api
+          type: web
+          property: url
+          envVarKey: API_V1_STR
+      - key: NEXT_PUBLIC_FIREBASE_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_APP_ID
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT_KEY
+        sync: false
