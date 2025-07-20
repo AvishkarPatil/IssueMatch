@@ -13,6 +13,6 @@ python-multipart==0.0.20
 httpx==0.27.2
 starlette==0.37.2
 beautifulsoup4==4.13.0
-requests==2.31.0
-numpy==2.2.4
-vertexai==1.0.0
+requests
+numpy
+vertexai
