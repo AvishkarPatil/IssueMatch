@@ -32,13 +32,9 @@ services:
         fromService:
           name: issuematch-frontend
           type: web
-          property: url
+          property: host
       - key: NEXT_PUBLIC_API_URL
-        fromService:
-          name: issuematch-api
-          type: web
-          property: url
-          envVarKey: API_V1_STR
+        value: ${issuematch-api.host}${API_V1_STR}
       - key: NEXT_PUBLIC_FIREBASE_API_KEY
         sync: false
       - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
