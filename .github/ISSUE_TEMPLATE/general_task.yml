@@ -1,0 +1,106 @@
+name: 📋 General Task
+description: Create a general task, improvement, or maintenance item
+title: "[TASK] "
+labels: ["task", "good-first-issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for creating a task! This helps organize our development work.
+        
+        **🏷️ OSCI Project**: This task is part of the Open Source Connect India (OSCI) initiative.
+
+  - type: textarea
+    id: task-description
+    attributes:
+      label: 📋 Task Description
+      description: Describe the task or general issue that needs to be addressed.
+      placeholder: What needs to be done?
+    validations:
+      required: true
+
+  - type: textarea
+    id: goals
+    attributes:
+      label: 🎯 Goals and Objectives
+      description: What are the goals or outcomes expected from this task?
+      placeholder: What should be achieved?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: ✅ Acceptance Criteria
+      description: List the specific criteria that must be met for this task to be considered complete.
+      placeholder: |
+        - [ ] Criteria 1
+        - [ ] Criteria 2
+        - [ ] Criteria 3
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: 🔧 Component
+      description: Which part of IssueMatch does this task relate to?
+      options:
+        - Frontend (React/Next.js)
+        - Backend (Python/FastAPI)
+        - AI/ML
+        - Database
+        - Documentation
+        - Testing
+        - DevOps/CI-CD
+        - Design/UI-UX
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: 🏷️ Difficulty Level
+      description: How difficult is this task?
+      options:
+        - 🟢 Beginner (Good first issue)
+        - 🟡 Intermediate
+        - 🔴 Advanced
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimated-time
+    attributes:
+      label: ⏱️ Estimated Time
+      description: How long do you think this task will take?
+      options:
+        - 1-2 hours
+        - 3-5 hours
+        - 1-2 days
+        - 3-5 days
+        - 1+ weeks
+    validations:
+      required: false
+
+  - type: textarea
+    id: technical-requirements
+    attributes:
+      label: 🔧 Technical Requirements
+      description: List any specific technical requirements or constraints.
+      placeholder: Any specific technologies, APIs, or constraints?
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: 📚 Resources
+      description: Any relevant documentation, links, or resources that might help.
+      placeholder: Links to documentation, examples, or related issues...
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📋 Additional Context
+      description: Any relevant information, dependencies, or context.
+      placeholder: Any other information that would be helpful...

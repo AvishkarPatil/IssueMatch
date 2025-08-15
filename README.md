@@ -2,6 +2,14 @@
   <h2>IssueMatch</h2>
   <p><em>Connecting developers with open source issues that match their skills and interests</em></p>
   <p>A smart platform that uses AI to analyze your GitHub profile and find the perfect open source issues for you to contribute to.</p>
+  
+  <p><strong>🇮🇳 Part of Open Source Connect India (OSCI) Initiative</strong></p>
+  
+  <img src="https://img.shields.io/badge/OSCI-Project-orange" alt="OSCI Project">
+  <img src="https://img.shields.io/github/contributors/AvishkarPatil/IssueMatch" alt="Contributors">
+  <img src="https://img.shields.io/github/issues/AvishkarPatil/IssueMatch" alt="Issues">
+  <img src="https://img.shields.io/github/forks/AvishkarPatil/IssueMatch" alt="Forks">
+  <img src="https://img.shields.io/github/stars/AvishkarPatil/IssueMatch" alt="Stars">
 </div>
 
 ---
@@ -139,13 +147,29 @@ The application will be available at http://localhost:3000
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+**IssueMatch is part of the Open Source Connect India (OSCI) initiative!** We welcome contributors of all skill levels.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### 🚀 Quick Start for Contributors
+1. Check out our [Contributing Guidelines](.github/CONTRIBUTING.md)
+2. Browse [open issues](https://github.com/AvishkarPatil/IssueMatch/issues)
+3. Look for `good-first-issue` labels for beginners
+4. Comment on an issue to get assigned
+5. Fork, code, and submit a PR!
+
+### 🎯 Contribution Areas
+- **Frontend**: React/Next.js/TypeScript improvements
+- **Backend**: Python/FastAPI enhancements
+- **AI/ML**: Improve matching algorithms
+- **Documentation**: Help others understand the project
+- **Testing**: Add tests and improve reliability
+
+### 🏆 OSCI Benefits
+- Recognition in OSCI community
+- Certificates and swag opportunities
+- Mentorship from experienced developers
+- Networking with Indian open source community
+
+**New to open source?** Perfect! This project is beginner-friendly with plenty of `good-first-issue` tasks.
 
 ## 📄 License
 

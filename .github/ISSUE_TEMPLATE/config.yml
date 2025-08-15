@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/AvishkarPatil/IssueMatch/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 🚀 OSCI Community
+    url: https://github.com/Open-Source-Connect-India
+    about: Join the Open Source Connect India community
+  - name: 📧 Contact Maintainer
+    url: mailto:avishkarpatil2003@gmail.com
+    about: Contact the project maintainer directly

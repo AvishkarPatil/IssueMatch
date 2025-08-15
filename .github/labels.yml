@@ -1,0 +1,107 @@
+# GitHub Labels Configuration for IssueMatch
+
+# Priority Labels
+- name: "priority: high"
+  color: "d73a4a"
+  description: "High priority issue that needs immediate attention"
+
+- name: "priority: medium"
+  color: "fbca04"
+  description: "Medium priority issue"
+
+- name: "priority: low"
+  color: "0e8a16"
+  description: "Low priority issue"
+
+# Type Labels
+- name: "bug"
+  color: "d73a4a"
+  description: "Something isn't working"
+
+- name: "enhancement"
+  color: "a2eeef"
+  description: "New feature or request"
+
+- name: "documentation"
+  color: "0075ca"
+  description: "Improvements or additions to documentation"
+
+- name: "task"
+  color: "d4c5f9"
+  description: "General task or maintenance work"
+
+# Difficulty Labels
+- name: "good-first-issue"
+  color: "7057ff"
+  description: "Good for newcomers to the project"
+
+- name: "beginner-friendly"
+  color: "7057ff"
+  description: "Suitable for beginners"
+
+- name: "intermediate"
+  color: "fbca04"
+  description: "Requires some experience"
+
+- name: "advanced"
+  color: "d73a4a"
+  description: "Requires significant experience"
+
+# Component Labels
+- name: "frontend"
+  color: "1d76db"
+  description: "Related to frontend (Next.js/React/TypeScript)"
+
+- name: "backend"
+  color: "0e8a16"
+  description: "Related to backend (Python/FastAPI)"
+
+- name: "ai/ml"
+  color: "f9d0c4"
+  description: "Related to AI/ML features"
+
+- name: "database"
+  color: "c2e0c6"
+  description: "Related to database operations"
+
+- name: "api"
+  color: "bfd4f2"
+  description: "Related to API development"
+
+- name: "ui/ux"
+  color: "e99695"
+  description: "Related to user interface and experience"
+
+# Status Labels
+- name: "needs-triage"
+  color: "ededed"
+  description: "Needs to be triaged by maintainers"
+
+- name: "needs-discussion"
+  color: "d4c5f9"
+  description: "Needs community discussion"
+
+- name: "in-progress"
+  color: "fbca04"
+  description: "Currently being worked on"
+
+- name: "blocked"
+  color: "d73a4a"
+  description: "Blocked by other issues or dependencies"
+
+- name: "help-wanted"
+  color: "008672"
+  description: "Extra attention is needed"
+
+# OSCI Specific Labels
+- name: "osci"
+  color: "ff6b35"
+  description: "Part of Open Source Connect India initiative"
+
+- name: "mentor-available"
+  color: "0e8a16"
+  description: "Mentor available to help with this issue"
+
+- name: "hacktoberfest"
+  color: "ff6b35"
+  description: "Suitable for Hacktoberfest"
