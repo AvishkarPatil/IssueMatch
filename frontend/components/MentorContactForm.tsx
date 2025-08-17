@@ -60,22 +60,22 @@ export function MentorConnectForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d1117] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0d1117] flex items-center justify-center px-4 py-12">
       <div className="text-center space-y-8 w-full max-w-lg">
         <div className="relative">
-          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#5eead4] to-[#a21caf] tracking-tight">
+          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-600 to-cyan-600 dark:from-[#5eead4] dark:to-[#a21caf] tracking-tight">
             <GraduationCap className="inline-block mr-3 -mt-1" /> Connect with a Mentor
           </h2>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full blur-md bg-gradient-to-br from-[#5eead4] to-[#a21caf] opacity-20 animate-pulse -z-10"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full blur-md bg-gradient-to-br from-blue-600 to-cyan-600 dark:from-[#5eead4] dark:to-[#a21caf] opacity-20 animate-pulse -z-10"></div>
         </div>
 
         {!isSubmitted ? (
           <form
             onSubmit={handleSubmit}
-            className="bg-[#161b22] p-10 rounded-lg shadow-lg border border-[#30363d] space-y-5"
+            className="bg-white dark:bg-[#161b22] p-10 rounded-lg shadow-lg dark:shadow-lg border border-gray-200 dark:border-[#30363d] space-y-5"
           >
             <div>
-              <label htmlFor="name" className="block text-left text-gray-400 mb-2 text-lg">
+              <label htmlFor="name" className="block text-left text-gray-700 dark:text-gray-400 mb-2 text-lg">
                 Your Name
               </label>
               <input
@@ -84,12 +84,12 @@ export function MentorConnectForm() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-[#0d1117] border border-[#30363d] rounded-md text-white focus:ring-2 focus:ring-[#5eead4] focus:outline-none text-lg"
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-[#0d1117] border border-gray-300 dark:border-[#30363d] rounded-md text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-[#5eead4] focus:outline-none text-lg shadow-sm dark:shadow-none"
               />
             </div>
 
             <div>
-              <label htmlFor="issueId" className="block text-left text-gray-400 mb-2 text-lg">
+              <label htmlFor="issueId" className="block text-left text-gray-700 dark:text-gray-400 mb-2 text-lg">
                 Issue ID
               </label>
               <div className="flex items-center relative">
@@ -100,14 +100,14 @@ export function MentorConnectForm() {
                   value={issueId}
                   onChange={(e) => setIssueId(e.target.value)}
                   required
-                  className="w-full px-4 py-3 pl-10 bg-[#0d1117] border border-[#30363d] rounded-md text-white focus:ring-2 focus:ring-[#5eead4] focus:outline-none text-lg"
+                  className="w-full px-4 py-3 pl-10 bg-gray-50 dark:bg-[#0d1117] border border-gray-300 dark:border-[#30363d] rounded-md text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-[#5eead4] focus:outline-none text-lg shadow-sm dark:shadow-none"
                   readOnly={!!searchParams.get('issueID')}
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="helpType" className="block text-left text-gray-400 mb-2 text-lg">
+              <label htmlFor="helpType" className="block text-left text-gray-700 dark:text-gray-400 mb-2 text-lg">
                 Area of Guidance Needed
               </label>
               <div className="flex items-center relative">
@@ -118,16 +118,16 @@ export function MentorConnectForm() {
                   onChange={(e) => setHelpType(e.target.value)}
                   required
                   placeholder="Describe what you're struggling with and what kind of mentorship you're looking for..."
-                  className="w-full px-4 py-3 pl-10 bg-[#0d1117] border border-[#30363d] rounded-md text-white focus:ring-2 focus:ring-[#5eead4] focus:outline-none text-lg min-h-[120px]"
+                  className="w-full px-4 py-3 pl-10 bg-gray-50 dark:bg-[#0d1117] border border-gray-300 dark:border-[#30363d] rounded-md text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-[#5eead4] focus:outline-none text-lg min-h-[120px] shadow-sm dark:shadow-none"
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              className={`w-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white font-semibold py-3 rounded-md hover:brightness-110 transition duration-200 focus:ring-2 focus:ring-[#5eead4] focus:outline-none ${
+              className={`w-full bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-[#6366f1] dark:to-[#a855f7] text-white font-semibold py-3 rounded-md hover:brightness-110 transition duration-200 focus:ring-2 focus:ring-blue-500 dark:focus:ring-[#5eead4] focus:outline-none ${
                 isSubmitting ? 'opacity-70 cursor-wait' : ''
-              } text-lg mt-4`}
+              } text-lg mt-4 shadow-sm dark:shadow-none`}
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -141,25 +141,25 @@ export function MentorConnectForm() {
             </button>
           </form>
         ) : (
-          <div className="bg-[#161b22] p-10 rounded-lg shadow-lg border border-[#30363d] space-y-6 animate-fadeIn">
+          <div className="bg-white dark:bg-[#161b22] p-10 rounded-lg shadow-lg dark:shadow-lg border border-gray-200 dark:border-[#30363d] space-y-6 animate-fadeIn">
             <div className="flex flex-col items-center justify-center">
               <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
                 <CheckCircle className="h-10 w-10 text-green-500" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Mentorship Request Sent!</h3>
-              <p className="text-gray-400 mb-4">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Mentorship Request Sent!</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 A mentor will review your request and reach out to you soon.
               </p>
-              <div className="bg-[#0d1117] p-4 rounded-md border border-[#30363d] w-full mb-6">
-                <p className="text-gray-400 text-sm mb-1">Your Request ID:</p>
-                <p className="text-[#5eead4] font-mono font-medium break-all">{requestId}</p>
+              <div className="bg-gray-50 dark:bg-[#0d1117] p-4 rounded-md border border-gray-200 dark:border-[#30363d] w-full mb-6">
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Your Request ID:</p>
+                <p className="text-blue-600 dark:text-[#5eead4] font-mono font-medium break-all">{requestId}</p>
               </div>
-              <p className="text-gray-400 text-sm mb-6">
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-6">
                 Please save this ID for reference. You can use it to check the status of your request.
               </p>
               <Link
                 href="/"
-                className="flex items-center justify-center bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white font-semibold py-3 px-6 rounded-md hover:brightness-110 transition duration-200 focus:ring-2 focus:ring-[#5eead4] focus:outline-none"
+                className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-[#6366f1] dark:to-[#a855f7] text-white font-semibold py-3 px-6 rounded-md hover:brightness-110 transition duration-200 focus:ring-2 focus:ring-blue-500 dark:focus:ring-[#5eead4] focus:outline-none shadow-sm dark:shadow-none"
               >
                 <Home className="mr-2" size={18} />
                 Go Home
@@ -168,7 +168,7 @@ export function MentorConnectForm() {
           </div>
         )}
 
-        <p className="text-gray-500 text-sm">Let's learn and grow together.</p>
+        <p className="text-gray-500 dark:text-gray-500 text-sm">Let's learn and grow together.</p>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { Menu, X, Home, Search, Bell, Trophy, Users, GraduationCap, Info, Github
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/context/auth-context'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 const FloatingNavbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -58,7 +59,7 @@ const FloatingNavbar = () => {
           scrolled ? 'scale-95' : 'scale-100'
         }`}
       >
-        <div className="glass-effect rounded-full px-6 py-3 shadow-2xl border border-gray-800/50">
+        <div className="bg-white/90 dark:bg-background/80 backdrop-blur-md rounded-full px-6 py-3 shadow-lg dark:shadow-2xl border border-gray-200 dark:border-border">
           <div className="flex items-center space-x-1">
             {/* Logo */}
             <Link href="/">
@@ -83,8 +84,8 @@ const FloatingNavbar = () => {
                         whileTap={{ scale: 0.95 }}
                         className={`px-4 py-2 rounded-full transition-all duration-300 flex items-center space-x-2 ${
                           active 
-                            ? 'text-white' 
-                            : 'text-gray-300 hover:text-white'
+                            ? 'text-foreground' 
+                            : 'text-muted-foreground hover:text-foreground'
                         }`}
                       >
                         <Icon size={16} />
@@ -94,7 +95,7 @@ const FloatingNavbar = () => {
                     {active && (
                       <motion.div
                         layoutId="activeTab"
-                        className="absolute inset-0 bg-gradient-to-r from-purple-600/50 to-cyan-600/50 rounded-full -z-10"
+                        className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 dark:from-purple-600/50 dark:to-cyan-600/50 rounded-full -z-10"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       />
                     )}
@@ -103,11 +104,20 @@ const FloatingNavbar = () => {
               })}
             </div>
 
+            {/* Theme Toggle */}
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="hidden md:flex"
+            >
+              <ThemeToggle />
+            </motion.div>
+
             {/* Notification Icon */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="hidden md:flex text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-800/50 transition-colors"
+              className="hidden md:flex text-muted-foreground hover:text-foreground p-2 rounded-full hover:bg-gray-100 dark:hover:bg-accent transition-colors shadow-sm dark:shadow-none"
             >
               <Bell size={16} />
             </motion.button>
@@ -118,16 +128,16 @@ const FloatingNavbar = () => {
                 <Link href="/profile">
                   <motion.div 
                     whileHover={{ scale: 1.05 }}
-                    className="flex items-center space-x-2 text-gray-300 hover:text-white"
+                    className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {user?.avatar_url ? (
                       <img
-                        className="h-8 w-8 rounded-full border border-purple-500/30"
+                        className="h-8 w-8 rounded-full border border-purple-500/30 shadow-sm dark:shadow-none"
                         src={user.avatar_url}
                         alt={`${user.login}'s avatar`}
                       />
                     ) : (
-                      <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center">
+                      <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center shadow-sm dark:shadow-none">
                         <User size={16} className="text-white" />
                       </div>
                     )}
@@ -139,7 +149,7 @@ const FloatingNavbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleLogin}
-                className="hidden md:flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium py-2 px-4 rounded-full transition-all hover:shadow-lg hover:shadow-purple-500/20 ml-2"
+                className="hidden md:flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 dark:bg-gradient-to-r dark:from-purple-600 dark:to-cyan-600 text-white font-medium py-2 px-4 rounded-full transition-all hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-purple-500/20 ml-2 shadow-sm dark:shadow-none"
               >
                 <Github className="w-4 h-4" />
                 <span className="text-sm">Sign In</span>
@@ -151,7 +161,7 @@ const FloatingNavbar = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 rounded-full hover:bg-gray-800 transition-colors ml-2"
+              className="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-accent transition-colors ml-2 text-muted-foreground hover:text-foreground shadow-sm dark:shadow-none"
             >
               <AnimatePresence mode="wait">
                 {isOpen ? (
@@ -162,7 +172,7 @@ const FloatingNavbar = () => {
                     exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <X size={18} className="text-white" />
+                    <X size={18} />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -172,7 +182,7 @@ const FloatingNavbar = () => {
                     exit={{ rotate: -90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Menu size={18} className="text-white" />
+                    <Menu size={18} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -191,7 +201,7 @@ const FloatingNavbar = () => {
             transition={{ duration: 0.2 }}
             className="fixed top-20 w-full flex justify-center z-40 md:hidden"
           >
-            <div className="glass-effect rounded-2xl p-4 shadow-2xl border border-gray-800/50 min-w-[200px]">
+            <div className="bg-white/95 dark:bg-background/80 backdrop-blur-md rounded-2xl p-4 shadow-xl dark:shadow-2xl border border-gray-200 dark:border-border min-w-[200px]">
               {navItems.map((item, index) => {
                 const Icon = item.icon
                 const active = isActive(item.href)
@@ -202,10 +212,10 @@ const FloatingNavbar = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
                       whileHover={{ x: 5 }}
-                      className={`flex items-center space-x-3 px-4 py-3 rounded-xl ${active ? 'bg-gradient-to-r from-purple-600/30 to-cyan-600/30' : 'hover:bg-gray-800/50'} transition-all duration-200`}
+                      className={`flex items-center space-x-3 px-4 py-3 rounded-xl ${active ? 'bg-blue-50 dark:bg-gradient-to-r dark:from-purple-600/30 dark:to-cyan-600/30' : 'hover:bg-gray-50 dark:hover:bg-accent/50'} transition-all duration-200`}
                     >
-                      <Icon size={18} className={active ? "text-white" : "text-cyan-400"} />
-                      <span className="font-medium text-white">{item.name}</span>
+                      <Icon size={18} className={active ? "text-blue-600 dark:text-foreground" : "text-cyan-400"} />
+                      <span className="font-medium text-foreground">{item.name}</span>
                     </motion.div>
                   </Link>
                 )
@@ -218,10 +228,10 @@ const FloatingNavbar = () => {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: navItems.length * 0.1 }}
-                      className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-200 mt-2"
+                      className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-50 dark:hover:bg-accent/50 transition-all duration-200 mt-2"
                     >
                       <User size={18} className="text-purple-400" />
-                      <span className="font-medium text-white">Profile</span>
+                      <span className="font-medium text-foreground">Profile</span>
                     </motion.div>
                   </Link>
                   <motion.button
@@ -229,14 +239,14 @@ const FloatingNavbar = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: (navItems.length + 1) * 0.1 }}
                     onClick={handleLogout}
-                    className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-200"
+                    className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-gray-50 dark:hover:bg-accent/50 transition-all duration-200"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-400">
                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                       <polyline points="16 17 21 12 16 7" />
                       <line x1="21" y1="12" x2="9" y2="12" />
                     </svg>
-                    <span className="font-medium text-white">Sign Out</span>
+                    <span className="font-medium text-foreground">Sign Out</span>
                   </motion.button>
                 </>
               ) : (
@@ -245,7 +255,7 @@ const FloatingNavbar = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: navItems.length * 0.1 }}
                   onClick={handleLogin}
-                  className="w-full flex items-center space-x-3 px-4 py-3 mt-2 rounded-xl bg-gradient-to-r from-purple-600/80 to-cyan-600/80 transition-all duration-200"
+                  className="w-full flex items-center space-x-3 px-4 py-3 mt-2 rounded-xl bg-blue-600/90 hover:bg-blue-700 dark:bg-gradient-to-r dark:from-purple-600/80 dark:to-cyan-600/80 transition-all duration-200 shadow-sm dark:shadow-none"
                 >
                   <Github size={18} className="text-white" />
                   <span className="font-medium text-white">Sign In with GitHub</span>

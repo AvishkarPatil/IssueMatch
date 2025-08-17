@@ -137,20 +137,20 @@ export default function IssueMatchAI() {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {isOpen ? (
-        <Card className="w-80 sm:w-96 h-[500px] flex flex-col shadow-lg border-2 border-gray-700 rounded-lg overflow-hidden bg-[#1a1f2a]">
-          <div className="bg-[#242a38] p-3 flex items-center justify-between border-b border-gray-700">
-            <div className="font-semibold text-white">IssueMatch AI</div>
+        <Card className="w-80 sm:w-96 h-[500px] flex flex-col shadow-lg border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-[#1a1f2a]">
+          <div className="bg-gray-50 dark:bg-[#242a38] p-3 flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
+            <div className="font-semibold text-gray-900 dark:text-white">IssueMatch AI</div>
             <div className="flex gap-2">
-              <Button variant="ghost" size="icon" onClick={minimizeChat} className="h-8 w-8 text-gray-300 hover:text-white hover:bg-gray-700">
+              <Button variant="ghost" size="icon" onClick={minimizeChat} className="h-8 w-8 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                 <Minimize2 className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={toggleChat} className="h-8 w-8 text-gray-300 hover:text-white hover:bg-gray-700">
+              <Button variant="ghost" size="icon" onClick={toggleChat} className="h-8 w-8 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                 <X className="h-4 w-4" />
               </Button>
             </div>
           </div>
 
-          <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#1a1f2a]">
+          <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-white dark:bg-[#1a1f2a]">
             {messages.map((message) => (
               <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
@@ -168,8 +168,8 @@ export default function IssueMatchAI() {
                   <div
                     className={`rounded-lg p-3 ${
                       message.role === "user" 
-                        ? "bg-purple-600 text-white" 
-                        : "bg-[#242a38] text-gray-200"
+                        ? "bg-blue-600 dark:bg-purple-600 text-white" 
+                        : "bg-gray-100 dark:bg-[#242a38] text-gray-900 dark:text-gray-200"
                     }`}
                   >
                     {message.content}
@@ -183,15 +183,15 @@ export default function IssueMatchAI() {
                   <Avatar className="h-8 w-8 mt-1">
                     <div className="h-full w-full flex items-center justify-center bg-gray-700">AI</div>
                   </Avatar>
-                  <div className="rounded-lg p-3 bg-[#242a38] text-gray-200">
+                  <div className="rounded-lg p-3 bg-gray-100 dark:bg-[#242a38] text-gray-900 dark:text-gray-200">
                     <div className="flex space-x-1">
-                      <div className="h-2 w-2 bg-purple-400 rounded-full animate-bounce"></div>
+                      <div className="h-2 w-2 bg-blue-400 dark:bg-purple-400 rounded-full animate-bounce"></div>
                       <div
-                        className="h-2 w-2 bg-purple-400 rounded-full animate-bounce"
+                        className="h-2 w-2 bg-blue-400 dark:bg-purple-400 rounded-full animate-bounce"
                         style={{ animationDelay: "0.2s" }}
                       ></div>
                       <div
-                        className="h-2 w-2 bg-purple-400 rounded-full animate-bounce"
+                        className="h-2 w-2 bg-blue-400 dark:bg-purple-400 rounded-full animate-bounce"
                         style={{ animationDelay: "0.4s" }}
                       ></div>
                     </div>
@@ -201,18 +201,18 @@ export default function IssueMatchAI() {
             )}
           </div>
 
-          <form onSubmit={handleSubmit} className="p-3 border-t border-gray-700 flex gap-2 bg-[#242a38]">
+          <form onSubmit={handleSubmit} className="p-3 border-t border-gray-200 dark:border-gray-700 flex gap-2 bg-gray-50 dark:bg-[#242a38]">
             <Input
               value={input}
               onChange={handleInputChange}
               placeholder="Type your message..."
-              className="flex-1 bg-[#1a1f2a] border-gray-700 text-white placeholder:text-gray-400"
+              className="flex-1 bg-white dark:bg-[#1a1f2a] border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
             />
             <Button
               type="submit"
               size="icon"
               disabled={isLoading || !input.trim()}
-              className="bg-purple-600 hover:bg-purple-700"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700"
             >
               <Send className="h-4 w-4" />
             </Button>
@@ -221,7 +221,7 @@ export default function IssueMatchAI() {
       ) : (
         <Button
           onClick={toggleChat}
-          className="h-14 w-14 rounded-full shadow-lg bg-purple-600 hover:bg-purple-700 border-2 border-white"
+          className="h-14 w-14 rounded-full shadow-lg bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 border-2 border-white dark:border-white"
         >
           <MessageCircle className="h-6 w-6" />
         </Button>

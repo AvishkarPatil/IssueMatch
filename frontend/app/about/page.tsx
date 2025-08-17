@@ -6,12 +6,12 @@ import Image from "next/image"
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
       {/* Hero Section */}
       <section className="pt-20 pb-16 px-4">
         <div className="max-w-5xl mx-auto text-center">
           <motion.h1
-            className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-200"
+            className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-purple-400 dark:to-purple-200"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -19,7 +19,7 @@ export default function AboutPage() {
             Our Mission
           </motion.h1>
           <motion.div
-            className="w-24 h-1 bg-purple-500 mx-auto mb-10"
+            className="w-24 h-1 bg-blue-500 dark:bg-purple-500 mx-auto mb-10"
             initial={{ width: 0 }}
             animate={{ width: 96 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -36,11 +36,11 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <Code className="mr-3 text-purple-400" />
+            <Code className="mr-3 text-blue-600 dark:text-purple-400" />
             What We Do
           </motion.h2>
           <motion.p
-            className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto"
+            className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
@@ -52,7 +52,7 @@ export default function AboutPage() {
       </section>
 
       {/* What Developers Get */}
-      <section className="py-12 px-4 bg-gray-900">
+      <section className="py-12 px-4 bg-gray-100 dark:bg-gray-900">
         <div className="max-w-5xl mx-auto">
           <motion.h2
             className="text-3xl font-bold mb-12 text-center"
@@ -65,69 +65,69 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div
-              className="bg-gray-800 p-6 rounded-xl border border-purple-800/20 shadow-lg"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-purple-800/20 shadow-lg dark:shadow-lg"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
               <div className="flex items-start">
-                <div className="bg-purple-800/30 p-3 rounded-lg mr-4">
-                  <Code className="h-6 w-6 text-purple-300" />
+                <div className="bg-blue-100 dark:bg-purple-800/30 p-3 rounded-lg mr-4">
+                  <Code className="h-6 w-6 text-blue-600 dark:text-purple-300" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-3 text-purple-200">Smart Issue Matching</h3>
-                  <p className="text-gray-300">Get AI-curated GitHub issues aligned to your skills and history.</p>
+                  <h3 className="text-xl font-semibold mb-3 text-blue-700 dark:text-purple-200">Smart Issue Matching</h3>
+                  <p className="text-gray-600 dark:text-gray-300">Get AI-curated GitHub issues aligned to your skills and history.</p>
                 </div>
               </div>
             </motion.div>
 
             <motion.div
-              className="bg-gray-800 p-6 rounded-xl border border-purple-800/20 shadow-lg"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-purple-800/20 shadow-lg dark:shadow-lg"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.7 }}
             >
               <div className="flex items-start">
-                <div className="bg-purple-800/30 p-3 rounded-lg mr-4">
-                  <Rocket className="h-6 w-6 text-purple-300" />
+                <div className="bg-blue-100 dark:bg-purple-800/30 p-3 rounded-lg mr-4">
+                  <Rocket className="h-6 w-6 text-blue-600 dark:text-purple-300" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-3 text-purple-200">Fast Onboarding</h3>
-                  <p className="text-gray-300">No setup or fluff — just connect GitHub and go.</p>
+                  <h3 className="text-xl font-semibold mb-3 text-blue-700 dark:text-purple-200">Fast Onboarding</h3>
+                  <p className="text-gray-600 dark:text-gray-300">No setup or fluff — just connect GitHub and go.</p>
                 </div>
               </div>
             </motion.div>
 
             <motion.div
-              className="bg-gray-800 p-6 rounded-xl border border-purple-800/20 shadow-lg"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-purple-800/20 shadow-lg dark:shadow-lg"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.8 }}
             >
               <div className="flex items-start">
-                <div className="bg-purple-800/30 p-3 rounded-lg mr-4">
-                  <BarChart3 className="h-6 w-6 text-purple-300" />
+                <div className="bg-blue-100 dark:bg-purple-800/30 p-3 rounded-lg mr-4">
+                  <BarChart3 className="h-6 w-6 text-blue-600 dark:text-purple-300" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-3 text-purple-200">Track Your Impact</h3>
-                  <p className="text-gray-300">See your matched issues, completed contributions, and growth over time.</p>
+                  <h3 className="text-xl font-semibold mb-3 text-blue-700 dark:text-purple-200">Track Your Impact</h3>
+                  <p className="text-gray-600 dark:text-gray-300">See your matched issues, completed contributions, and growth over time.</p>
                 </div>
               </div>
             </motion.div>
 
             <motion.div
-              className="bg-gray-800 p-6 rounded-xl border border-purple-800/20 shadow-lg"
+              className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-purple-800/20 shadow-lg dark:shadow-lg"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.9 }}
             >
               <div className="flex items-start">
-                <div className="bg-purple-800/30 p-3 rounded-lg mr-4">
-                  <Target className="h-6 w-6 text-purple-300" />
+                <div className="bg-blue-100 dark:bg-purple-800/30 p-3 rounded-lg mr-4">
+                  <Target className="h-6 w-6 text-blue-600 dark:text-purple-300" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-3 text-purple-200">Personalized Dashboard</h3>
-                  <p className="text-gray-300">A clean, focused space showing your active issues, repos, and suggested matches.</p>
+                  <h3 className="text-xl font-semibold mb-3 text-blue-700 dark:text-purple-200">Personalized Dashboard</h3>
+                  <p className="text-gray-600 dark:text-gray-300">A clean, focused space showing your active issues, repos, and suggested matches.</p>
                 </div>
               </div>
             </motion.div>
@@ -136,7 +136,7 @@ export default function AboutPage() {
       </section>
 
       {/* Join the Movement - Without box */}
-      <section className="py-16 px-4 bg-gray-950">
+      <section className="py-16 px-4 bg-white dark:bg-gray-950">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -144,10 +144,10 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 1.2 }}
           >
             <h2 className="text-2xl font-bold mb-6 inline-flex items-center justify-center">
-              <Globe className="mr-3 text-purple-400" />
+              <Globe className="mr-3 text-blue-600 dark:text-purple-400" />
               Join the Movement
             </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Whether you're a first-time contributor or a seasoned maintainer — this is your space.
             </p>
           </motion.div>
@@ -155,8 +155,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-            {/* Team Section */}
-      <section className="py-16 px-4 bg-gray-900">
+      <section className="py-16 px-4 bg-gray-100 dark:bg-gray-900">
         <div className="max-w-5xl mx-auto">
           <motion.h2
             className="text-3xl font-bold mb-16 text-center"
@@ -181,8 +180,8 @@ export default function AboutPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
               >
-                <div className="relative mb-3"> {/* Increased bottom margin from 6 to 10 */}
-                  <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-purple-600 relative z-10">
+                <div className="relative mb-3">
+                  <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-600 dark:border-purple-600 relative z-10">
                     <Image
                       src={member.image || "/placeholder.svg"}
                       alt={member.name}
@@ -191,12 +190,11 @@ export default function AboutPage() {
                       className="object-cover"
                     />
                   </div>
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[calc(100%+16px)] h-[calc(100%+16px)] bg-gradient-to-b from-purple-600/0 to-purple-600 rounded-full -z-10"></div>
-                  {/* Removed the third div that was causing overlap issues */}
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[calc(100%+16px)] h-[calc(100%+16px)] bg-gradient-to-b from-blue-600/0 to-blue-600 dark:from-purple-600/0 dark:to-purple-600 rounded-full -z-10"></div>
                 </div>
-                <div className="bg-gray-800 px-6 py-4 rounded-xl border border-purple-800/20 shadow-lg text-center w-full mt-[-30px] pt-6"> {/* Adjusted mt from -20px to -30px */}
-                  <h3 className="font-bold text-lg text-purple-200">{member.name}</h3>
-                  <p className="text-purple-400/80">{member.role}</p>
+                <div className="bg-white dark:bg-gray-800 px-6 py-4 rounded-xl border border-gray-200 dark:border-purple-800/20 shadow-lg dark:shadow-lg text-center w-full mt-[-30px] pt-6">
+                  <h3 className="font-bold text-lg text-blue-700 dark:text-purple-200">{member.name}</h3>
+                  <p className="text-blue-600/80 dark:text-purple-400/80">{member.role}</p>
                 </div>
               </motion.div>
             ))}

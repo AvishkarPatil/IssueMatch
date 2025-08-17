@@ -75,19 +75,19 @@ export function InspirationSidebar() {
   return (
     <div className="space-y-6">
       {/* Inspirational Quote */}
-      <div className="bg-gradient-to-br from-[#1a1f2a] to-[#242a38] rounded-lg p-5 shadow-lg border border-purple-900/20">
-        <h3 className="text-lg font-medium text-white mb-4 flex items-center">
-          <span className="bg-purple-600/20 p-1.5 rounded-md mr-2 text-purple-400">💡</span>
+      <div className="bg-white dark:bg-gradient-to-br dark:from-[#1a1f2a] dark:to-[#242a38] rounded-lg p-5 shadow-lg dark:shadow-lg border border-gray-200 dark:border-purple-900/20">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4 flex items-center">
+          <span className="bg-blue-100 dark:bg-purple-600/20 p-1.5 rounded-md mr-2 text-blue-600 dark:text-purple-400">💡</span>
           Daily Inspiration
         </h3>
         <div className="min-h-[120px] flex flex-col justify-center">
           <p
-            className={`text-gray-300 italic mb-2 transition-opacity duration-500 ${animating ? "opacity-0" : "opacity-100"}`}
+            className={`text-gray-700 dark:text-gray-300 italic mb-2 transition-opacity duration-500 ${animating ? "opacity-0" : "opacity-100"}`}
           >
             "{quotes[quoteIndex].text}"
           </p>
           <p
-            className={`text-purple-400 text-sm text-right transition-opacity duration-500 ${animating ? "opacity-0" : "opacity-100"}`}
+            className={`text-blue-600 dark:text-purple-400 text-sm text-right transition-opacity duration-500 ${animating ? "opacity-0" : "opacity-100"}`}
           >
             — {quotes[quoteIndex].author}
           </p>
@@ -95,23 +95,23 @@ export function InspirationSidebar() {
       </div>
 
       {/* Achievements */}
-      <div className="bg-gradient-to-br from-[#1a1f2a] to-[#242a38] rounded-lg p-5 shadow-lg border border-purple-900/20">
-        <h3 className="text-lg font-medium text-white mb-4 flex items-center">
-          <span className="bg-purple-600/20 p-1.5 rounded-md mr-2 text-purple-400">🏆</span>
+      <div className="bg-white dark:bg-gradient-to-br dark:from-[#1a1f2a] dark:to-[#242a38] rounded-lg p-5 shadow-lg dark:shadow-lg border border-gray-200 dark:border-purple-900/20">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4 flex items-center">
+          <span className="bg-blue-100 dark:bg-purple-600/20 p-1.5 rounded-md mr-2 text-blue-600 dark:text-purple-400">🏆</span>
           Your Achievements
         </h3>
         <div className="space-y-4">
           {achievements.slice(0, 3).map((achievement, index) => (
             <div
               key={index}
-              className="flex items-start gap-3 group p-2 rounded-md hover:bg-black/20 transition-colors"
+              className="flex items-start gap-3 group p-2 rounded-md hover:bg-gray-50 dark:hover:bg-black/20 transition-colors"
             >
-              <div className="mt-0.5 bg-[#1a1f2a] p-1.5 rounded-md">{achievement.icon}</div>
+              <div className="mt-0.5 bg-gray-100 dark:bg-[#1a1f2a] p-1.5 rounded-md">{achievement.icon}</div>
               <div>
-                <h4 className="text-white font-medium group-hover:text-purple-400 transition-colors">
+                <h4 className="text-gray-900 dark:text-white font-medium group-hover:text-blue-600 dark:group-hover:text-purple-400 transition-colors">
                   {achievement.title}
                 </h4>
-                <p className="text-sm text-gray-400">{achievement.description}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{achievement.description}</p>
               </div>
             </div>
           ))}
