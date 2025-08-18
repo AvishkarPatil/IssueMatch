@@ -5,6 +5,7 @@ import {
   getSortedRowModel,
   SortingState,
   useReactTable,
+  Row,
 } from '@tanstack/react-table';
 import { ChevronDown, ChevronUp, Trophy, Medal, Star } from 'lucide-react';
 
@@ -30,7 +31,7 @@ export default function LeaderboardTable({ users, isLoading }: LeaderboardTableP
     {
       accessorKey: 'rank',
       header: 'Rank',
-      cell: ({ row }) => {
+      cell: ({ row }: { row: Row<LeaderboardUser> }) => {
         const rank = row.original.rank;
         let rankDisplay;
         
@@ -54,23 +55,23 @@ export default function LeaderboardTable({ users, isLoading }: LeaderboardTableP
     {
       accessorKey: 'username',
       header: 'Developer',
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<LeaderboardUser> }) => (
         <div className="flex items-center gap-2">
           <img 
             src={row.original.avatarUrl} 
             alt={row.original.username} 
-            className="w-8 h-8 rounded-full border-2 border-purple-500/30"
+            className="w-8 h-8 rounded-full border-2 border-blue-500/30 dark:border-purple-500/30"
           />
-          <span>{row.original.username}</span>
+          <span className="text-gray-900 dark:text-white">{row.original.username}</span>
         </div>
       ),
     },
     {
       accessorKey: 'score',
       header: 'Score',
-      cell: ({ row }) => (
-        <div className="font-semibold text-purple-500 flex items-center gap-1">
-          <Star className="h-4 w-4 fill-purple-500" />
+      cell: ({ row }: { row: Row<LeaderboardUser> }) => (
+        <div className="font-semibold text-blue-600 dark:text-purple-500 flex items-center gap-1">
+          <Star className="h-4 w-4 fill-blue-600 dark:fill-purple-500" />
           {row.original.score}
         </div>
       ),
@@ -78,26 +79,26 @@ export default function LeaderboardTable({ users, isLoading }: LeaderboardTableP
     {
       accessorKey: 'contributions',
       header: 'Contributions',
-      cell: ({ row }) => (
-        <div className="font-medium">{row.original.contributions}</div>
+      cell: ({ row }: { row: Row<LeaderboardUser> }) => (
+        <div className="font-medium text-gray-900 dark:text-white">{row.original.contributions}</div>
       ),
     },
     {
       accessorKey: 'mentorships',
       header: 'Mentorships',
-      cell: ({ row }) => (
-        <div className="font-medium">{row.original.mentorships}</div>
+      cell: ({ row }: { row: Row<LeaderboardUser> }) => (
+        <div className="font-medium text-gray-900 dark:text-white">{row.original.mentorships}</div>
       ),
     },
     {
       accessorKey: 'skillBadges',
       header: 'Top Skills',
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<LeaderboardUser> }) => (
         <div className="flex flex-wrap gap-1">
-          {row.original.skillBadges.slice(0, 3).map((skill, i) => (
+          {row.original.skillBadges.slice(0, 3).map((skill: string, i: number) => (
             <span 
               key={i} 
-              className="px-2 py-1 text-xs rounded-full bg-purple-900/30 text-purple-300 border border-purple-800/50"
+              className="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-purple-900/30 text-blue-700 dark:text-purple-300 border border-blue-200 dark:border-purple-800/50"
             >
               {skill}
             </span>
@@ -121,21 +122,21 @@ export default function LeaderboardTable({ users, isLoading }: LeaderboardTableP
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 dark:border-purple-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-700 shadow-md bg-gray-900/50">
-      <table className="min-w-full divide-y divide-gray-800">
-        <thead className="bg-gray-800">
+    <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 shadow-md dark:shadow-md bg-white dark:bg-gray-900/50">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+        <thead className="bg-gray-50 dark:bg-gray-800">
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
                 <th 
                   key={header.id}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-700 transition-colors"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   onClick={header.column.getToggleSortingHandler()}
                 >
                   <div className="flex items-center gap-1">
@@ -151,14 +152,14 @@ export default function LeaderboardTable({ users, isLoading }: LeaderboardTableP
             </tr>
           ))}
         </thead>
-        <tbody className="bg-gray-900 divide-y divide-gray-800">
+        <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
           {table.getRowModel().rows.map(row => (
             <tr 
               key={row.id}
-              className="hover:bg-gray-800/70 transition-colors"
+              className="hover:bg-gray-50 dark:hover:bg-gray-800/70 transition-colors"
             >
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="px-6 py-4 whitespace-nowrap">
+                <td key={cell.id} className="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

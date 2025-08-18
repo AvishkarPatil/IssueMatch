@@ -8,7 +8,7 @@ import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0d1117] text-white">
+    <main className="min-h-screen bg-gray-50 dark:bg-[#0d1117] text-gray-900 dark:text-white">
       {/* Hero Slider Section */}
       <Slider />
 
@@ -29,7 +29,7 @@ export default function Home() {
 
           <div className="flex-1">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-white">Recommended</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Recommended</h2>
               <SortDropdown />
             </div>
             <IssuesList type="recommended" />

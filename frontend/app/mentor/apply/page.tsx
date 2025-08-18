@@ -57,10 +57,10 @@ export default function MentorApplicationPage() {
     try {
       // Create a new mentor application in Firestore
       await addDoc(collection(db, 'mentor_applications'), {
-        userId: user.uid,
-        name: user.displayName,
-        email: user.email,
-        avatarUrl: user.photoURL,
+        userId: user.id,
+        name: user.name || user.login,
+        email: user.login, // Using GitHub username as email
+        avatarUrl: user.avatar_url,
         bio,
         skills,
         timezone,
@@ -85,28 +85,28 @@ export default function MentorApplicationPage() {
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <Link 
         href="/mentor-hub" 
-        className="flex items-center text-purple-400 hover:text-purple-300 mb-6"
+        className="flex items-center text-blue-600 dark:text-purple-400 hover:text-blue-700 dark:hover:text-purple-300 mb-6"
       >
         <ChevronLeft className="h-4 w-4 mr-1" />
         Back to Mentor Hub
       </Link>
       
       <div className="flex items-center gap-3 mb-8">
-        <GraduationCap className="h-8 w-8 text-purple-500" />
-        <h1 className="text-3xl font-bold text-gray-100">Become a Mentor</h1>
+        <GraduationCap className="h-8 w-8 text-blue-600 dark:text-purple-500" />
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Become a Mentor</h1>
       </div>
       
-      <div className="bg-gray-900/70 rounded-lg shadow-md border border-gray-700 p-6 backdrop-blur-sm">
+      <div className="bg-white dark:bg-gray-900/70 rounded-lg shadow-md dark:shadow-md border border-gray-200 dark:border-gray-700 p-6 backdrop-blur-sm">
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
             <div>
-              <label htmlFor="bio" className="block text-sm font-medium text-gray-300 mb-1">
+              <label htmlFor="bio" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Bio (Tell us about yourself)
               </label>
               <textarea
                 id="bio"
                 rows={4}
-                className="w-full border border-gray-700 bg-gray-800 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-200"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
                 placeholder="Share your background, expertise, and what you're passionate about..."
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
@@ -115,20 +115,20 @@ export default function MentorApplicationPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Skills (Programming languages, frameworks, tools)
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
                 {skills.map((skill) => (
                   <div 
                     key={skill} 
-                    className="flex items-center gap-1 px-3 py-1 bg-purple-900/30 text-purple-300 rounded-full border border-purple-800/50"
+                    className="flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-purple-900/30 text-blue-700 dark:text-purple-300 rounded-full border border-blue-200 dark:border-purple-800/50"
                   >
                     <span>{skill}</span>
                     <button 
                       type="button" 
                       onClick={() => removeSkill(skill)}
-                      className="text-purple-300 hover:text-purple-100"
+                      className="text-blue-600 dark:text-purple-300 hover:text-blue-800 dark:hover:text-purple-100"
                     >
                       <Trash2 className="h-3 w-3" />
                     </button>
@@ -138,7 +138,7 @@ export default function MentorApplicationPage() {
               <div className="flex">
                 <input
                   type="text"
-                  className="flex-1 border border-gray-700 bg-gray-800 rounded-l-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-200"
+                  className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-l-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
                   placeholder="Add a skill..."
                   value={newSkill}
                   onChange={(e) => setNewSkill(e.target.value)}
@@ -147,7 +147,7 @@ export default function MentorApplicationPage() {
                 <button
                   type="button"
                   onClick={addSkill}
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-3 rounded-r-md flex items-center"
+                  className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white px-3 rounded-r-md flex items-center shadow-sm dark:shadow-none"
                 >
                   <Plus className="h-4 w-4" />
                 </button>
@@ -156,12 +156,12 @@ export default function MentorApplicationPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="timezone" className="block text-sm font-medium text-gray-300 mb-1">
+                <label htmlFor="timezone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Timezone
                 </label>
                 <select
                   id="timezone"
-                  className="w-full border border-gray-700 bg-gray-800 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-200"
+                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
                   value={timezone}
                   onChange={(e) => setTimezone(e.target.value)}
                   required
@@ -174,7 +174,7 @@ export default function MentorApplicationPage() {
               </div>
               
               <div>
-                <label htmlFor="experience" className="block text-sm font-medium text-gray-300 mb-1">
+                <label htmlFor="experience" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Years of Experience
                 </label>
                 <input
@@ -182,7 +182,7 @@ export default function MentorApplicationPage() {
                   id="experience"
                   min="0"
                   max="50"
-                  className="w-full border border-gray-700 bg-gray-800 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-200"
+                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
                   value={experience}
                   onChange={(e) => setExperience(e.target.value)}
                   required
@@ -191,13 +191,13 @@ export default function MentorApplicationPage() {
             </div>
             
             <div>
-              <label htmlFor="githubProjects" className="block text-sm font-medium text-gray-300 mb-1">
+              <label htmlFor="githubProjects" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Notable GitHub Projects or Contributions
               </label>
               <textarea
                 id="githubProjects"
                 rows={3}
-                className="w-full border border-gray-700 bg-gray-800 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-200"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
                 placeholder="List your notable projects or contributions (URLs preferred)"
                 value={githubProjects}
                 onChange={(e) => setGithubProjects(e.target.value)}
@@ -206,13 +206,13 @@ export default function MentorApplicationPage() {
             </div>
             
             <div>
-              <label htmlFor="motivation" className="block text-sm font-medium text-gray-300 mb-1">
+              <label htmlFor="motivation" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Why do you want to be a mentor?
               </label>
               <textarea
                 id="motivation"
                 rows={3}
-                className="w-full border border-gray-700 bg-gray-800 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-200"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
                 placeholder="Tell us why you want to mentor others and what you hope to achieve"
                 value={motivation}
                 onChange={(e) => setMotivation(e.target.value)}
@@ -223,7 +223,7 @@ export default function MentorApplicationPage() {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white rounded-md transition-colors font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm dark:shadow-none"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (

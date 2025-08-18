@@ -3,6 +3,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { Footer } from "@/components/footer"
 import { AuthProvider } from "@/context/auth-context"
+import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import IssueMatchAI from "@/components/issue-match-ai"
 import FloatingNavbar from "@/components/floating-navbar"
@@ -22,16 +23,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-[#0d1117] text-white`} suppressHydrationWarning>
-        <AuthProvider>
-          <FloatingNavbar />
-          <PageWrapper>
-            {children}
-          </PageWrapper>
-          <Footer />
-          <IssueMatchAI />
-          <Toaster />
-        </AuthProvider>
+      <body className={`${inter.className} bg-background text-foreground`} suppressHydrationWarning>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <FloatingNavbar />
+            <PageWrapper>
+              {children}
+            </PageWrapper>
+            <Footer />
+            <IssueMatchAI />
+            <Toaster />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
