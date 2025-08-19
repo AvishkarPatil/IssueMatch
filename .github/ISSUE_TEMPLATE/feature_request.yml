@@ -1,82 +1,114 @@
-name: ✨ Feature Request
-description: Suggest a new feature or enhancement for IssueMatch
+name: "🚀 Feature Request"
+description: "Suggest an idea or enhancement for this project"
 title: "[FEATURE] "
-labels: ["enhancement", "needs-discussion"]
+labels: ["enhancement", "needs-triage"]
+assignees: []
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a new feature! Your ideas help make IssueMatch better.
+        ## 👋 Thanks for taking the time to suggest a feature!
         
-        **🏷️ OSCI Project**: This feature request is part of the Open Source Connect India (OSCI) initiative.
+        We appreciate your input and want to make sure we understand your needs. Please fill out the sections below to help us evaluate your request.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: "Prerequisites"
+      description: "Please confirm you have completed the following"
+      options:
+        - label: "I have searched existing issues to ensure this feature hasn't been requested before"
+          required: true
+        - label: "I have read the project documentation and contribution guidelines"
+          required: true
 
   - type: textarea
-    id: feature-description
+    id: problem-description
     attributes:
-      label: 💡 Feature Description
-      description: A clear and concise description of the feature you want to request.
-      placeholder: Describe the feature you'd like to see...
-    validations:
-      required: true
-
-  - type: textarea
-    id: problem-statement
-    attributes:
-      label: 🎯 Problem Statement
-      description: Is your feature request related to a problem? Please describe the problem you're trying to solve.
-      placeholder: What problem does this feature solve?
+      label: "🎯 Problem Statement"
+      description: "What problem does this feature solve? What challenge are you facing?"
+      placeholder: |
+        Describe the problem or limitation you're experiencing:
+        
+        • What are you trying to accomplish?
+        • What obstacles are preventing you from achieving your goal?
+        • How does this impact your workflow or user experience?
+        
+        Example: "I'm always frustrated when I have to manually configure settings for each new project because..."
     validations:
       required: true
 
   - type: textarea
     id: proposed-solution
     attributes:
-      label: 🛠️ Proposed Solution
-      description: Describe the solution you'd like to see implemented.
-      placeholder: How would you like this feature to work?
+      label: "💡 Proposed Solution"
+      description: "Describe your ideal solution in detail"
+      placeholder: |
+        Clearly describe what you'd like to see implemented:
+        
+        • What should the feature do?
+        • How should it work from a user's perspective?
+        • What would the interface/API look like?
+        • Are there any specific requirements or constraints?
     validations:
       required: true
 
-  - type: dropdown
-    id: component
+  - type: textarea
+    id: alternatives
     attributes:
-      label: 🔧 Component
-      description: Which part of IssueMatch would this feature affect?
-      options:
-        - Frontend (UI/UX)
-        - Backend (API)
-        - AI/ML (Matching Algorithm)
-        - Database
-        - Authentication
-        - Other
-    validations:
-      required: true
+      label: "🔄 Alternatives Considered"
+      description: "What other solutions or workarounds have you considered?"
+      placeholder: |
+        Describe any alternative approaches you've thought about:
+        
+        • Other potential solutions you've considered
+        • Existing workarounds you're currently using
+        • Why these alternatives don't fully meet your needs
 
   - type: dropdown
     id: priority
     attributes:
-      label: 📊 Priority
-      description: How important is this feature to you?
+      label: "📊 Priority Level"
+      description: "How would you rate the importance of this feature?"
       options:
-        - Low - Nice to have
-        - Medium - Would be helpful
-        - High - Really need this
-        - Critical - Blocking my usage
+        - "Low - Nice to have"
+        - "Medium - Would improve workflow"
+        - "High - Significant impact on productivity"
+        - "Critical - Blocking important use cases"
     validations:
       required: true
 
   - type: textarea
-    id: use-case
+    id: use-cases
     attributes:
-      label: 📊 Use Case
-      description: Explain why this feature would be beneficial and how it would be used.
-      placeholder: Who would use this feature and how?
-    validations:
-      required: true
+      label: "🎭 Use Cases"
+      description: "Provide specific examples of how this feature would be used"
+      placeholder: |
+        Share concrete examples or user stories:
+        
+        • Who would use this feature?
+        • In what scenarios would it be useful?
+        • Can you provide step-by-step examples?
 
   - type: textarea
     id: additional-context
     attributes:
-      label: 📋 Additional Context
-      description: Add any other context, mockups, wireframes, or examples about the feature request here.
-      placeholder: Any additional information, links, or examples...
+      label: "📎 Additional Context"
+      description: "Any other information that would help us understand your request"
+      placeholder: |
+        Add any other relevant information:
+        
+        • Screenshots, mockups, or diagrams
+        • Links to related discussions or documentation
+        • Examples from other tools or projects
+        • Technical considerations or constraints
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: "🤝 Contribution"
+      description: "Are you interested in contributing to this feature?"
+      options:
+        - label: "I'm willing to submit a pull request for this feature"
+        - label: "I'm available to help with testing"
+        - label: "I can provide additional feedback during development"

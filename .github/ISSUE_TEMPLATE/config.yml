@@ -1,11 +1,23 @@
-blank_issues_enabled: false
-contact_links:
-  - name: 💬 GitHub Discussions
-    url: https://github.com/AvishkarPatil/IssueMatch/discussions
-    about: Ask questions and discuss ideas with the community
-  - name: 🚀 OSCI Community
-    url: https://github.com/Open-Source-Connect-India
-    about: Join the Open Source Connect India community
-  - name: 📧 Contact Maintainer
-    url: mailto:avishkarpatil2003@gmail.com
-    about: Contact the project maintainer directly
+# GitHub Issue Templates Configuration
+# This file configures the behavior of issue creation in this repository
+
+# Enable blank issues (issues created without using a template)
+blank_issues_enabled: true
+
+# Default settings for blank issues
+blank_issue_title: "Please provide a descriptive title for your issue"
+blank_issue_body: |
+  <!-- 
+  Thank you for creating an issue! 
+  
+  Please provide a clear and descriptive title above, and fill out the information below to help us understand and address your concern.
+  -->
+  
+  ## Description
+  <!-- Provide a clear and concise description of the issue, question, or topic -->
+  
+  ## Context
+  <!-- Add any relevant context, environment details, or background information -->
+  
+  ## Additional Information
+  <!-- Include any screenshots, logs, or other helpful information -->
