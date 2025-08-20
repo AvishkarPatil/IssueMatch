@@ -106,6 +106,13 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+#### Environment variables
+Copy the example env file and update values before running the backend:
+```bash
+cp backend/.env.example backend/.env
+# then edit backend/.env with your values and run the backend
+```
+
 #### Configure credentials
 Create a keys.json file with your Google Cloud credentials and place it in the app/services directory.
 
