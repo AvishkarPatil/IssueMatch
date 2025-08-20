@@ -1,29 +1,31 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-export function middleware(request: NextRequest) {
-  const path = request.nextUrl.pathname
+const PUBLIC_ROUTES = ["/", "/login"]
+const IGNORED_PREFIXES = ["/_next", "/api", "/static"]
 
-  // Skip middleware for these paths
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
   if (
-    path.startsWith("/_next") ||
-    path.startsWith("/api") ||
-    path.startsWith("/static") ||
-    path.includes(".") ||
-    path === "/" ||
-    path === "/login" ||
-    path === "/"
+    IGNORED_PREFIXES.some((prefix) => pathname.startsWith(prefix)) ||
+    pathname.includes(".") ||
+    PUBLIC_ROUTES.includes(pathname)
   ) {
     return NextResponse.next()
   }
 
-  // Check if the user has a session cookie
-  const hasSession = request.cookies.has("session")
+  const session = request.cookies.get("session")
 
-  // If the user is not logged in and trying to access a protected route
-  if (!hasSession && path !== "/" && path !== "/login" && path !== "/") {
-    return NextResponse.redirect(new URL("/login", request.url))
+  if (!session || !session.value) {
+    const loginUrl = new URL("/login", request.url)
+    loginUrl.searchParams.set("redirect", pathname)
+    return NextResponse.redirect(loginUrl)
   }
 
   return NextResponse.next()
+}
+
+export const config = {
+  matcher: ["/((?!_next|api|static).*)"],
 }
