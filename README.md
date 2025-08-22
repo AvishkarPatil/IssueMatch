@@ -12,6 +12,7 @@
   <img src="https://img.shields.io/github/stars/AvishkarPatil/IssueMatch" alt="Stars">
 </div>
 
+[![OSCI-Project-Banner.png](https://i.postimg.cc/76mJvBmF/OSCI-Project-Banner.png)](https://postimg.cc/8JfzMb84)
 ---
 
 ## 🚀 Overview
