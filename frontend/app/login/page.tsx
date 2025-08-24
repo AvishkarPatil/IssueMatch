@@ -2,7 +2,7 @@
 
 import { Github } from "lucide-react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/context/auth-context"
 
@@ -10,44 +10,52 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { isAuthenticated, user, checkAuth } = useAuth()
 
-  // Check authentication status on component mount
+  // Capture redirect param from URL if present
+  const redirectParam = searchParams.get("redirect")
+
   useEffect(() => {
     const checkAuthStatus = async () => {
       const isAuth = await checkAuth()
 
       if (isAuth && user) {
-        // If user has completed the skills test, redirect to match page
+        // If redirect param exists, honor it first
+        if (redirectParam) {
+          router.push(redirectParam)
+          return
+        }
+
+        // Fallback to existing behavior
         if (user.test_taken) {
-          router.push('/match')
+          router.push("/match")
         } else {
-          // If user hasn't completed the skills test, redirect to skills page
-          router.push('/skills')
+          router.push("/skills")
         }
       }
     }
 
     checkAuthStatus()
 
-    // Check for error query parameter (for failed login attempts)
-    const urlParams = new URLSearchParams(window.location.search)
-    const errorParam = urlParams.get('error')
+    // Handle error query param
+    const errorParam = searchParams.get("error")
     if (errorParam) {
       setError(
-        errorParam === 'auth_failed'
+        errorParam === "auth_failed"
           ? "GitHub authentication failed. Please try again."
           : "An error occurred during login. Please try again."
       )
     }
-  }, [router, checkAuth, user])
+  }, [router, checkAuth, user, redirectParam, searchParams])
 
   const handleGitHubLogin = () => {
     setIsLoading(true)
     setError("")
 
-    // Redirect to the backend's GitHub OAuth login endpoint
-    window.location.href = "http://localhost:8000/api/v1/auth/login"
+    // Preserve redirect param when sending to backend
+    const redirectQuery = redirectParam ? `?redirect=${redirectParam}` : ""
+    window.location.href = `http://localhost:8000/api/v1/auth/login${redirectQuery}`
   }
 
   return (
