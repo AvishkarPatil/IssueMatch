@@ -1,11 +1,12 @@
+// middleware.ts
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 const PUBLIC_ROUTES = ["/", "/login"]
-const IGNORED_PREFIXES = ["/_next", "/api", "/static"]
+const IGNORED_PREFIXES = ["/_next", "/api", "/static", "/favicon.ico"]
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const { pathname, search } = request.nextUrl
 
   if (
     IGNORED_PREFIXES.some((prefix) => pathname.startsWith(prefix)) ||
@@ -17,9 +18,10 @@ export function middleware(request: NextRequest) {
 
   const session = request.cookies.get("session")
 
-  if (!session || !session.value) {
+  if (!session?.value) {
     const loginUrl = new URL("/login", request.url)
-    loginUrl.searchParams.set("redirect", pathname)
+    const redirect = `${pathname}${search || ""}` // keep query string too
+    loginUrl.searchParams.set("redirect", redirect || "/")
     return NextResponse.redirect(loginUrl)
   }
 
@@ -27,5 +29,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|static).*)"],
+  // ignore static/assets and api; also ignore any path with a dot (files)
+  matcher: ["/((?!_next|api|static|.*\\..*).*)"],
 }
