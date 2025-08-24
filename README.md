@@ -19,6 +19,13 @@
 
 IssueMatch is an intelligent platform that bridges the gap between developers and open source projects. By analyzing your GitHub profile and skills using advanced AI techniques, IssueMatch recommends issues that perfectly match your expertise and interests, making it easier to find meaningful contributions in the vast open source ecosystem.
 
+## 🌐 Live Demo
+
+You can try the live version of IssueMatch here:  
+👉 [https://issue-match.vercel.app](https://issue-match.vercel.app)
+
+---
+
 ## ✨ Features
 
 - **GitHub Profile Analysis**: Automatically extracts your technical skills, languages, and interests from your GitHub profile
@@ -65,6 +72,12 @@ IssueMatch is an intelligent platform that bridges the gap between developers an
 
 
 ## 🚀 Deployment
+
+### Live Deployment
+The project is currently deployed on **Vercel**:
+👉 [https://issue-match.vercel.app](https://issue-match.vercel.app)
+
+---
 
 ### Prerequisites
 - Python 3.9+
