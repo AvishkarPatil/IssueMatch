@@ -1,34 +1,37 @@
 // middleware.ts
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const PUBLIC_ROUTES = ["/", "/login"]
-const IGNORED_PREFIXES = ["/_next", "/api", "/static", "/favicon.ico"]
+const PUBLIC_ROUTES = ["/", "/login"];
+const IGNORED_PREFIXES = ["/_next", "/api", "/static", "/favicon.ico"];
 
 export function middleware(request: NextRequest) {
-  const { pathname, search } = request.nextUrl
+  const { pathname, search } = request.nextUrl;
 
+  // Skip public or ignored routes
   if (
+    PUBLIC_ROUTES.includes(pathname) ||
     IGNORED_PREFIXES.some((prefix) => pathname.startsWith(prefix)) ||
-    pathname.includes(".") ||
-    PUBLIC_ROUTES.includes(pathname)
+    pathname.includes(".") // skip files (e.g., .png, .js, etc.)
   ) {
-    return NextResponse.next()
+    return NextResponse.next();
   }
 
-  const session = request.cookies.get("session")
+  // Check session cookie
+  const session = request.cookies.get("session");
 
   if (!session?.value) {
-    const loginUrl = new URL("/login", request.url)
-    const redirect = `${pathname}${search || ""}` // keep query string too
-    loginUrl.searchParams.set("redirect", redirect || "/")
-    return NextResponse.redirect(loginUrl)
+    // Build login URL with redirect param
+    const loginUrl = new URL("/login", request.url);
+    const redirectPath = `${pathname}${search || ""}`; // preserve query string
+    loginUrl.searchParams.set("redirect", redirectPath || "/");
+
+    return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.next()
+  return NextResponse.next();
 }
 
 export const config = {
-  // ignore static/assets and api; also ignore any path with a dot (files)
-  matcher: ["/((?!_next|api|static|.*\\..*).*)"],
-}
+  matcher: ["/((?!_next|api|static|.*\\..*).*)"], // apply only to non-public, non-static routes
+};
