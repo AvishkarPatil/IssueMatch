@@ -136,7 +136,7 @@ export default function SkillsPage() {
   // Loading state - show while checking auth or loading user data
   if (loading || authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-purple-900 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-purple-900 text-gray-900 dark:text-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Loading...</h2>
           <Progress value={100} className="w-[300px]" />
@@ -146,7 +146,7 @@ export default function SkillsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-purple-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-purple-900 text-gray-900 dark:text-white">
       {currentScreen === "welcome" && <WelcomeScreen />}
 
       {currentScreen === "test" && <SkillsTest onComplete={handleTestComplete} />}
