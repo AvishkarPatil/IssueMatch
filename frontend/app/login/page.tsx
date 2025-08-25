@@ -53,9 +53,16 @@ export default function LoginPage() {
     setIsLoading(true)
     setError("")
 
-    // Preserve redirect param when sending to backend
-    const redirectQuery = redirectParam ? `?redirect=${redirectParam}` : ""
-    window.location.href = `http://localhost:8000/api/v1/auth/login${redirectQuery}`
+    // Always preserve redirect param if present
+    const params = new URLSearchParams()
+    if (redirectParam) {
+      params.set("redirect", redirectParam)
+    }
+
+    // Send user to backend login route with redirect
+    window.location.href = `http://localhost:8000/api/v1/auth/login${
+      params.toString() ? `?${params.toString()}` : ""
+    }`
   }
 
   return (
