@@ -13,7 +13,7 @@ Thank you for your interest in contributing to IssueMatch! This project is part 
 ### Development Setup
 1. Fork the repository
 2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/IssueMatch.git`
-3. Follow the setup instructions in [README.md](../README.md)
+3. Follow the setup instructions in [SETUP](/.github/SETUP.md)
 
 ## 📋 How to Contribute
 
@@ -22,11 +22,14 @@ Thank you for your interest in contributing to IssueMatch! This project is part 
 - Look for issues labeled `good-first-issue` for beginners
 - Comment on the issue to get assigned
 
-### 2. Create a Branch
+### 2. Create and Switch to a Branch
 ```bash
-git checkout -b feature/your-feature-name
-# or
-git checkout -b fix/bug-description
+# switching to new branch with updated code on the original main
+
+git switch -c feature/[your-feature-name] upstream main 
+# or 
+git switch -c fix/[bug-description]   
+# generally issue number (eg. fix/issue40 or just issue40)
 ```
 
 ### 3. Make Changes
@@ -44,7 +47,7 @@ git commit -m "docs: update documentation"
 
 ### 5. Submit Pull Request
 - Push your branch to your fork
-- Create a pull request using our template
+- Create a pull request (pr) using our template
 - Link the related issue
 - Wait for review
 

@@ -66,123 +66,18 @@ IssueMatch is an intelligent platform that bridges the gap between developers an
 
 ## 🚀 Deployment
 
-### Prerequisites
-- Python 3.9+
-- Node.js 18+
-- Google Cloud account with Natural Language API and Vertex AI enabled
-- GitHub OAuth application credentials
-- Firebase project
+Refer to [Deployment](/DEPLOYMENT.md)
 
-### Backend Setup
+## 🤝 Contributors
 
-#### Clone the repository
-```bash
-git clone https://github.com/yourusername/issuematch.git
-cd issuematch
-```
+Refer to [Contribution](/.github/CONTRIBUTING.md)
 
-#### Navigate to backend directory
-```bash
-cd backend
-```
-
-#### Create virtual environment
-```bash
-python -m venv venv
-```
-
-#### Activate virtual environment
-On Windows:
-```bash
-venv\Scripts\activate
-```
-
-On macOS/Linux:
-```bash
-source venv/bin/activate
-```
-
-#### Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-#### Environment variables
-Copy the example env file and update values before running the backend:
-```bash
-cp backend/.env.example backend/.env
-# then edit backend/.env with your values and run the backend
-```
-
-#### Configure credentials
-Create a keys.json file with your Google Cloud credentials and place it in the app/services directory.
-
-#### Set environment variables
-Create a .env file with the following variables:
-```
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
-GOOGLE_APPLICATION_CREDENTIALS=path/to/keys.json
-```
-
-#### Start the backend server
-```bash
-uvicorn app.main:app --reload --port 8000
-```
-
-### Frontend Setup
-
-#### Navigate to frontend directory
-```bash
-cd frontend
-```
-
-#### Install dependencies
-```bash
-npm install
-```
-
-#### Configure Firebase
-Update the firebase.ts file with your Firebase project credentials.
-
-#### Start the development server
-```bash
-npm run dev
-```
-
-The application will be available at http://localhost:3000
-
-
-## 🤝 Contributing
-
-**IssueMatch is part of the Open Source Connect India (OSCI) initiative!** We welcome contributors of all skill levels.
-
-### 🚀 Quick Start for Contributors
-1. Check out our [Contributing Guidelines](.github/CONTRIBUTING.md)
-2. Browse [open issues](https://github.com/AvishkarPatil/IssueMatch/issues)
-3. Look for `good-first-issue` labels for beginners
-4. Comment on an issue to get assigned
-5. Fork, code, and submit a PR!
-
-### 🎯 Contribution Areas
-- **Frontend**: React/Next.js/TypeScript improvements
-- **Backend**: Python/FastAPI enhancements
-- **AI/ML**: Improve matching algorithms
-- **Documentation**: Help others understand the project
-- **Testing**: Add tests and improve reliability
-
-### 🏆 OSCI Benefits
-- Recognition in OSCI community
-- Certificates and swag opportunities
-- Mentorship from experienced developers
-- Networking with Indian open source community
-
-**New to open source?** Perfect! This project is beginner-friendly with plenty of `good-first-issue` tasks.
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+- For any issues with the documentation drop by on  [doc issue thread](https://github.com/AvishkarPatil/IssueMatch/issues/44)
 ---
 
 <div align="center">
