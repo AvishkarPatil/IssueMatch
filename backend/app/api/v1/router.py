@@ -1,28 +1,35 @@
 from fastapi import APIRouter
-from .endpoints import auth, github, ai, match
+import logging
+import importlib
 
+# Setup structured logging
+logger = logging.getLogger(_name_)
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+# Initialize main API router
 api_router = APIRouter()
+
+# Core routers (must always exist)
+from .endpoints import auth, github, ai, match
 
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 api_router.include_router(github.router, prefix="/github", tags=["github"])
 api_router.include_router(ai.router, prefix="/ai", tags=["ai"])
 api_router.include_router(match.router, prefix="/match", tags=["match"])
 
-# Import and include new routers if available
-try:
-    from app.routers import leaderboard
-    api_router.include_router(leaderboard.router, prefix="/leaderboard", tags=["leaderboard"])
-except ImportError:
-    print("Leaderboard router not available")
+# Optional routers (load dynamically if present)
+OPTIONAL_ROUTERS = [
+    ("leaderboard", "app.routers.leaderboard"),
+    ("referral", "app.routers.referral"),
+    ("mentor", "app.routers.mentor"),
+]
 
-try:
-    from app.routers import referral
-    api_router.include_router(referral.router, prefix="/referral", tags=["referral"])
-except ImportError:
-    print("Referral router not available")
-
-try:
-    from app.routers import mentor
-    api_router.include_router(mentor.router, prefix="/mentor", tags=["mentor"])
-except ImportError:
-    print("Mentor router not available")
+for name, module_path in OPTIONAL_ROUTERS:
+    try:
+        module = importlib.import_module(module_path)
+        api_router.include_router(module.router, prefix=f"/{name}", tags=[name])
+        logger.info(f"✅ Loaded optional router: {name}")
+    except ImportError:
+        logger.warning(f"⚠ Skipping optional router: {name} (module not found)")
+    except AttributeError:
+        logger.error(f"❌ Failed to include router: {name} (no 'router' defined)")
