@@ -1,11 +1,10 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from "react"
 import { useRouter } from "next/navigation"
 import { createOrUpdateGithubUser, getUserByGithubId } from "@/lib/firebase-utils"
 import { useToast } from "@/components/ui/use-toast"
 
-// Define the User type
 type User = {
   id: string
   login: string
@@ -14,7 +13,6 @@ type User = {
   test_taken?: boolean
 } | null
 
-// Define the context type
 type AuthContextType = {
   user: User
   isLoading: boolean
@@ -23,7 +21,6 @@ type AuthContextType = {
   checkAuth: () => Promise<boolean>
 }
 
-// Create the context with default values
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
@@ -32,153 +29,127 @@ const AuthContext = createContext<AuthContextType>({
   checkAuth: async () => false,
 })
 
-// Provider component
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User>(null)
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
   const { toast } = useToast()
 
-  // Check if the user is authenticated
   const checkAuth = async (): Promise<boolean> => {
     try {
       setIsLoading(true)
-      console.log("Checking authentication...");
 
-      // Fetch user profile from backend
-      console.log("Fetching user profile from backend...");
-      const response = await fetch("http://localhost:8000/api/v1/github/profile", {
-        credentials: "include" // Important: include cookies for session authentication
-      });
+      const response = await fetch(${API_BASE_URL}/api/v1/github/profile, {
+        credentials: "include",
+      })
 
-      if (!response.ok) {
-        console.log("Not authenticated, response not OK:", response.status);
-        return false;
+      if (!response.ok) return false
+
+      const githubUser = await response.json()
+      if (!githubUser?.id) return false
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem(
+          "github_user",
+          JSON.stringify({
+            id: githubUser.id.toString(),
+            login: githubUser.login,
+            avatar_url: githubUser.avatar_url,
+            name: githubUser.name,
+          })
+        )
       }
 
-      const githubUser = await response.json();
-      console.log("GitHub user data received:", githubUser);
-
-      if (!githubUser?.id) {
-        console.log("No user ID found in GitHub data");
-        return false;
-      }
-
-      // Store essential user data in localStorage for convenience
-      localStorage.setItem('github_user', JSON.stringify({
-        id: githubUser.id.toString(),
-        login: githubUser.login,
-        avatar_url: githubUser.avatar_url,
-        name: githubUser.name
-      }));
-      console.log("User data stored in localStorage");
-
-      // Check if user exists in our database
-      console.log("Checking if user exists in Firebase...");
-      const userResult = await getUserByGithubId(githubUser.id.toString());
-      console.log("User lookup result:", userResult);
+      const userResult = await getUserByGithubId(githubUser.id.toString())
 
       if (!userResult?.success) {
-        console.log("User doesn't exist in Firebase, creating new user...");
-        // User doesn't exist in our database yet, create them
         const createResult = await createOrUpdateGithubUser({
           id: githubUser.id.toString(),
           login: githubUser.login,
           avatar_url: githubUser.avatar_url,
           name: githubUser.name,
-          email: githubUser.email
-        });
-
-        console.log("User creation result:", createResult);
+          email: githubUser.email,
+        })
 
         if (!createResult.success) {
-          console.error("Failed to create user in Firebase:", createResult.error);
           toast({
             title: "Error",
-            description: "Failed to create user profile. Please try again.",
+            description: "Failed to create user profile.",
             variant: "destructive",
-          });
+          })
         }
 
-        // Set user with default values
         setUser({
           id: githubUser.id.toString(),
           login: githubUser.login,
           avatar_url: githubUser.avatar_url,
           name: githubUser.name,
-          test_taken: false
-        });
-        console.log("User state set with default values");
+          test_taken: false,
+        })
       } else {
-        console.log("User exists in Firebase, using existing data");
-        // User exists, use data from our database
         setUser({
           id: githubUser.id.toString(),
           login: githubUser.login,
           avatar_url: githubUser.avatar_url,
           name: githubUser.name,
-          test_taken: userResult.data?.test_taken || false
-        });
-        console.log("User state set with Firebase data");
+          test_taken: userResult.data?.test_taken || false,
+        })
       }
 
-      console.log("Authentication check complete, user is authenticated");
-      return true;
+      return true
     } catch (error) {
-      console.error("Error checking authentication:", error);
       toast({
         title: "Authentication Error",
-        description: "There was a problem verifying your account. Please try again.",
+        description: "Problem verifying your account.",
         variant: "destructive",
-      });
-      return false;
+      })
+      return false
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
-  // Logout function
   const logout = async (): Promise<void> => {
     try {
-      console.log("Logging out...");
-      // Clear local storage
-      localStorage.removeItem('github_user')
-
-      // Clear user state
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("github_user")
+      }
       setUser(null)
-
-      // Redirect to backend logout endpoint
-      window.location.href = "http://localhost:8000/api/v1/auth/logout"
+      window.location.href = ${API_BASE_URL}/api/v1/auth/logout
     } catch (error) {
-      console.error("Error during logout:", error)
       toast({
         title: "Error",
-        description: "There was a problem logging out. Please try again.",
+        description: "Problem logging out.",
         variant: "destructive",
       })
     }
   }
 
-  // Check authentication on component mount
   useEffect(() => {
-    console.log("AuthProvider mounted, checking authentication...");
-    checkAuth();
-  }, []);
+    checkAuth()
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        isAuthenticated: !!user,
-        logout,
-        checkAuth,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    // Re-check when user comes back to the tab
+    const handleVisibility = () => {
+      if (!document.hidden) checkAuth()
+    }
+    document.addEventListener("visibilitychange", handleVisibility)
+    return () => document.removeEventListener("visibilitychange", handleVisibility)
+  }, [])
+
+  const value = useMemo(
+    () => ({
+      user,
+      isLoading,
+      isAuthenticated: !!user,
+      logout,
+      checkAuth,
+    }),
+    [user, isLoading]
   )
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
-// Custom hook to use the auth context
 export const useAuth = () => useContext(AuthContext)
