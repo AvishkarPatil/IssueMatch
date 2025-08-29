@@ -164,16 +164,16 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
   const canProceed = selectedOptions[currentQuestionIndex] !== -1
 
   return (
-    <div className="container mx-auto max-w-3xl px-6 py-8">
+    <div className="container mx-auto max-w-3xl px-6 py-8 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
       <div className="mb-8">
-        <div className="flex justify-between items-center mb-2 text-sm text-purple-300">
+        <div className="flex justify-between items-center mb-2 text-sm text-blue-600 dark:text-purple-300">
           <span>
             Question {currentQuestionIndex + 1} of {questions.length}
           </span>
           <span>{Math.round(progress)}% Complete</span>
         </div>
-        <Progress value={progress} className="h-2 bg-gray-700">
-          <div className="h-full bg-purple-500 rounded-full" style={{ width: `${progress}%` }}></div>
+        <Progress value={progress} className="h-2 bg-gray-200 dark:bg-gray-700">
+          <div className="h-full bg-blue-500 dark:bg-purple-500 rounded-full" style={{ width: `${progress}%` }}></div>
         </Progress>
       </div>
 
@@ -186,7 +186,7 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
           transition={{ duration: 0.3 }}
           className={`${isTransitioning ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
         >
-          <h2 className="text-2xl font-bold mb-6 text-white">{currentQuestion.question}</h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">{currentQuestion.question}</h2>
 
           <div className="space-y-3 mb-10">
             {currentQuestion.options.map((option, index) => (
@@ -194,22 +194,24 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
                 key={index}
                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
                   selectedOptions[currentQuestionIndex] === index
-                    ? "border-purple-500 bg-purple-900/30"
-                    : "border-gray-700 hover:border-purple-400 bg-gray-800/30"
+                    ? "border-blue-500 dark:border-purple-500 bg-blue-50/50 dark:bg-purple-900/30"
+                    : "border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-purple-400 bg-white/50 dark:bg-gray-800/30"
                 }`}
                 onClick={() => handleOptionSelect(index)}
               >
                 <div className="flex items-center">
                   <div
                     className={`w-5 h-5 rounded-full mr-3 flex items-center justify-center ${
-                      selectedOptions[currentQuestionIndex] === index ? "bg-purple-500" : "border-2 border-gray-500"
+                      selectedOptions[currentQuestionIndex] === index 
+                        ? "bg-blue-500 dark:bg-purple-500" 
+                        : "border-2 border-gray-400 dark:border-gray-500"
                     }`}
                   >
                     {selectedOptions[currentQuestionIndex] === index && (
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     )}
                   </div>
-                  <span className="text-lg">{option.text}</span>
+                  <span className="text-lg text-gray-900 dark:text-white">{option.text}</span>
                 </div>
               </div>
             ))}
@@ -220,7 +222,7 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
               variant="outline"
               onClick={handleBack}
               disabled={isFirstQuestion}
-              className={`${isFirstQuestion ? "opacity-0" : "opacity-100"} border-gray-600 text-white hover:bg-purple-900/30 hover:text-purple-300`}
+              className={`${isFirstQuestion ? "opacity-0" : "opacity-100"} border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-purple-900/30 hover:text-blue-700 dark:hover:text-purple-300`}
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
               Back
@@ -230,7 +232,7 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
               <Button
                 onClick={handleSubmit}
                 disabled={!canProceed}
-                className="bg-purple-600 hover:bg-purple-700 text-white"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white"
               >
                 Submit Test
                 <Send className="ml-2 h-4 w-4" />
@@ -239,7 +241,7 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
               <Button
                 onClick={handleNext}
                 disabled={!canProceed}
-                className="bg-purple-600 hover:bg-purple-700 text-white"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white"
               >
                 Next
                 <ChevronRight className="ml-2 h-4 w-4" />
