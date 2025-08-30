@@ -41,15 +41,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setIsLoading(true)
 
-      const response = await fetch(${API_BASE_URL}/api/v1/github/profile, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/github/profile`, {
         credentials: "include",
       })
 
-      if (!response.ok) return false
+      if (!response.ok) {
+        setUser(null)
+        return false
+      }
 
       const githubUser = await response.json()
-      if (!githubUser?.id) return false
+      if (!githubUser?.id) {
+        setUser(null)
+        return false
+      }
 
+      // persist in localStorage only on client
       if (typeof window !== "undefined") {
         localStorage.setItem(
           "github_user",
@@ -62,9 +69,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         )
       }
 
+      // Fetch user record from DB
       const userResult = await getUserByGithubId(githubUser.id.toString())
 
       if (!userResult?.success) {
+        // Create user if not found
         const createResult = await createOrUpdateGithubUser({
           id: githubUser.id.toString(),
           login: githubUser.login,
@@ -100,11 +109,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       return true
     } catch (error) {
+      console.error("Auth check failed:", error)
       toast({
         title: "Authentication Error",
         description: "Problem verifying your account.",
         variant: "destructive",
       })
+      setUser(null)
       return false
     } finally {
       setIsLoading(false)
@@ -117,8 +128,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem("github_user")
       }
       setUser(null)
-      window.location.href = ${API_BASE_URL}/api/v1/auth/logout
+      // Use router.push for Next.js navigation instead of full reload if possible
+      window.location.href = `${API_BASE_URL}/api/v1/auth/logout`
     } catch (error) {
+      console.error("Logout failed:", error)
       toast({
         title: "Error",
         description: "Problem logging out.",
