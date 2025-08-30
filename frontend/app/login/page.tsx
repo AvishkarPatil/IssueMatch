@@ -51,10 +51,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d1117] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white dark:bg-[#0d1117] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="text-center text-3xl font-extrabold text-white">Sign in to your account</h2>
-        <p className="mt-2 text-center text-sm text-gray-400">
+        <h2 className="text-center text-3xl font-extrabold text-black dark:text-white">Sign in to your account</h2>
+        <p className="mt-2 text-center text-sm text-gray-700 dark:text-gray-400">
           Or{" "}
           <Link href="/landing" className="font-medium text-purple-400 hover:text-purple-300">
             return to the landing page
@@ -63,9 +63,9 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-[#1a1f2a] py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-gray-100 dark:bg-[#1a1f2a] py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {error && (
-            <div className="bg-red-900/30 border border-red-800 text-red-300 px-4 py-3 rounded-md text-sm mb-6">
+            <div className="bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-md text-sm mb-6">
               {error}
             </div>
           )}
@@ -73,33 +73,33 @@ export default function LoginPage() {
           <button
             onClick={handleGitHubLogin}
             disabled={isLoading}
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#24292e] hover:bg-[#2c3440] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1a1f2a] focus:ring-purple-500 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black dark:text-white bg-gray-300 dark:bg-[#24292e] hover:bg-gray-400 dark:hover:bg-[#2c3440] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-[#1a1f2a] focus:ring-purple-500 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Github className="mr-2 h-5 w-5" />
             {isLoading ? "Redirecting to GitHub..." : "Sign in with GitHub"}
           </button>
 
-          <div className="mt-6 text-center text-sm text-gray-400">
+          <div className="mt-6 text-center text-sm text-gray-700 dark:text-gray-400">
             <p>
               By signing in, you agree to our{" "}
-              <Link href="#" className="font-medium text-purple-400 hover:text-purple-300">
+              <Link href="#" className="font-medium text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300">
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link href="#" className="font-medium text-purple-400 hover:text-purple-300">
+              <Link href="#" className="font-medium text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300">
                 Privacy Policy
               </Link>
             </p>
           </div>
         </div>
 
-        <p className="mt-6 text-center text-sm text-gray-400">
+        <p className="mt-6 text-center text-sm text-gray-700 dark:text-gray-400">
           Don't have a GitHub account?{" "}
           <a
             href="https://github.com/signup"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-purple-400 hover:text-purple-300"
+            className="font-medium text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300"
           >
             Create one
           </a>
