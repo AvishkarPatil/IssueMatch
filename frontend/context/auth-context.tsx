@@ -128,7 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem("github_user")
       }
       setUser(null)
-      // Use router.push for Next.js navigation instead of full reload if possible
+      // Redirect to backend logout
       window.location.href = `${API_BASE_URL}/api/v1/auth/logout`
     } catch (error) {
       console.error("Logout failed:", error)
