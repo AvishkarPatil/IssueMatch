@@ -3,7 +3,7 @@ import logging
 import importlib
 
 # Setup structured logging
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 # Initialize main API router
