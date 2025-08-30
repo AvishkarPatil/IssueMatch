@@ -1,6 +1,14 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from "react"
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  ReactNode,
+  useCallback,
+} from "react"
 import { useRouter } from "next/navigation"
 import { createOrUpdateGithubUser, getUserByGithubId } from "@/lib/firebase-utils"
 import { useToast } from "@/components/ui/use-toast"
@@ -37,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
   const { toast } = useToast()
 
-  const checkAuth = async (): Promise<boolean> => {
+  const checkAuth = useCallback(async (): Promise<boolean> => {
     try {
       setIsLoading(true)
 
@@ -47,6 +55,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (!response.ok) {
         setUser(null)
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("github_user")
+        }
         return false
       }
 
@@ -120,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [toast])
 
   const logout = async (): Promise<void> => {
     try {
@@ -128,8 +139,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem("github_user")
       }
       setUser(null)
-      // Redirect to backend logout
-      window.location.href = `${API_BASE_URL}/api/v1/auth/logout`
+      // Use router navigation instead of hard reload
+      router.push(`${API_BASE_URL}/api/v1/auth/logout`)
     } catch (error) {
       console.error("Logout failed:", error)
       toast({
@@ -149,7 +160,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     document.addEventListener("visibilitychange", handleVisibility)
     return () => document.removeEventListener("visibilitychange", handleVisibility)
-  }, [])
+  }, [checkAuth])
 
   const value = useMemo(
     () => ({
@@ -159,7 +170,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout,
       checkAuth,
     }),
-    [user, isLoading]
+    [user, isLoading, logout, checkAuth]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
