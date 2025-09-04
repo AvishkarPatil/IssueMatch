@@ -17,15 +17,18 @@ MODEL_NAME = "all-MiniLM-L6-v2"  # Sentence transformer model to use
 # Global variables
 model = None
 
-# Initialize the model
-try:
-    logger.info(f"Loading sentence transformer model: {MODEL_NAME}")
-    model = SentenceTransformer(MODEL_NAME)
-    logger.info("Model loaded successfully")
-except Exception as e:
-    logger.error(f"Error loading model: {str(e)}")
-    model = None
+def load_model():
+    global model
+    if model is None:
+        try:
+            logger.info(f"Loading sentence transformer model: {MODEL_NAME}")
+            model = SentenceTransformer(MODEL_NAME)
+            logger.info("Model loaded successfully")
+        except Exception as e:
+            logger.error(f"Error loading model: {str(e)}")
+            model = None
 
+load_model()
 
 def fetch_github_issues(keywords: List[str], top_k: int = TOP_PER_KEYWORD, github_token: Optional[str] = None) -> List[
     Dict[str, Any]]:
@@ -48,15 +51,16 @@ def fetch_github_issues(keywords: List[str], top_k: int = TOP_PER_KEYWORD, githu
 
     all_issues = []
     for keyword in keywords:
-        query = f'label:"{keyword}"+state:open+type:issue'
+        # Search for keyword in title, body, and comments instead of just labels
+        query = f'{keyword}+state:open+type:issue'
         url = f"https://api.github.com/search/issues?q={query}&per_page={top_k}"
 
-        # logger.info(f"Fetching issues for keyword: {keyword}")
+        logger.info(f"Fetching issues for keyword: {keyword}")
         response = requests.get(url, headers=headers)
 
         if response.status_code == 200:
             items = response.json().get('items', [])
-            # logger.info(f"Found {len(items)} issues for keyword: {keyword}")
+            logger.info(f"Found {len(items)} issues for keyword: {keyword}")
             all_issues.extend(items[:top_k])  # Take top N only
         else:
             logger.error(f"Error for keyword: {keyword}, Status Code: {response.status_code}")
@@ -199,7 +203,7 @@ def get_top_matched_issues(
     global model
 
     try:
-        # logger.info(f"Getting top matched issues for query: {query_text[:100]}...")
+        logger.info(f"Getting top matched issues for query: {query_text[:100]}...")
 
         # Check if model is loaded
         if model is None:
@@ -224,13 +228,19 @@ def get_top_matched_issues(
         # Fetch issues
         issues = fetch_github_issues(search_keywords, top_k=TOP_PER_KEYWORD, github_token=github_token)
 
+        # Fallback: If no issues found with specific keywords, try with general programming keywords
         if not issues:
-            logger.warning("No issues fetched")
+            logger.warning("No issues fetched with specific keywords, trying fallback keywords")
+            fallback_keywords = ["python", "javascript", "java", "react", "node", "good first issue"]
+            issues = fetch_github_issues(fallback_keywords, top_k=TOP_PER_KEYWORD, github_token=github_token)
+
+        if not issues:
+            logger.warning("No issues fetched even with fallback keywords")
             return {
                 "recommendations": [],
                 "issues_fetched": 0,
                 "issues_indexed": 0,
-                "message": "No issues found for the given keywords"
+                "message": "No issues found for the given keywords. Try adjusting your search criteria or check back later."
             }
 
         # Prepare issue texts for embedding

@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
@@ -15,11 +16,11 @@ app = FastAPI(
 app.add_middleware(
     SessionMiddleware,
     secret_key=settings.SECRET_KEY,
-    # --- Optional Session Cookie Parameters (consider for production) ---
-    # session_cookie="your_app_session", # Customize the cookie name
-    # max_age=7 * 24 * 60 * 60, # Example: Cookie expires after 7 days
-    # same_site="lax", # Or "strict" for more security, but test carefully
-    # https_only=True, # Recommended: Send cookie only over HTTPS
+    # --- Session Cookie Parameters ---
+    session_cookie="issuematch_session", # Customize the cookie name
+    max_age=7 * 24 * 60 * 60, # Example: Cookie expires after 7 days
+    same_site="lax", # Use lax for localhost development to avoid CSRF issues
+    https_only=False, # No HTTPS in development
 )
 
 
@@ -32,7 +33,6 @@ origins = [
 ]
 
 # In production, allow requests from any origin
-import os
 if os.environ.get("RENDER", False):
     origins = ["*"]  # Allow all origins in production
 
@@ -62,14 +62,16 @@ app.include_router(api_router_v1, prefix=settings.API_V1_STR)
 # --- Optional: Startup/Shutdown Event Handlers ---
 # These functions can run code when the server starts or stops.
 # Useful for loading resources (like a FAISS index) or cleaning up.
-# @app.on_event("startup")
-# async def startup_event():
-#     """
-#     Code to run when the application starts up.
-#     Example: Load ML models, FAISS index, connect to databases.
-#     """
-#     print("Backend server starting up...")
-#     # load_faiss_index() # Example placeholder
+from .services.faiss_search import load_model
+
+@app.on_event("startup")
+async def startup_event():
+    """
+    Code to run when the application starts up.
+    Example: Load ML models, FAISS index, connect to databases.
+    """
+    print("Backend server starting up...")
+    load_model()
 
 # @app.on_event("shutdown")
 # async def shutdown_event():
