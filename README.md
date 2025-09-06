@@ -15,11 +15,11 @@
 [![OSCI-Project-Banner.png](https://i.postimg.cc/76mJvBmF/OSCI-Project-Banner.png)](https://postimg.cc/8JfzMb84)
 ---
 
-## 🚀 Overview
-
+<div align="center">
 IssueMatch is an intelligent platform that bridges the gap between developers and open source projects. By analyzing your GitHub profile and skills using advanced AI techniques, IssueMatch recommends issues that perfectly match your expertise and interests, making it easier to find meaningful contributions in the vast open source ecosystem.
+</div>
 
-## ✨ Features
+### ✨ Features
 
 - **GitHub Profile Analysis**: Automatically extracts your technical skills, languages, and interests from your GitHub profile
 - **AI-Powered Matching**: Uses natural language processing and vector similarity to find issues that match your skills
@@ -28,7 +28,7 @@ IssueMatch is an intelligent platform that bridges the gap between developers an
 - **Real-time Analytics**: Track your open source contributions and growth
 - **AI Assistant**: Get help with understanding issues and planning your contributions
 
-## 🛠️ Technology Stack
+### 🛠️ Technology Stack
 
 ### Backend
 - **Python** with **FastAPI** framework
@@ -48,7 +48,7 @@ IssueMatch is an intelligent platform that bridges the gap between developers an
 ### Authentication
 - **GitHub OAuth**: For secure user authentication
 
-## 🔄 How It Works
+### 🔄 How It Works
 
 1. **Login with GitHub**: Authenticate using your GitHub account
 2. **Skill Assessment**: Complete a brief skill assessment (or skip if returning user)
@@ -64,20 +64,19 @@ IssueMatch is an intelligent platform that bridges the gap between developers an
 5. **Contribution**: Select an issue to contribute to, with optional mentorship support
 
 
-## 🚀 Deployment
+### 🚀 Deployment
 
 Refer to [Deployment](/DEPLOYMENT.md)
 
-## 🤝 Contributors
+### 🤝 Contributors
 
 Refer to [Contribution](/.github/CONTRIBUTING.md)
 
 
-## 📄 License
+### 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- For any issues with the documentation drop by on  [doc issue thread](https://github.com/AvishkarPatil/IssueMatch/issues/44)
 ---
 
 <div align="center">
