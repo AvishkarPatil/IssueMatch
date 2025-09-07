@@ -1,4 +1,5 @@
-import requests
+import asyncio
+import aiohttp
 from sentence_transformers import SentenceTransformer
 import faiss, re
 import numpy as np
@@ -30,44 +31,35 @@ def load_model():
 
 load_model()
 
-def fetch_github_issues(keywords: List[str], top_k: int = TOP_PER_KEYWORD, github_token: Optional[str] = None) -> List[
-    Dict[str, Any]]:
-    """
-    Fetch GitHub issues based on keywords.
+async def fetch_issues_for_keyword(session: aiohttp.ClientSession, keyword: str, top_k: int, headers: Dict[str, str]) -> List[Dict[str, Any]]:
+    query = f'{keyword}+state:open+type:issue'
+    url = f"https://api.github.com/search/issues?q={query}&per_page={top_k}"
+    logger.info(f"Fetching issues for keyword: {keyword}")
+    async with session.get(url, headers=headers) as response:
+        if response.status == 200:
+            json_response = await response.json()
+            items = json_response.get('items', [])
+            logger.info(f"Found {len(items)} issues for keyword: {keyword}")
+            return items[:top_k]
+        else:
+            logger.error(f"Error for keyword: {keyword}, Status Code: {response.status}")
+            if response.status == 403:
+                logger.error("Rate limit exceeded or authentication required")
+            elif response.status == 401:
+                logger.error("Unauthorized - check your GitHub token")
+            return []
 
-    Args:
-        keywords: List of keywords to search for
-        top_k: Number of issues to fetch per keyword
-        github_token: GitHub API token for authentication
-
-    Returns:
-        List of GitHub issues
-    """
+async def fetch_github_issues(keywords: List[str], top_k: int = TOP_PER_KEYWORD, github_token: Optional[str] = None) -> List[Dict[str, Any]]:
     logger.info(f"Fetching GitHub issues for keywords: {keywords}")
-
     headers = {"Accept": "application/vnd.github+json"}
     if github_token:
         headers["Authorization"] = f"Bearer {github_token}"
 
-    all_issues = []
-    for keyword in keywords:
-        # Search for keyword in title, body, and comments instead of just labels
-        query = f'{keyword}+state:open+type:issue'
-        url = f"https://api.github.com/search/issues?q={query}&per_page={top_k}"
-
-        logger.info(f"Fetching issues for keyword: {keyword}")
-        response = requests.get(url, headers=headers)
-
-        if response.status_code == 200:
-            items = response.json().get('items', [])
-            logger.info(f"Found {len(items)} issues for keyword: {keyword}")
-            all_issues.extend(items[:top_k])  # Take top N only
-        else:
-            logger.error(f"Error for keyword: {keyword}, Status Code: {response.status_code}")
-            if response.status_code == 403:
-                logger.error("Rate limit exceeded or authentication required")
-            elif response.status_code == 401:
-                logger.error("Unauthorized - check your GitHub token")
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_issues_for_keyword(session, keyword, top_k, headers) for keyword in keywords]
+        results = await asyncio.gather(*tasks)
+    
+    all_issues = [issue for sublist in results for issue in sublist]
 
     # Deduplicate by URL
     unique_issues = list({issue['html_url']: issue for issue in all_issues}.values())
@@ -180,7 +172,7 @@ def format_issues_json(issues: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return results
 
 
-def get_top_matched_issues(
+async def get_top_matched_issues(
         query_text: str,
         keywords: List[str],
         languages: List[str] = None,
@@ -225,14 +217,14 @@ def get_top_matched_issues(
         search_keywords = list(set(search_keywords))
         logger.info(f"Search keywords: {search_keywords}")
 
-        # Fetch issues
-        issues = fetch_github_issues(search_keywords, top_k=TOP_PER_KEYWORD, github_token=github_token)
+        # Fetch issues asynchronously
+        issues = await fetch_github_issues(search_keywords, top_k=TOP_PER_KEYWORD, github_token=github_token)
 
         # Fallback: If no issues found with specific keywords, try with general programming keywords
         if not issues:
             logger.warning("No issues fetched with specific keywords, trying fallback keywords")
             fallback_keywords = ["python", "javascript", "java", "react", "node", "good first issue"]
-            issues = fetch_github_issues(fallback_keywords, top_k=TOP_PER_KEYWORD, github_token=github_token)
+            issues = await fetch_github_issues(fallback_keywords, top_k=TOP_PER_KEYWORD, github_token=github_token)
 
         if not issues:
             logger.warning("No issues fetched even with fallback keywords")

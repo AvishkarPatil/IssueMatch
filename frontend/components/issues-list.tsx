@@ -25,14 +25,11 @@ interface IssuesListProps {
 
 import { IssueFilter } from "@/components/issue-filter"
 
-export function IssuesList({ type }: IssuesListProps) {
+export function IssuesList({ type, filters = { keywords: [] } }: IssuesListProps & { filters?: { keywords: string[] } }) {
   const [issues, setIssues] = useState<APIIssue[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [userSkills, setUserSkills] = useState<string[]>([])
-  const [filters, setFilters] = useState<{ keywords: string[] }>({
-    keywords: [],
-  })
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const { user, isLoading: authLoading } = useAuth()
 
@@ -46,8 +43,6 @@ export function IssuesList({ type }: IssuesListProps) {
       const result = await getUserByGithubId(user.id)
       if (result.success && result.data?.skill_keywords) {
         setUserSkills(result.data.skill_keywords)
-        // Initialize filters.keywords with user skills
-        setFilters((prev) => ({ ...prev, keywords: result.data.skill_keywords }))
       } else {
         setUserSkills([])
       }
@@ -190,7 +185,6 @@ export function IssuesList({ type }: IssuesListProps) {
 
   return (
     <>
-      <IssueFilter onFilterChange={setFilters} />
       <div className="grid gap-4 mt-4">
         {loading ? (
           <div className="bg-white dark:bg-[#1a1f2a] rounded-lg p-6 border border-gray-200 dark:border-gray-800 shadow-md dark:shadow-none">

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Badge } from "@/components/ui/badge"
-import { Filter } from "lucide-react"
+import { Filter, ChevronDown } from "lucide-react"
 
 interface IssueFilterProps {
   onFilterChange: (filters: { keywords: string[] }) => void
@@ -69,15 +69,18 @@ export function IssueFilter({ onFilterChange }: IssueFilterProps) {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-2">
+        <button
+          className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-[#1a1f2a] rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#242a38] transition-colors border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none"
+        >
           <Filter className="h-4 w-4" />
-          Filter Issues
+          <span>Filter Issues</span>
           {totalSelected > 0 && (
             <Badge variant="secondary" className="ml-1">
               {totalSelected}
             </Badge>
           )}
-        </Button>
+          <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        </button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-4">
         <div className="space-y-4">
