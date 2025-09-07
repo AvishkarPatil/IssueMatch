@@ -26,3 +26,9 @@ try:
     api_router.include_router(mentor.router, prefix="/mentor", tags=["mentor"])
 except ImportError:
     print("Mentor router not available")
+
+try:
+    from app.routers import ai_feedback
+    api_router.include_router(ai_feedback.router, prefix="/ai", tags=["ai-feedback"])
+except ImportError:
+    print("AI feedback router not available")
