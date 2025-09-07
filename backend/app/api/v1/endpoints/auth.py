@@ -42,8 +42,10 @@ async def github_callback_handler(request: Request, code: str = None, state: str
     """
     # Verify state parameter to prevent CSRF attacks
     stored_state = request.session.get('oauth_state')
+    print(f"DEBUG: Received state: {state}, Stored state: {stored_state}")
     if not state or not stored_state or state != stored_state:
         request.session.pop('oauth_state', None)  # Clean up state
+        print(f"DEBUG: State mismatch - received: {state}, stored: {stored_state}")
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Invalid state parameter. CSRF check failed."

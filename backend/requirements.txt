@@ -16,3 +16,4 @@ beautifulsoup4==4.13.0
 requests
 numpy
 vertexai
+aiohttp==3.9.1

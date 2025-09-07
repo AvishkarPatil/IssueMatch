@@ -112,7 +112,7 @@ async def match_issues(
             all_keywords.extend(topics)
 
         # Get top matched issues
-        result = get_top_matched_issues(
+        result = await get_top_matched_issues(
             query_text=text_blob,
             keywords=all_keywords,
             languages=languages,
