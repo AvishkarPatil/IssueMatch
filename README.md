@@ -3,16 +3,12 @@
   <p><em>Connecting developers with open source issues that match their skills and interests</em></p>
   <p>A smart platform that uses AI to analyze your GitHub profile and find the perfect open source issues for you to contribute to.</p>
   
-  <p><strong>🇮🇳 Part of Open Source Connect India (OSCI) Initiative</strong></p>
-  
-  <img src="https://img.shields.io/badge/OSCI-Project-orange" alt="OSCI Project">
   <img src="https://img.shields.io/github/contributors/AvishkarPatil/IssueMatch" alt="Contributors">
   <img src="https://img.shields.io/github/issues/AvishkarPatil/IssueMatch" alt="Issues">
   <img src="https://img.shields.io/github/forks/AvishkarPatil/IssueMatch" alt="Forks">
   <img src="https://img.shields.io/github/stars/AvishkarPatil/IssueMatch" alt="Stars">
 </div>
 
-[![OSCI-Project-Banner.png](https://i.postimg.cc/76mJvBmF/OSCI-Project-Banner.png)](https://postimg.cc/8JfzMb84)
 ---
 
 <div align="center">
