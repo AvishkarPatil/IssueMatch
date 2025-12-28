@@ -46,9 +46,26 @@ export default function LoginPage() {
     setIsLoading(true)
     setError("")
 
-    // Redirect to the backend's GitHub OAuth login endpoint
-    window.location.href = "http://localhost:8000/api/v1/auth/login"
+    // Build selected scopes and redirect to backend OAuth endpoint
+    // Default required scope
+    const required = ["read:user"]
+    const extras = []
+    if (includeRepoStatus) extras.push("repo:status")
+    if (includeRepo) extras.push("repo")
+    if (includePublicRepo) extras.push("public_repo")
+    if (includeReadOrg) extras.push("read:org")
+    if (includeEmail) extras.push("user:email")
+
+    const scopes = [...required, ...extras].join(" ")
+    window.location.href = `http://localhost:8000/api/v1/auth/login?scopes=${encodeURIComponent(scopes)}`
   }
+
+  // Scope selection state (kept near top for clarity)
+  const [includeRepoStatus, setIncludeRepoStatus] = useState(true)
+  const [includeRepo, setIncludeRepo] = useState(false)
+  const [includePublicRepo, setIncludePublicRepo] = useState(false)
+  const [includeReadOrg, setIncludeReadOrg] = useState(false)
+  const [includeEmail, setIncludeEmail] = useState(true)
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0d1117] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -78,6 +95,60 @@ export default function LoginPage() {
             <Github className="mr-2 h-5 w-5" />
             {isLoading ? "Redirecting to GitHub..." : "Sign in with GitHub"}
           </button>
+
+          {/* Scope selection - let users choose minimal permissions */}
+          <div className="mt-4 text-sm text-gray-700 dark:text-gray-400">
+            <p className="font-medium mb-2">Choose which access to grant (optional)</p>
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <input type="checkbox" checked disabled className="mr-2" />
+                <div>
+                  <div className="font-medium">Basic profile</div>
+                  <div className="text-xs text-muted-foreground">read:user (required)</div>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <input type="checkbox" checked={includeRepoStatus} onChange={(e) => setIncludeRepoStatus(e.target.checked)} className="mr-2" />
+                <div>
+                  <div className="font-medium">Commit statuses</div>
+                  <div className="text-xs text-muted-foreground">repo:status — allows reading and writing commit statuses (no code access)</div>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <input type="checkbox" checked={includePublicRepo} onChange={(e) => setIncludePublicRepo(e.target.checked)} className="mr-2" />
+                <div>
+                  <div className="font-medium">Public repo access</div>
+                  <div className="text-xs text-muted-foreground">public_repo — read and write access to public repositories only</div>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <input type="checkbox" checked={includeRepo} onChange={(e) => setIncludeRepo(e.target.checked)} className="mr-2" />
+                <div>
+                  <div className="font-medium">Private repo access</div>
+                  <div className="text-xs text-muted-foreground">repo — full control of private repositories (includes code access). Use only if you want IssueMatch to read your private repos.</div>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <input type="checkbox" checked={includeReadOrg} onChange={(e) => setIncludeReadOrg(e.target.checked)} className="mr-2" />
+                <div>
+                  <div className="font-medium">Organization membership</div>
+                  <div className="text-xs text-muted-foreground">read:org — read organization and team membership (no repo code access)</div>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <input type="checkbox" checked={includeEmail} onChange={(e) => setIncludeEmail(e.target.checked)} className="mr-2" />
+                <div>
+                  <div className="font-medium">Email</div>
+                  <div className="text-xs text-muted-foreground">user:email — access to your verified email addresses</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className="mt-6 text-center text-sm text-gray-700 dark:text-gray-400">
             <p>

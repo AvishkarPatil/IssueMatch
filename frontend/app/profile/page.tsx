@@ -66,6 +66,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<GitHubProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [scopesInfo, setScopesInfo] = useState<{requested: string; granted: string} | null>(null)
 
   const mockData: { skills: Skill[]; stats: Stats; achievements: Achievement[]; resumeUploaded: boolean } = {
     skills: [
@@ -116,6 +117,16 @@ export default function ProfilePage() {
 
         const data: GitHubProfile = await response.json()
         setProfile(data) // Store fetched profile data in state
+        // Also fetch requested/granted scopes for display
+        try {
+          const scopeRes = await fetch("http://localhost:8000/api/v1/auth/scopes", { credentials: "include" })
+          if (scopeRes.ok) {
+            const scopeData = await scopeRes.json()
+            setScopesInfo({ requested: scopeData.requested || "", granted: scopeData.granted || "" })
+          }
+        } catch (e) {
+          // Non-fatal
+        }
       } catch (err: any) {
         // Handle errors during fetch
         setError(err.message || "Failed to load profile data")
@@ -275,6 +286,17 @@ export default function ProfilePage() {
                   </div>
                 </div>
               </div>
+
+              {/* OAuth Scopes Info */}
+              {scopesInfo && (
+                <div className="mt-4 text-sm text-gray-700 dark:text-gray-400">
+                  <div className="text-xs text-muted-foreground mb-1">Requested Scopes</div>
+                  <div className="text-sm mb-2">{scopesInfo.requested || "(none)"}</div>
+                  <div className="text-xs text-muted-foreground mb-1">Granted Scopes</div>
+                  <div className="text-sm mb-3">{scopesInfo.granted || "(none)"}</div>
+                  <a href="/login" className="text-purple-600 dark:text-purple-400 hover:underline text-sm">Revoke / change permissions</a>
+                </div>
+              )}
 
               {/* Skills Section */}
               <div className="border-t border-gray-300 dark:border-gray-700 pt-4">
