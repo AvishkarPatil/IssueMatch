@@ -7,11 +7,12 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     # GitHub OAuth settings
-    GITHUB_CLIENT_ID: str
-    GITHUB_CLIENT_SECRET: str
+    # Provide safe defaults for local development/tests. In production, set these via env or .env file.
+    GITHUB_CLIENT_ID: str = ""
+    GITHUB_CLIENT_SECRET: str = ""
 
     # Security
-    SECRET_KEY: str
+    SECRET_KEY: str = "dev-secret"
 
     # Google Sheets
     SHEETS_ID: Optional[str] = None
@@ -27,4 +28,6 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-print(f"--- DEBUG [config.py]: Loaded GITHUB_CLIENT_ID = '{settings.GITHUB_CLIENT_ID}' ---")
+# Avoid printing secrets in logs; only confirm that config loaded in debug scenarios.
+if settings.GITHUB_CLIENT_ID:
+    print(f"--- DEBUG [config.py]: Loaded GITHUB_CLIENT_ID (non-empty) ---")

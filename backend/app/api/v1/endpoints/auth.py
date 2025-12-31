@@ -11,24 +11,50 @@ router = APIRouter()
 GITHUB_AUTH_URL = "https://github.com/login/oauth/authorize"
 GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token"
 GITHUB_CALLBACK_URL = f"http://localhost:8000{settings.API_V1_STR}/auth/callback"
-GITHUB_SCOPES = "read:user repo"  # Permissions needed for user data and repo access
+GITHUB_SCOPES = "read:user repo"  # Default permissions needed for user data and repo access
+
+# Limit which scopes can be requested by the frontend to avoid arbitrary scope injection
+ALLOWED_GITHUB_SCOPES = {
+    "read:user",
+    "user:email",
+    "repo",
+    "public_repo",
+    "repo:status",
+    "read:org",
+}
 FRONTEND_LOGIN_SUCCESS_URL = "http://localhost:3000/skills"  # Redirect after successful login
 FRONTEND_LOGIN_FAILURE_URL = "http://localhost:3000/login?error=auth_failed"
 FRONTEND_LOGOUT_REDIRECT_URL = "http://localhost:3000/login"
 
 @router.get("/login")
-async def github_login_redirect(request: Request):
+async def github_login_redirect(request: Request, scopes: str = None):
     """
     Initiates GitHub OAuth flow by redirecting to GitHub's authorization page.
     """
     state = secrets.token_urlsafe(16)
     request.session['oauth_state'] = state
 
+    # Use scopes supplied by frontend if provided and valid, otherwise use defaults
+    used_scopes = GITHUB_SCOPES
+    if scopes:
+        # Normalize spaces and commas
+        candidate = scopes.replace(",", " ").strip()
+        # Validate requested scopes against allowlist
+        requested = [s for s in candidate.split() if s]
+        invalid = [s for s in requested if s not in ALLOWED_GITHUB_SCOPES]
+        if invalid:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid scope(s) requested: {invalid}")
+        if requested:
+            used_scopes = " ".join(requested)
+
+    # Store requested scopes in session for later reference
+    request.session['github_requested_scopes'] = used_scopes
+
     github_auth_url = (
         f"{GITHUB_AUTH_URL}"
         f"?client_id={settings.GITHUB_CLIENT_ID}"
         f"&redirect_uri={GITHUB_CALLBACK_URL}"
-        f"&scope={GITHUB_SCOPES}"
+        f"&scope={used_scopes}"
         f"&state={state}"
     )
     return RedirectResponse(url=github_auth_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
@@ -104,6 +130,17 @@ async def logout_user(request: Request):
     """
     request.session.clear()
     return RedirectResponse(url=FRONTEND_LOGOUT_REDIRECT_URL, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+
+
+@router.get("/scopes")
+async def get_requested_and_granted_scopes(request: Request):
+    """
+    Returns the scopes that were requested during the OAuth flow and the scopes actually granted by GitHub
+    (if available in the session). This is useful for the frontend to display what the user granted.
+    """
+    requested = request.session.get('github_requested_scopes', '')
+    granted = request.session.get('github_scope', '')
+    return {"requested": requested, "granted": granted}
 
 # Dependency to extract GitHub token from session
 async def get_github_token(request: Request) -> str:

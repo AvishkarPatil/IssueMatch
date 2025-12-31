@@ -23,8 +23,8 @@ export function Navbar() {
   };
 
   const handleLogin = () => {
-    // Redirect to the backend login endpoint to start the GitHub OAuth flow
-    window.location.href = `${API_URL}/auth/login`;
+    // Navigate to the frontend login page where users can choose scopes
+    router.push('/login')
   };
 
   const handleSearch = (e: React.FormEvent) => {

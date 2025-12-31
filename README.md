@@ -43,6 +43,7 @@ IssueMatch is an intelligent platform that bridges the gap between developers an
 
 ### Authentication
 - **GitHub OAuth**: For secure user authentication
+  - The login page now allows selecting which GitHub OAuth scopes to grant. See [docs/oauth-scopes.md](docs/oauth-scopes.md) for details on each scope and recommendations.
 
 ### 🔄 How It Works
 
