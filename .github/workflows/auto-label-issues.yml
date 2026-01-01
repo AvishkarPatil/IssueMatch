@@ -1,0 +1,33 @@
+name: Auto Label Issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Add SWoC labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['SWoC26', 'SWOC']
+            })
+      
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `Thank you for creating this issue! 🎉\n\nThis issue is part of **Social Winter of Code 2026**.\n\n**Next Steps:**\n- A maintainer will review and assign difficulty labels (Easy/Medium/Hard)\n- Feel free to ask questions in the comments\n- Wait for assignment before starting work\n\nHappy contributing! 🚀`
+            })
