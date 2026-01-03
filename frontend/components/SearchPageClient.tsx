@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
-import { ExternalLink, AlertCircle, Search } from "lucide-react"
+import { ExternalLink, AlertCircle, Search, Star, Code } from "lucide-react"
 
 interface GitHubIssue {
   id: number
@@ -84,107 +84,147 @@ export default function SearchPageClient() {
     !text ? "" : text.length > maxLength ? text.substring(0, maxLength) + "..." : text
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
-          <div className="relative flex-grow">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-            </div>
-            <input
-              type="text"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search GitHub issues..."
-              className="w-full h-12 py-2 pl-10 pr-4 bg-white dark:bg-[#1a1f2a] border border-gray-300 dark:border-[#30363d] rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent shadow-sm dark:shadow-none"
-            />
+    <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white relative overflow-hidden">
+      {/* Radial glow effects */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div className="max-w-6xl mx-auto px-4 py-8 pt-32 relative z-10">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-[#e88951] via-[#f59e6c] to-[#e88951]">
+            Discover Open Source Issues
+          </h1>
+
+          {/* Scroll indicator */}
+          <div className="flex justify-center mb-8">
+            <button
+              onClick={() => document.querySelector('input')?.focus()}
+              className="cursor-pointer"
+            >
+              <svg
+                width="100"
+                height="50"
+                viewBox="0 0 100 50"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-gray-900 dark:text-white hover:text-[#e88951] dark:hover:text-[#e88951] transition-colors"
+              >
+                <path d="M68.6958 5.40679C67.3329 12.7082 68.5287 20.1216 68.5197 27.4583C68.5189 29.5382 68.404 31.6054 68.1147 33.682C67.9844 34.592 69.4111 34.751 69.5414 33.8411C70.5618 26.5016 69.2488 19.104 69.4639 11.7325C69.5218 9.65887 69.7222 7.6012 70.0939 5.56265C70.1638 5.1949 69.831 4.81112 69.4601 4.76976C69.0891 4.72841 68.7689 5.01049 68.6958 5.40679Z"></path>
+                <path d="M74.0117 26.1349C73.2662 27.1206 72.5493 28.1096 72.0194 29.235C71.5688 30.167 71.2007 31.137 70.7216 32.0658C70.4995 32.5033 70.252 32.9091 69.9475 33.3085C69.8142 33.4669 69.6779 33.654 69.5161 33.8093C69.4527 33.86 68.9199 34.2339 68.9167 34.2624C68.9263 34.1768 69.0752 34.3957 69.0055 34.2434C68.958 34.1515 68.8534 34.0531 68.8058 33.9612C68.6347 33.6821 68.4637 33.403 68.264 33.1208L67.1612 31.3512C66.3532 30.0477 65.5199 28.7126 64.7119 27.4093C64.5185 27.0699 63.9701 27.0666 63.7131 27.2979C63.396 27.5514 63.4053 27.9858 63.6018 28.2966C64.3845 29.5683 65.1956 30.8431 65.9783 32.1149L67.1572 33.9796C67.5025 34.5093 67.8225 35.2671 68.428 35.5368C69.6136 36.0446 70.7841 34.615 71.3424 33.7529C71.9992 32.786 72.4085 31.705 72.9035 30.6336C73.4842 29.3116 74.2774 28.1578 75.1306 26.9818C75.7047 26.2369 74.5573 25.3868 74.0117 26.1349ZM55.1301 12.2849C54.6936 18.274 54.6565 24.3076 55.0284 30.3003C55.1293 31.987 55.2555 33.7056 55.4419 35.4019C55.5431 36.3087 56.9541 36.0905 56.8529 35.1837C56.2654 29.3115 56.0868 23.3982 56.2824 17.4978C56.3528 15.8301 56.4263 14.1339 56.5537 12.4725C56.6301 11.5276 55.2034 11.3686 55.1301 12.2849Z"></path>
+                <path d="M59.2642 30.6571C58.8264 31.475 58.36 32.2896 57.9222 33.1075C57.7032 33.5164 57.4843 33.9253 57.2369 34.3311C57.0528 34.6861 56.8656 35.0697 56.6278 35.3898C56.596 35.4152 56.5611 35.4691 56.5294 35.4944C56.4881 35.6054 56.5041 35.4627 56.5548 35.5261C56.7481 35.6055 56.8337 35.6151 56.7545 35.5484L56.6784 35.4533C56.6023 35.3581 56.5263 35.263 56.4534 35.1393C56.1778 34.7619 55.8734 34.3814 55.5946 34.0324C55.0146 33.2744 54.4315 32.545 53.8515 31.787C53.2685 31.0576 52.1584 31.945 52.7415 32.6744C53.4229 33.5592 54.1042 34.4441 54.7888 35.3004C55.1184 35.7127 55.4321 36.2677 55.8569 36.6039C56.3069 36.9719 56.884 36.9784 57.3533 36.6551C57.7624 36.3542 57.9845 35.9167 58.2067 35.4792C58.4636 34.9878 58.746 34.5282 59.003 34.0369C59.5423 33.0859 60.0563 32.1032 60.5957 31.1522C60.7765 30.8257 60.5104 30.3627 60.2092 30.2135C59.8161 30.112 59.4451 30.3305 59.2642 30.6571ZM44.5918 10.1569L42.2324 37.5406C42.0032 40.1151 41.8057 42.6641 41.5764 45.2386C41.5032 46.1549 42.9299 46.314 43.0032 45.3977L45.3626 18.014C45.5918 15.4396 45.7893 12.8905 46.0186 10.316C46.1235 9.37433 44.6968 9.21532 44.5918 10.1569Z"></path>
+                <path d="M48.101 37.7616C46.7404 38.8232 45.8267 40.2814 44.9163 41.7109C44.0407 43.0866 43.1365 44.4592 41.738 45.3434C42.1247 45.5019 42.5146 45.6321 42.9014 45.7908C42.1324 41.8051 41.04 37.8699 39.6781 34.0203C39.545 33.6589 39.0695 33.5191 38.7365 33.6553C38.3719 33.817 38.2385 34.2353 38.3716 34.5969C39.7209 38.3007 40.7404 42.1121 41.4904 46.009C41.6012 46.5703 42.1877 46.7512 42.6539 46.4565C45.5462 44.6124 46.3877 40.9506 49.0169 38.8748C49.7178 38.2884 48.8304 37.1784 48.101 37.7616ZM25.9671 13.1014C25.7028 16.2497 26.0758 19.3824 26.5091 22.4929C26.9645 25.6636 27.4166 28.863 27.872 32.0337C28.1346 33.8253 28.3971 35.6167 28.631 37.4051C28.7607 38.3151 30.1717 38.0968 30.042 37.1868C29.5866 34.016 29.1281 30.8738 28.7012 27.7062C28.2647 24.6242 27.7396 21.5612 27.449 18.4666C27.2943 16.7449 27.2283 15.0042 27.3653 13.2572C27.4671 12.3442 26.0404 12.1851 25.9671 13.1014Z"></path>
+                <path d="M30.5625 27.3357C29.9525 30.7343 29.3425 34.133 28.704 37.5284C29.1225 37.4018 29.5411 37.2751 29.9882 37.1516C28.6034 35.0617 27.2504 32.9465 25.8655 30.8565C25.6406 30.5425 25.1523 30.517 24.8669 30.7451C24.5497 30.9987 24.5305 31.4299 24.7555 31.7439C26.1403 33.8338 27.4933 35.9491 28.8781 38.039C29.2489 38.6003 30.0417 38.2265 30.1624 37.6621C30.7724 34.2635 31.3824 30.8648 32.0209 27.4694C32.0908 27.1016 31.758 26.7178 31.3871 26.6765C30.9559 26.6573 30.6324 26.9679 30.5625 27.3357Z"></path>
+              </svg>
+            </button>
           </div>
-          <button
-            type="submit"
-            className="h-12 px-6 bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white font-medium rounded-full transition-colors shadow-sm dark:shadow-none"
-          >
-            Search
-          </button>
-        </form>
-      </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mb-12">
+          <form onSubmit={handleSearch} className="max-w-3xl mx-auto">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="Search for issues, languages, or topics..."
+                className="w-full h-14 py-4 pl-14 pr-32 bg-white dark:bg-[#161b22] border border-gray-300 dark:border-gray-800 rounded-full text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#e88951] focus:border-transparent shadow-lg dark:shadow-none transition-all"
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-2 h-10 px-6 bg-[#e88951] hover:bg-[#d67840] text-white font-medium rounded-full transition-colors shadow-md"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+        </div>
 
       {query && (
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Search Results</h1>
-          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <Search className="h-4 w-4" />
-            <p>{loading ? "Searching..." : `Found ${totalCount} issues matching "${query}"`}</p>
+        <div className="mb-8 max-w-3xl mx-auto">
+          <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-800 to-transparent"></div>
+            <p className="text-sm">{loading ? "Searching..." : `${totalCount.toLocaleString()} results for "${query}"`}</p>
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-800 to-transparent"></div>
           </div>
         </div>
       )}
 
       {loading ? (
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-4xl mx-auto">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white dark:bg-[#1a1f2a] rounded-lg p-4 animate-pulse border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none">
-              <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-3"></div>
-              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/4 mb-2"></div>
-              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
+            <div key={i} className="bg-white dark:bg-[#161b22] rounded-xl p-6 animate-pulse border border-gray-200 dark:border-gray-800 shadow-sm dark:shadow-none">
+              <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/4 mb-3"></div>
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full mb-2"></div>
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-2/3"></div>
             </div>
           ))}
         </div>
       ) : error ? (
-        <div className="bg-white dark:bg-[#1a1f2a] rounded-lg p-6 text-center border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none">
-          <AlertCircle className="h-8 w-8 text-red-500 mx-auto mb-2" />
-          <p className="text-red-600 dark:text-red-400 mb-2">{error}</p>
+        <div className="bg-white dark:bg-[#161b22] rounded-xl p-8 text-center border border-gray-200 dark:border-gray-800 shadow-sm dark:shadow-none max-w-2xl mx-auto">
+          <div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <AlertCircle className="h-8 w-8 text-red-500" />
+          </div>
+          <p className="text-red-600 dark:text-red-400 font-semibold mb-2">{error}</p>
           <p className="text-gray-600 dark:text-gray-400">Please try a different search or check your connection.</p>
         </div>
       ) : issues.length === 0 && query ? (
-        <div className="bg-white dark:bg-[#1a1f2a] rounded-lg p-6 text-center border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none">
+        <div className="bg-white dark:bg-[#161b22] rounded-xl p-8 text-center border border-gray-200 dark:border-gray-800 shadow-sm dark:shadow-none max-w-2xl mx-auto">
+          <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="h-8 w-8 text-gray-400" />
+          </div>
           <p className="text-gray-600 dark:text-gray-400">No issues found matching "{query}".</p>
+          <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">Try different keywords or filters</p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-4xl mx-auto">
           {issues.map((issue) => (
             <div
               key={issue.id}
-              className="bg-white dark:bg-[#1a1f2a] rounded-lg p-5 hover:bg-gray-50 dark:hover:bg-[#242a38] transition-colors border border-gray-200 dark:border-[#30363d] shadow-sm dark:shadow-none"
+              className="group bg-white dark:bg-[#161b22] rounded-xl p-6 hover:shadow-xl dark:hover:shadow-none transition-all duration-300 border border-gray-200 dark:border-gray-800 hover:border-[#e88951] dark:hover:border-[#e88951] cursor-pointer"
             >
               <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-2">
-                  <a
-                    href={issue.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-lg font-semibold text-blue-600 dark:text-cyan-400 hover:text-blue-700 dark:hover:text-purple-400 transition-colors"
-                  >
+                <a
+                  href={issue.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 flex-1"
+                >
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-[#e88951] transition-colors">
                     {issue.title}
-                  </a>
-                  <a
-                    href={issue.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-purple-400"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" />
-                  </a>
-                </div>
+                  </h3>
+                  <ExternalLink className="h-4 w-4 text-gray-400 group-hover:text-[#e88951] transition-colors flex-shrink-0" />
+                </a>
                 <span
-                  className={`px-2 py-0.5 text-xs rounded-full ${
+                  className={`px-3 py-1 text-xs font-medium rounded-full flex-shrink-0 ml-3 ${
                     issue.state === "open"
-                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-                      : "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300"
+                      ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                      : "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400"
                   }`}
                 >
                   {issue.state}
                 </span>
               </div>
 
-              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 mb-3">
-                <span className="text-gray-700 dark:text-gray-300 font-medium">{getRepoPath(issue.repository_url)}</span>
-                <span className="mx-2">•</span>
-                <span>Opened by {issue.user.login}</span>
-                <span className="mx-2">•</span>
+              <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-3">
+                <span className="px-2 py-1 bg-gray-100 dark:bg-[#0d1117] rounded-md text-gray-700 dark:text-gray-300 font-medium">
+                  {getRepoPath(issue.repository_url)}
+                </span>
+                <span className="text-gray-400">•</span>
+                <span>by {issue.user.login}</span>
+                <span className="text-gray-400">•</span>
                 <span>{new Date(issue.created_at).toLocaleDateString()}</span>
               </div>
 
               {issue.body && (
-                <p className="text-gray-600 dark:text-gray-300 text-sm mt-2 line-clamp-2">{truncateText(issue.body, 200)}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 leading-relaxed">
+                  {truncateText(issue.body, 200)}
+                </p>
               )}
             </div>
           ))}
@@ -192,52 +232,57 @@ export default function SearchPageClient() {
       )}
 
       {!query && !loading && (
-        <div className="mt-12">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 text-center">Search for GitHub Issues</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-lg mx-auto text-center">
-            Find open source issues to contribute to by searching for keywords, languages, or project names.
+        <div className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 text-center">Popular Searches</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-8 text-center">
+            Quick filters to help you get started
           </p>
 
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
+          <div className="flex flex-wrap justify-center gap-3">
             <button
               onClick={() => {
                 setSearchInput("label:good-first-issue state:open")
                 handleSearch(new Event("submit") as any)
               }}
-              className="px-4 py-2 bg-gray-100 dark:bg-[#242a38] text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-[#2d3748] text-sm border border-gray-300 dark:border-[#30363d] shadow-sm dark:shadow-none"
+              className="group flex items-center gap-2 px-5 py-3 bg-white dark:bg-[#161b22] rounded-full hover:bg-[#e88951] dark:hover:bg-[#e88951] transition-all border border-gray-200 dark:border-gray-800 hover:border-[#e88951] shadow-sm hover:shadow-md"
             >
-              Good First Issues
+              <Star className="w-4 h-4 text-[#e88951] group-hover:text-white transition-colors" />
+              <span className="font-medium text-gray-900 dark:text-white group-hover:text-white transition-colors">Good First Issues</span>
             </button>
             <button
               onClick={() => {
                 setSearchInput("label:help-wanted state:open")
                 handleSearch(new Event("submit") as any)
               }}
-              className="px-4 py-2 bg-gray-100 dark:bg-[#242a38] text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-[#2d3748] text-sm border border-gray-300 dark:border-[#30363d] shadow-sm dark:shadow-none"
+              className="group flex items-center gap-2 px-5 py-3 bg-white dark:bg-[#161b22] rounded-full hover:bg-[#e88951] dark:hover:bg-[#e88951] transition-all border border-gray-200 dark:border-gray-800 hover:border-[#e88951] shadow-sm hover:shadow-md"
             >
-              Help Wanted
+              <AlertCircle className="w-4 h-4 text-[#e88951] group-hover:text-white transition-colors" />
+              <span className="font-medium text-gray-900 dark:text-white group-hover:text-white transition-colors">Help Wanted</span>
             </button>
             <button
               onClick={() => {
                 setSearchInput("language:javascript state:open")
                 handleSearch(new Event("submit") as any)
               }}
-              className="px-4 py-2 bg-gray-100 dark:bg-[#242a38] text-yellow-700 dark:text-yellow-300 rounded-md hover:bg-gray-200 dark:hover:bg-[#2d3748] text-sm border border-gray-300 dark:border-[#30363d] shadow-sm dark:shadow-none"
+              className="group flex items-center gap-2 px-5 py-3 bg-white dark:bg-[#161b22] rounded-full hover:bg-[#e88951] dark:hover:bg-[#e88951] transition-all border border-gray-200 dark:border-gray-800 hover:border-[#e88951] shadow-sm hover:shadow-md"
             >
-              JavaScript
+              <Code className="w-4 h-4 text-yellow-500 group-hover:text-white transition-colors" />
+              <span className="font-medium text-gray-900 dark:text-white group-hover:text-white transition-colors">JavaScript</span>
             </button>
             <button
               onClick={() => {
                 setSearchInput("language:python state:open")
                 handleSearch(new Event("submit") as any)
               }}
-              className="px-4 py-2 bg-gray-100 dark:bg-[#242a38] text-blue-700 dark:text-blue-300 rounded-md hover:bg-gray-200 dark:hover:bg-[#2d3748] text-sm border border-gray-300 dark:border-[#30363d] shadow-sm dark:shadow-none"
+              className="group flex items-center gap-2 px-5 py-3 bg-white dark:bg-[#161b22] rounded-full hover:bg-[#e88951] dark:hover:bg-[#e88951] transition-all border border-gray-200 dark:border-gray-800 hover:border-[#e88951] shadow-sm hover:shadow-md"
             >
-              Python
+              <Code className="w-4 h-4 text-blue-500 group-hover:text-white transition-colors" />
+              <span className="font-medium text-gray-900 dark:text-white group-hover:text-white transition-colors">Python</span>
             </button>
           </div>
         </div>
       )}
     </div>
+  </div>
   )
 }

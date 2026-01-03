@@ -28,7 +28,7 @@ export default function MentorList({ mentors, isLoading, onRequestMentor }: Ment
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="bg-gray-200 dark:bg-gray-800/50 h-64 rounded-lg border border-gray-200 dark:border-transparent"></div>
+          <div key={i} className="bg-gray-200 dark:bg-[#0d1117] h-80 rounded-xl border border-gray-200 dark:border-gray-800"></div>
         ))}
       </div>
     );
@@ -69,65 +69,65 @@ export default function MentorList({ mentors, isLoading, onRequestMentor }: Ment
       {enhancedMentors.map((mentor) => (
         <div 
           key={mentor.id}
-          className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md dark:shadow-md hover:shadow-lg dark:hover:shadow-lg transition-all hover:border-blue-700/50 dark:hover:border-purple-700/50"
+          className="group bg-white dark:bg-[#161b22] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-lg dark:shadow-none hover:shadow-xl dark:hover:shadow-none transition-all hover:border-[#e88951] dark:hover:border-[#e88951] hover:-translate-y-1"
         >
           <div className="p-6">
             <div className="flex items-center gap-4 mb-4">
               <img 
                 src={mentor.avatarUrl} 
                 alt={mentor.name} 
-                className="w-16 h-16 rounded-full object-cover border-2 border-blue-500/30 dark:border-purple-500/30"
+                className="w-16 h-16 rounded-full object-cover border-2 border-[#e88951]/30"
               />
               <div>
-                <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">{mentor.name}</h3>
-                <div className="flex items-center gap-1 text-yellow-500 dark:text-yellow-400">
-                  <Star className="h-4 w-4 fill-yellow-500 dark:fill-yellow-400" />
-                  <span>{mentor.rating.toFixed(1)}</span>
+                <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{mentor.name}</h3>
+                <div className="flex items-center gap-1 text-yellow-500">
+                  <Star className="h-4 w-4 fill-yellow-500" />
+                  <span className="text-sm font-medium">{mentor.rating.toFixed(1)}</span>
                 </div>
               </div>
             </div>
             
-            <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">{mentor.bio}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">{mentor.bio}</p>
             
             <div className="grid grid-cols-2 gap-2 mb-4 text-xs text-gray-500 dark:text-gray-400">
-              <div className="flex items-center gap-1">
-                <Code className="h-3 w-3" />
+              <div className="flex items-center gap-1.5">
+                <Code className="h-3.5 w-3.5 text-[#e88951]" />
                 <span>{mentor.languages?.slice(0, 2).join(', ') || 'Various'}</span>
               </div>
-              <div className="flex items-center gap-1">
-                <Clock className="h-3 w-3" />
+              <div className="flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5 text-[#e88951]" />
                 <span>{mentor.experience} years</span>
               </div>
-              <div className="flex items-center gap-1">
-                <Calendar className="h-3 w-3" />
+              <div className="flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5 text-[#e88951]" />
                 <span>{mentor.timezone}</span>
               </div>
               {mentor.achievements?.length > 0 && (
-                <div className="flex items-center gap-1">
-                  <Award className="h-3 w-3" />
+                <div className="flex items-center gap-1.5">
+                  <Award className="h-3.5 w-3.5 text-[#e88951]" />
                   <span>{mentor.achievements[0]}</span>
                 </div>
               )}
             </div>
             
-            <div className="flex flex-wrap gap-1 mb-4">
+            <div className="flex flex-wrap gap-2 mb-4">
               {mentor.skills.slice(0, 4).map((skill, i) => (
                 <span 
                   key={i} 
-                  className="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-purple-900/30 text-blue-700 dark:text-purple-300 border border-blue-200 dark:border-purple-800/50"
+                  className="px-2.5 py-1 text-xs rounded-full bg-gray-100 dark:bg-[#0d1117] text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800"
                 >
                   {skill}
                 </span>
               ))}
               {mentor.skills.length > 4 && (
-                <span className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
-                  +{mentor.skills.length - 4} more
+                <span className="px-2.5 py-1 text-xs rounded-full bg-gray-100 dark:bg-[#0d1117] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800">
+                  +{mentor.skills.length - 4}
                 </span>
               )}
             </div>
             
             <div className="flex items-center justify-between">
-              <span className={`px-2 py-1 text-xs rounded-full ${getAvailabilityColor(mentor.availability)}`}>
+              <span className={`px-3 py-1.5 text-xs font-medium rounded-full ${getAvailabilityColor(mentor.availability)}`}>
                 {mentor.availability.charAt(0).toUpperCase() + mentor.availability.slice(1)}
               </span>
               
@@ -135,18 +135,18 @@ export default function MentorList({ mentors, isLoading, onRequestMentor }: Ment
                 <Link 
                   href={mentor.githubUrl}
                   target="_blank"
-                  className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                  className="p-2 text-gray-500 dark:text-gray-400 hover:text-[#e88951] dark:hover:text-[#e88951] transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-[#0d1117]"
                 >
                   <ExternalLink className="h-4 w-4" />
                 </Link>
                 
                 <button
                   onClick={() => onRequestMentor(mentor.id)}
-                  className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white px-3 py-1 rounded-md text-sm flex items-center gap-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm dark:shadow-none"
+                  className="bg-[#e88951] hover:bg-[#d67840] text-white px-4 py-2 rounded-full text-sm flex items-center gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg font-medium"
                   disabled={mentor.availability === 'unavailable'}
                 >
                   <MessageCircle className="h-4 w-4" />
-                  Request Help
+                  Request
                 </button>
               </div>
             </div>

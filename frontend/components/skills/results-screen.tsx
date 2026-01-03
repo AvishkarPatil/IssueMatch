@@ -60,8 +60,14 @@ export default function ResultsScreen({ skills, onGetStarted }: ResultsScreenPro
   const displaySkills = skills.map((skill) => skillDisplayNames[skill] || skill)
 
   return (
+    <div className="relative">
+      {/* Radial glows */}
+      <div className="absolute top-20 left-10 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#e88951]/5 rounded-full blur-3xl pointer-events-none"></div>
+      
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-6 text-center max-w-3xl mx-auto"
+      className="flex flex-col items-center justify-center min-h-screen p-6 text-center max-w-3xl mx-auto relative z-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.2 }}
@@ -70,14 +76,14 @@ export default function ResultsScreen({ skills, onGetStarted }: ResultsScreenPro
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.5 }}
-        className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mb-6"
+        className="w-16 h-16 bg-[#e88951] rounded-full flex items-center justify-center mb-6"
       >
         <Check className="h-8 w-8 text-white" />
       </motion.div>
 
       <h1 className="text-3xl font-bold mb-3 text-white">Your Skills Profile</h1>
 
-      <p className="text-lg text-purple-300 mb-8">Based on your responses, these are your top skills</p>
+      <p className="text-lg text-[#e88951] mb-8">Based on your responses, these are your top skills</p>
 
       <motion.div
         className="flex flex-wrap justify-center gap-3 mb-10"
@@ -91,9 +97,9 @@ export default function ResultsScreen({ skills, onGetStarted }: ResultsScreenPro
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.3, delay: 1 + index * 0.1 }}
-            className="bg-purple-800/50 border border-purple-500 rounded-full px-4 py-2 flex items-center"
+            className="bg-[#e88951]/20 border border-[#e88951] rounded-full px-4 py-2 flex items-center"
           >
-            <Sparkles className="h-3 w-3 mr-2 text-purple-400" />
+            <Sparkles className="h-3 w-3 mr-2 text-[#e88951]" />
             <span className="text-white font-medium text-sm">{skill}</span>
           </motion.div>
         ))}
@@ -106,7 +112,7 @@ export default function ResultsScreen({ skills, onGetStarted }: ResultsScreenPro
       >
         <Button
           onClick={handleGetStarted}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2"
+          className="bg-[#e88951] hover:bg-[#d67840] text-white px-6 py-2"
           disabled={isLoading}
         >
           {isLoading ? (
@@ -123,5 +129,6 @@ export default function ResultsScreen({ skills, onGetStarted }: ResultsScreenPro
         </Button>
       </motion.div>
     </motion.div>
+    </div>
   )
 }

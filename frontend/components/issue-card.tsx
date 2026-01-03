@@ -58,7 +58,7 @@ export function IssueCard({ issue }: IssueCardProps) {
 
   return (
     <div
-      className={`bg-white dark:bg-[#1a1f2a] rounded-lg overflow-hidden transition-all duration-300 border border-gray-200 dark:border-transparent shadow-md dark:shadow-none ${
+      className={`bg-white dark:bg-[#161b22] rounded-lg overflow-hidden transition-all duration-300 border border-gray-200 dark:border-gray-800 shadow-md dark:shadow-none ${
         isHovered ? "shadow-lg shadow-blue-500/10 dark:shadow-purple-900/20 translate-y-[-2px]" : ""
       }`}
       onMouseEnter={() => setIsHovered(true)}
@@ -126,7 +126,7 @@ export function IssueCard({ issue }: IssueCardProps) {
             {issue.skills.slice(0, 3).map((skill, index) => (
               <span
                 key={index}
-                className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-[#242a38] text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-purple-900/30 hover:text-blue-700 dark:hover:text-purple-300 transition-colors cursor-pointer"
+                className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-[#0d1117] text-gray-700 dark:text-gray-300 hover:bg-[#e88951]/10 dark:hover:bg-[#e88951]/20 hover:text-[#e88951] transition-colors cursor-pointer"
               >
                 {skill}
               </span>
@@ -135,7 +135,7 @@ export function IssueCard({ issue }: IssueCardProps) {
 
           <div className="flex gap-2">
             <motion.button
-              className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-[#242a38] text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-600/20 hover:text-amber-700 dark:hover:text-amber-300 transition-colors border border-gray-200 dark:border-transparent"
+              className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-[#0d1117] text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-600/20 hover:text-amber-700 dark:hover:text-amber-300 transition-colors border border-gray-200 dark:border-gray-800"
               onClick={handleMentor}
               whileTap={{ scale: 0.95 }}
             >
@@ -148,8 +148,8 @@ export function IssueCard({ issue }: IssueCardProps) {
             <motion.button
               className={`px-3 py-1.5 rounded-lg transition-colors ${
                 isInterested
-                  ? "bg-blue-600 dark:bg-purple-600 text-white"
-                  : "bg-gray-100 dark:bg-[#242a38] text-gray-600 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-purple-600/20 hover:text-blue-700 dark:hover:text-purple-400 border border-gray-200 dark:border-transparent"
+                  ? "bg-[#e88951] text-white"
+                  : "bg-gray-100 dark:bg-[#0d1117] text-gray-600 dark:text-gray-400 hover:bg-[#e88951]/10 dark:hover:bg-[#e88951]/20 hover:text-[#e88951] border border-gray-200 dark:border-gray-800"
               }`}
               onClick={handleContribute}
               whileTap={{ scale: 0.95 }}
@@ -169,7 +169,7 @@ export function IssueCard({ issue }: IssueCardProps) {
               className={`px-3 py-1.5 rounded-lg transition-colors ${
                 isInterested === false
                   ? "bg-red-600 text-white"
-                  : "bg-gray-100 dark:bg-[#242a38] text-gray-600 dark:text-gray-400 hover:bg-red-100 dark:hover:bg-red-600/20 hover:text-red-700 dark:hover:text-red-400 border border-gray-200 dark:border-transparent"
+                  : "bg-gray-100 dark:bg-[#0d1117] text-gray-600 dark:text-gray-400 hover:bg-red-100 dark:hover:bg-red-600/20 hover:text-red-700 dark:hover:text-red-400 border border-gray-200 dark:border-gray-800"
               }`}
               onClick={handleNotInterested}
               whileTap={{ scale: 0.95 }}

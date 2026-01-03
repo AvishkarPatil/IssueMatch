@@ -164,17 +164,23 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
   const canProceed = selectedOptions[currentQuestionIndex] !== -1
 
   return (
-    <div className="container mx-auto max-w-3xl px-6 py-8 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
+    <div className="relative">
+      {/* Radial glows */}
+      <div className="absolute top-20 left-10 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#e88951]/5 rounded-full blur-3xl pointer-events-none"></div>
+      
+    <div className="container mx-auto max-w-3xl px-6 py-8 mt-24 bg-white dark:bg-[#161b22] rounded-lg shadow-lg border border-gray-200 dark:border-gray-800 relative z-10">
       <div className="mb-8">
-        <div className="flex justify-between items-center mb-2 text-sm text-blue-600 dark:text-purple-300">
+        <div className="flex justify-between items-center mb-2 text-sm text-[#e88951]">
           <span>
             Question {currentQuestionIndex + 1} of {questions.length}
           </span>
           <span>{Math.round(progress)}% Complete</span>
         </div>
-        <Progress value={progress} className="h-2 bg-gray-200 dark:bg-gray-700">
-          <div className="h-full bg-blue-500 dark:bg-purple-500 rounded-full" style={{ width: `${progress}%` }}></div>
-        </Progress>
+        <div className="relative w-full h-2 bg-gray-200 dark:bg-gray-700 overflow-hidden rounded-full">
+          <div className="h-full bg-gradient-to-r from-[#e88951] via-[#f59e6c] to-[#e88951] rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }}></div>
+        </div>
       </div>
 
       <AnimatePresence mode="wait">
@@ -194,8 +200,8 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
                 key={index}
                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
                   selectedOptions[currentQuestionIndex] === index
-                    ? "border-blue-500 dark:border-purple-500 bg-blue-50/50 dark:bg-purple-900/30"
-                    : "border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-purple-400 bg-white/50 dark:bg-gray-800/30"
+                    ? "border-[#e88951] bg-[#e88951]/10 dark:bg-[#e88951]/20"
+                    : "border-gray-300 dark:border-gray-700 hover:border-[#e88951]/60 bg-white dark:bg-[#0d1117]"
                 }`}
                 onClick={() => handleOptionSelect(index)}
               >
@@ -203,7 +209,7 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
                   <div
                     className={`w-5 h-5 rounded-full mr-3 flex items-center justify-center ${
                       selectedOptions[currentQuestionIndex] === index 
-                        ? "bg-blue-500 dark:bg-purple-500" 
+                        ? "bg-[#e88951]" 
                         : "border-2 border-gray-400 dark:border-gray-500"
                     }`}
                   >
@@ -222,7 +228,7 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
               variant="outline"
               onClick={handleBack}
               disabled={isFirstQuestion}
-              className={`${isFirstQuestion ? "opacity-0" : "opacity-100"} border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-purple-900/30 hover:text-blue-700 dark:hover:text-purple-300`}
+              className={`${isFirstQuestion ? "opacity-0" : "opacity-100"} border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white hover:bg-[#e88951]/10 hover:text-[#e88951]`}
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
               Back
@@ -232,7 +238,7 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
               <Button
                 onClick={handleSubmit}
                 disabled={!canProceed}
-                className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white"
+                className="bg-[#e88951] hover:bg-[#d67840] text-white"
               >
                 Submit Test
                 <Send className="ml-2 h-4 w-4" />
@@ -241,7 +247,7 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
               <Button
                 onClick={handleNext}
                 disabled={!canProceed}
-                className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white"
+                className="bg-[#e88951] hover:bg-[#d67840] text-white"
               >
                 Next
                 <ChevronRight className="ml-2 h-4 w-4" />
@@ -250,6 +256,7 @@ export default function SkillsTest({ onComplete }: SkillsTestProps) {
           </div>
         </motion.div>
       </AnimatePresence>
+    </div>
     </div>
   )
 }

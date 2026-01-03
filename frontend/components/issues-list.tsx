@@ -133,7 +133,7 @@ export function IssuesList({ type }: IssuesListProps) {
   return (
     <div className="grid gap-4">
       {loading ? (
-        <div className="bg-white dark:bg-[#1a1f2a] rounded-lg p-6 border border-gray-200 dark:border-gray-800 shadow-md dark:shadow-none">
+        <div className="bg-white dark:bg-[#161b22] rounded-lg p-6 border border-gray-200 dark:border-gray-800 shadow-md dark:shadow-none">
           <div className="animate-pulse space-y-4">
             <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
             <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
@@ -145,18 +145,18 @@ export function IssuesList({ type }: IssuesListProps) {
           </div>
         </div>
       ) : error ? (
-        <div className="bg-white dark:bg-[#1a1f2a] rounded-lg p-6 text-center border border-gray-200 dark:border-gray-800 shadow-md dark:shadow-none">
+        <div className="bg-white dark:bg-[#161b22] rounded-lg p-6 text-center border border-gray-200 dark:border-gray-800 shadow-md dark:shadow-none">
           <div className="text-red-600 dark:text-red-400 mb-2">Error loading issues</div>
           <div className="text-gray-600 dark:text-gray-400 text-sm mb-4">{error}</div>
           <button
             onClick={fetchIssues}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 rounded-lg text-white transition-colors shadow-sm dark:shadow-none"
+            className="px-4 py-2 bg-[#e88951] hover:bg-[#d67840] rounded-lg text-white transition-colors shadow-sm dark:shadow-none"
           >
             Try Again
           </button>
         </div>
       ) : transformedIssues.length === 0 ? (
-        <div className="bg-white dark:bg-[#1a1f2a] rounded-lg p-6 text-center border border-gray-200 dark:border-gray-800 shadow-md dark:shadow-none">
+        <div className="bg-white dark:bg-[#161b22] rounded-lg p-6 text-center border border-gray-200 dark:border-gray-800 shadow-md dark:shadow-none">
           <div className="text-gray-600 dark:text-gray-400 mb-2">No issues found</div>
           <div className="text-gray-500 dark:text-gray-500 text-sm">Try adjusting your search criteria or check back later</div>
         </div>

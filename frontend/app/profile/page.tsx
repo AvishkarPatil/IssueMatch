@@ -184,7 +184,7 @@ export default function ProfilePage() {
   // --- Render Loading State ---
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0d1117] flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
         {/* Basic loading indicator */}
         <div className="text-black dark:text-white animate-pulse">Loading profile...</div>
       </div>
@@ -194,7 +194,7 @@ export default function ProfilePage() {
   // --- Render Error State ---
   if (error || !profile) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0d1117] flex items-center justify-center text-center">
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center text-center">
         <div>
           <p className="text-red-600 dark:text-red-400 text-lg mb-4">{error || "Failed to load profile data."}</p>
           <Link href="/login" className="text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300 underline">
@@ -207,18 +207,22 @@ export default function ProfilePage() {
 
   // --- Render Profile Page ---
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0d1117] text-black dark:text-gray-300">
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-gray-300 relative overflow-hidden">
+      {/* Radial glow effects */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      
       {/* Main container */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 pt-24 relative z-10">
         {/* Grid layout for sidebar and main content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
           {/* Sidebar Section */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-100 dark:bg-[#1a1f2a] rounded-xl p-6 shadow-lg sticky top-8"> {/* Added sticky top */}
+            <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-6 shadow-lg sticky top-8"> {/* Added sticky top */}
               {/* Profile Header */}
               <div className="flex flex-col items-center mb-6">
-                <div className="w-32 h-32 rounded-full bg-purple-200 dark:bg-purple-600/20 mb-4 overflow-hidden border-2 border-purple-500"> {/* Added border */}
+                <div className="w-32 h-32 rounded-full bg-[#e88951]/20 mb-4 overflow-hidden border-2 border-[#e88951]"> {/* Added border */}
                   <img
                     src={profile.avatar_url}
                     alt={profile.name || profile.login} // Use login as fallback alt text
@@ -250,7 +254,7 @@ export default function ProfilePage() {
                         href={profile.blog.startsWith("http") ? profile.blog : `https://${profile.blog}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-purple-600 dark:text-purple-400 hover:underline truncate" // Added truncate
+                        className="text-[#e88951] hover:underline truncate" // Added truncate
                       >
                         {profile.blog.replace(/^https?:\/\//, "")}
                       </a>
@@ -263,7 +267,7 @@ export default function ProfilePage() {
                       href={profile.html_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-purple-600 dark:text-purple-400 hover:underline truncate"
+                      className="text-[#e88951] hover:underline truncate"
                     >
                       {profile.html_url.replace("https://github.com/", "")}
                     </a>
@@ -283,7 +287,7 @@ export default function ProfilePage() {
                   {/* Link to edit/upload resume */}
                   <Link
                     href="/resume" // Adjust link as needed
-                    className="text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300 text-sm flex items-center"
+                    className="text-[#e88951] hover:text-[#d67840] text-sm flex items-center"
                   >
                     <Edit className="h-3 w-3 mr-1" />
                     Edit
@@ -293,15 +297,15 @@ export default function ProfilePage() {
                 {/* Skills List */}
                 <div className="space-y-3">
                   {mockData.skills.map((skill) => (
-                    <div key={skill.name} className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-3">
+                    <div key={skill.name} className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-3">
                       <div className="flex justify-between items-center mb-1">
                         <div className="font-medium text-black dark:text-white text-sm">{skill.name}</div>
-                        <span className="text-xs text-purple-600 dark:text-purple-400">{getSkillLevelLabel(skill.level)}</span>
+                        <span className="text-xs text-[#e88951]">{getSkillLevelLabel(skill.level)}</span>
                       </div>
                       {/* Progress Bar */}
                       <div className="w-full bg-gray-400 dark:bg-gray-700 rounded-full h-1.5">
                         <div
-                          className="bg-purple-600 h-1.5 rounded-full"
+                          className="bg-[#e88951] h-1.5 rounded-full"
                           style={{ width: `${(skill.level / 5) * 100}%` }}
                         ></div>
                       </div>
@@ -326,7 +330,7 @@ export default function ProfilePage() {
                 <div className="mt-6 pt-4 border-t border-gray-300 dark:border-gray-700 space-y-2"> {/* Added border */}
                   <Link
                     href="/referral"
-                    className="w-full py-2 px-4 bg-gray-200 dark:bg-[#242a38] hover:bg-gray-300 dark:hover:bg-[#2d3548] rounded-lg text-black dark:text-gray-300 font-medium transition-colors flex items-center justify-center text-sm"
+                    className="w-full py-2 px-4 bg-gray-200 dark:bg-[#0d1117] hover:bg-gray-300 dark:hover:bg-[#161b22] rounded-lg text-black dark:text-gray-300 font-medium transition-colors flex items-center justify-center text-sm"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
@@ -351,34 +355,34 @@ export default function ProfilePage() {
             {/* Stats Cards Grid */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
               {/* Contributions Stat */}
-              <div className="bg-gray-100 dark:bg-[#1a1f2a] rounded-xl p-4 text-center shadow-md"> {/* Added shadow */}
+              <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md"> {/* Added shadow */}
                 <div className="text-2xl font-bold text-black dark:text-white">{mockData.stats.contributions}</div>
                 <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">Contributions</div> {/* Added mt-1 */}
               </div>
               {/* Repositories Stat */}
-              <div className="bg-gray-100 dark:bg-[#1a1f2a] rounded-xl p-4 text-center shadow-md">
+              <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md">
                 <div className="text-2xl font-bold text-black dark:text-white">{profile.public_repos}</div>
                 <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">Repositories</div>
               </div>
               {/* Pull Requests Stat */}
-              <div className="bg-gray-100 dark:bg-[#1a1f2a] rounded-xl p-4 text-center shadow-md">
+              <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md">
                 <div className="text-2xl font-bold text-black dark:text-white">{mockData.stats.pullRequests}</div>
                 <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">Pull Requests</div>
               </div>
               {/* Issues Closed Stat */}
-              <div className="bg-gray-100 dark:bg-[#1a1f2a] rounded-xl p-4 text-center shadow-md">
+              <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md">
                 <div className="text-2xl font-bold text-black dark:text-white">{mockData.stats.issuesClosed}</div>
                 <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">Issues Closed</div>
               </div>
               {/* Followers Stat */}
-              <div className="bg-gray-100 dark:bg-[#1a1f2a] rounded-xl p-4 text-center shadow-md">
+              <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md">
                 <div className="text-2xl font-bold text-black dark:text-white">{profile.followers}</div>
                 <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">Followers</div>
               </div>
             </div> {/* End Stats Cards Grid */}
 
             {/* Tabs Container */}
-            <div className="bg-gray-100 dark:bg-[#1a1f2a] rounded-xl shadow-lg overflow-hidden">
+            <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl shadow-lg overflow-hidden">
               {/* Tab Headers */}
               <div className="border-b border-gray-300 dark:border-gray-800">
                 <div className="flex space-x-1"> {/* Added space-x-1 */}
@@ -386,7 +390,7 @@ export default function ProfilePage() {
                   <button
                     className={`px-4 sm:px-6 py-4 text-sm font-medium transition-colors ${
                       activeTab === "overview"
-                        ? "text-black dark:text-white border-b-2 border-purple-500"
+                        ? "text-black dark:text-white border-b-2 border-[#e88951]"
                         : "text-gray-700 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                     }`}
                     onClick={() => setActiveTab("overview")}
@@ -397,7 +401,7 @@ export default function ProfilePage() {
                   <button
                     className={`px-4 sm:px-6 py-4 text-sm font-medium transition-colors ${
                       activeTab === "contributions"
-                        ? "text-black dark:text-white border-b-2 border-purple-500"
+                        ? "text-black dark:text-white border-b-2 border-[#e88951]"
                         : "text-gray-700 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                     }`}
                     onClick={() => setActiveTab("contributions")}
@@ -408,7 +412,7 @@ export default function ProfilePage() {
                   <button
                     className={`px-4 sm:px-6 py-4 text-sm font-medium transition-colors ${
                       activeTab === "analytics"
-                        ? "text-black dark:text-white border-b-2 border-purple-500"
+                        ? "text-black dark:text-white border-b-2 border-[#e88951]"
                         : "text-gray-700 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                     }`}
                     onClick={() => setActiveTab("analytics")}
@@ -427,8 +431,8 @@ export default function ProfilePage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {/* Map through mock achievements */}
                       {mockData.achievements.map((achievement, index) => (
-                        <div key={index} className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-4 flex items-center shadow-sm"> {/* Added shadow */}
-                          <div className="w-10 h-10 rounded-full bg-purple-200 dark:bg-purple-600/20 flex items-center justify-center mr-3 flex-shrink-0">
+                        <div key={index} className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-4 flex items-center shadow-sm"> {/* Added shadow */}
+                          <div className="w-10 h-10 rounded-full bg-[#e88951]/20 flex items-center justify-center mr-3 flex-shrink-0">
                             {getAchievementIcon(achievement.icon)}
                           </div>
                           <div>
@@ -443,48 +447,48 @@ export default function ProfilePage() {
                     {/* Placeholder for recommended issues - replace with actual data later */}
                     <div className="space-y-4">
                       {/* Example Recommended Issue 1 */}
-                      <div className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-4 hover:bg-gray-300 dark:hover:bg-[#2d3548] transition-colors cursor-pointer shadow-sm">
+                      <div className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-4 hover:bg-gray-300 dark:hover:bg-[#161b22] transition-colors cursor-pointer shadow-sm">
                         <div className="flex justify-between items-start mb-2">
                           <h3 className="font-medium text-black dark:text-white text-sm leading-snug">Implement dark mode toggle for dashboard</h3> {/* Adjusted text size/leading */}
-                          <div className="bg-purple-600/20 text-purple-600 dark:text-purple-400 text-xs px-2 py-0.5 rounded-full flex-shrink-0"> {/* Adjusted padding */}
+                          <div className="bg-[#e88951]/20 text-[#e88951] text-xs px-2 py-0.5 rounded-full flex-shrink-0"> {/* Adjusted padding */}
                             95% Match
                           </div>
                         </div>
                         <div className="text-xs text-gray-700 dark:text-gray-400 mb-3">frontend-toolkit/ui-components</div> {/* Changed to xs */}
                         <div className="flex flex-wrap gap-2">
-                          <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#2d3548] text-gray-800 dark:text-gray-300">React</span> {/* Adjusted colors/padding */}
-                          <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#2d3548] text-gray-800 dark:text-gray-300">TypeScript</span>
-                          <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#2d3548] text-gray-800 dark:text-gray-300">CSS</span>
+                          <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300">React</span> {/* Adjusted colors/padding */}
+                          <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300">TypeScript</span>
+                          <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300">CSS</span>
                         </div>
                       </div>
                       {/* Example Recommended Issue 2 */}
-                      <div className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-4 hover:bg-gray-300 dark:hover:bg-[#2d3548] transition-colors cursor-pointer shadow-sm">
+                      <div className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-4 hover:bg-gray-300 dark:hover:bg-[#161b22] transition-colors cursor-pointer shadow-sm">
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="font-medium text-black dark:text-white text-sm leading-snug">Fix accessibility issues in navigation menu</h3>
-                            <div className="bg-purple-600/20 text-purple-600 dark:text-purple-400 text-xs px-2 py-0.5 rounded-full flex-shrink-0">
+                            <div className="bg-[#e88951]/20 text-[#e88951] text-xs px-2 py-0.5 rounded-full flex-shrink-0">
                               87% Match
                             </div>
                           </div>
                           <div className="text-xs text-gray-700 dark:text-gray-400 mb-3">a11y-tools/navigation-component</div>
                           <div className="flex flex-wrap gap-2">
-                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#2d3548] text-gray-800 dark:text-gray-300">JavaScript</span>
-                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#2d3548] text-gray-800 dark:text-gray-300">Accessibility</span>
-                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#2d3548] text-gray-800 dark:text-gray-300">HTML</span>
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300">JavaScript</span>
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300">Accessibility</span>
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300">HTML</span>
                           </div>
                       </div>
                       {/* Example Recommended Issue 3 */}
-                       <div className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-4 hover:bg-gray-300 dark:hover:bg-[#2d3548] transition-colors cursor-pointer shadow-sm">
+                       <div className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-4 hover:bg-gray-300 dark:hover:bg-[#161b22] transition-colors cursor-pointer shadow-sm">
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="font-medium text-black dark:text-white text-sm leading-snug">Optimize API response caching</h3>
-                            <div className="bg-purple-600/20 text-purple-600 dark:text-purple-400 text-xs px-2 py-0.5 rounded-full flex-shrink-0">
+                            <div className="bg-[#e88951]/20 text-[#e88951] text-xs px-2 py-0.5 rounded-full flex-shrink-0">
                               82% Match
                             </div>
                           </div>
                           <div className="text-xs text-gray-700 dark:text-gray-400 mb-3">data-services/api-gateway</div>
                           <div className="flex flex-wrap gap-2">
-                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#2d3548] text-gray-800 dark:text-gray-300">Node.js</span>
-                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#2d3548] text-gray-800 dark:text-gray-300">Performance</span>
-                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#2d3548] text-gray-800 dark:text-gray-300">API</span>
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300">Node.js</span>
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300">Performance</span>
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300">API</span>
                           </div>
                       </div>
                     </div> {/* End recommended issues space-y-4 */}
@@ -498,7 +502,7 @@ export default function ProfilePage() {
                     {/* Placeholder for contributions list */}
                     <div className="space-y-4">
                       {/* Example Contribution 1 */}
-                      <div className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-4 shadow-sm">
+                      <div className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-4 shadow-sm">
                         <div className="flex items-start gap-3">
                           <div className="bg-green-200 dark:bg-green-600/20 p-2 rounded-full mt-1 flex-shrink-0"> {/* Added mt-1 */}
                             <GitMerge className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -509,12 +513,12 @@ export default function ProfilePage() {
                               <span className="text-xs text-gray-700 dark:text-gray-400">3 days ago</span>
                             </div>
                             <p className="text-gray-800 dark:text-gray-300 mt-1 text-sm">Added responsive design for mobile devices</p>
-                            <div className="text-xs text-purple-600 dark:text-purple-400 mt-1">ui-framework/responsive-components</div>
+                            <div className="text-xs text-[#e88951] mt-1">ui-framework/responsive-components</div>
                           </div>
                         </div>
                       </div>
                       {/* Example Contribution 2 */}
-                      <div className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-4 shadow-sm">
+                      <div className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-4 shadow-sm">
                         <div className="flex items-start gap-3">
                           <div className="bg-blue-200 dark:bg-blue-600/20 p-2 rounded-full mt-1 flex-shrink-0">
                             <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -525,15 +529,15 @@ export default function ProfilePage() {
                               <span className="text-xs text-gray-700 dark:text-gray-400">1 week ago</span>
                             </div>
                             <p className="text-gray-800 dark:text-gray-300 mt-1 text-sm">Fixed bug in authentication flow</p>
-                            <div className="text-xs text-purple-600 dark:text-purple-400 mt-1">auth-service/login-module</div>
+                            <div className="text-xs text-[#e88951] mt-1">auth-service/login-module</div>
                           </div>
                         </div>
                       </div>
                       {/* Example Contribution 3 */}
-                      <div className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-4 shadow-sm">
+                      <div className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-4 shadow-sm">
                         <div className="flex items-start gap-3">
-                          <div className="bg-purple-200 dark:bg-purple-600/20 p-2 rounded-full mt-1 flex-shrink-0">
-                            <GitPullRequest className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                          <div className="bg-[#e88951]/20 p-2 rounded-full mt-1 flex-shrink-0">
+                            <GitPullRequest className="h-5 w-5 text-[#e88951]" />
                           </div>
                           <div className="flex-1">
                             <div className="flex justify-between items-start">
@@ -541,7 +545,7 @@ export default function ProfilePage() {
                               <span className="text-xs text-gray-700 dark:text-gray-400">2 weeks ago</span>
                             </div>
                             <p className="text-gray-800 dark:text-gray-300 mt-1 text-sm">Implemented new feature for data visualization</p>
-                            <div className="text-xs text-purple-600 dark:text-purple-400 mt-1">data-viz/chart-components</div>
+                            <div className="text-xs text-[#e88951] mt-1">data-viz/chart-components</div>
                           </div>
                         </div>
                       </div>
@@ -549,7 +553,7 @@ export default function ProfilePage() {
 
                     {/* Load More Button */}
                     <div className="mt-6 text-center">
-                      <button className="px-4 py-2 bg-gray-100 dark:bg-[#1a1f2a] hover:bg-gray-200 dark:hover:bg-[#242a38] text-gray-800 dark:text-gray-300 rounded-lg text-sm transition-colors border border-gray-300 dark:border-gray-700"> {/* Added border */}
+                      <button className="px-4 py-2 bg-gray-100 dark:bg-[#161b22] hover:bg-gray-200 dark:hover:bg-[#242a38] text-gray-800 dark:text-gray-300 rounded-lg text-sm transition-colors border border-gray-300 dark:border-gray-700"> {/* Added border */}
                         Load More
                       </button>
                     </div>
@@ -559,14 +563,14 @@ export default function ProfilePage() {
                 {/* Analytics Tab Content */}
                 {activeTab === "analytics" && (
                   <div>
-                    <div className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-6 mb-6 shadow-sm h-80"> {/* Added h-64 to reduce height */}
+                    <div className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-6 mb-6 shadow-sm h-80"> {/* Added h-64 to reduce height */}
                         <GitHubActivityGraph height={170}/>
                     </div>
 
                     {/* Language & Time Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* Top Languages Card */}
-                      <div className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-6 shadow-sm">
+                      <div className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-6 shadow-sm">
                         <h3 className="text-lg font-medium text-black dark:text-white mb-4">Top Languages</h3>
                         <div className="space-y-4">
                           {/* Example Language 1 */}
@@ -613,9 +617,9 @@ export default function ProfilePage() {
                       </div> {/* End Top Languages Card */}
 
 
-                      <div className="bg-gray-200 dark:bg-[#242a38] rounded-lg p-6 shadow-sm">
+                      <div className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-6 shadow-sm">
                         <h3 className="text-lg font-medium text-black dark:text-white mb-4">Contribution Times</h3>
-                        <div className="h-48 flex items-center justify-center bg-gray-100 dark:bg-[#1a1f2a] rounded-md overflow-hidden"> {/* Added overflow-hidden */}
+                        <div className="h-48 flex items-center justify-center bg-gray-100 dark:bg-[#161b22] rounded-md overflow-hidden"> {/* Added overflow-hidden */}
                           <Image
                             src="https://i.ibb.co/SwB9Bpxy/heatmap.png"
                             alt="Contribution times heatmap"

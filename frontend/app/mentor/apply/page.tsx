@@ -82,21 +82,29 @@ export default function MentorApplicationPage() {
   };
   
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <Link 
-        href="/mentor-hub" 
-        className="flex items-center text-blue-600 dark:text-purple-400 hover:text-blue-700 dark:hover:text-purple-300 mb-6"
-      >
-        <ChevronLeft className="h-4 w-4 mr-1" />
-        Back to Mentor Hub
-      </Link>
+    <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white relative overflow-hidden">
+      {/* Radial glow effects */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
       
-      <div className="flex items-center gap-3 mb-8">
-        <GraduationCap className="h-8 w-8 text-blue-600 dark:text-purple-500" />
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Become a Mentor</h1>
-      </div>
-      
-      <div className="bg-white dark:bg-gray-900/70 rounded-lg shadow-md dark:shadow-md border border-gray-200 dark:border-gray-700 p-6 backdrop-blur-sm">
+      <div className="container mx-auto px-4 py-8 max-w-3xl pt-32 relative z-10">
+        <Link 
+          href="/mentor-hub" 
+          className="inline-flex items-center text-[#e88951] hover:text-[#d67840] mb-8 font-medium transition-colors"
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Back to Mentor Hub
+        </Link>
+        
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-3 mb-4">
+            <GraduationCap className="h-10 w-10 text-[#e88951]" />
+            <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#e88951] via-[#f59e6c] to-[#e88951]">Become a Mentor</h1>
+          </div>
+          <p className="text-gray-600 dark:text-gray-400">Share your expertise and help others grow</p>
+        </div>
+        
+        <div className="bg-white dark:bg-[#161b22] rounded-2xl shadow-2xl dark:shadow-none border border-gray-200 dark:border-gray-800 p-8">
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
             <div>
@@ -106,7 +114,7 @@ export default function MentorApplicationPage() {
               <textarea
                 id="bio"
                 rows={4}
-                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
+                className="w-full border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#0d1117] rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e88951] text-gray-900 dark:text-gray-200 shadow-sm"
                 placeholder="Share your background, expertise, and what you're passionate about..."
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
@@ -122,23 +130,23 @@ export default function MentorApplicationPage() {
                 {skills.map((skill) => (
                   <div 
                     key={skill} 
-                    className="flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-purple-900/30 text-blue-700 dark:text-purple-300 rounded-full border border-blue-200 dark:border-purple-800/50"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-[#0d1117] text-gray-700 dark:text-gray-300 rounded-full border border-gray-200 dark:border-gray-800"
                   >
-                    <span>{skill}</span>
+                    <span className="text-sm">{skill}</span>
                     <button 
                       type="button" 
                       onClick={() => removeSkill(skill)}
-                      className="text-blue-600 dark:text-purple-300 hover:text-blue-800 dark:hover:text-purple-100"
+                      className="text-[#e88951] hover:text-[#d67840] transition-colors"
                     >
-                      <Trash2 className="h-3 w-3" />
+                      <Trash2 className="h-3.5 w-3.5" />
                     </button>
                   </div>
                 ))}
               </div>
-              <div className="flex">
+              <div className="flex gap-2">
                 <input
                   type="text"
-                  className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-l-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
+                  className="flex-1 border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#0d1117] rounded-l-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e88951] text-gray-900 dark:text-gray-200 shadow-sm"
                   placeholder="Add a skill..."
                   value={newSkill}
                   onChange={(e) => setNewSkill(e.target.value)}
@@ -147,9 +155,9 @@ export default function MentorApplicationPage() {
                 <button
                   type="button"
                   onClick={addSkill}
-                  className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white px-3 rounded-r-md flex items-center shadow-sm dark:shadow-none"
+                  className="bg-[#e88951] hover:bg-[#d67840] text-white px-4 rounded-r-xl flex items-center shadow-md transition-colors"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-5 w-5" />
                 </button>
               </div>
             </div>
@@ -161,7 +169,7 @@ export default function MentorApplicationPage() {
                 </label>
                 <select
                   id="timezone"
-                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
+                  className="w-full border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#0d1117] rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e88951] text-gray-900 dark:text-gray-200 shadow-sm"
                   value={timezone}
                   onChange={(e) => setTimezone(e.target.value)}
                   required
@@ -182,7 +190,7 @@ export default function MentorApplicationPage() {
                   id="experience"
                   min="0"
                   max="50"
-                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
+                  className="w-full border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#0d1117] rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e88951] text-gray-900 dark:text-gray-200 shadow-sm"
                   value={experience}
                   onChange={(e) => setExperience(e.target.value)}
                   required
@@ -197,7 +205,7 @@ export default function MentorApplicationPage() {
               <textarea
                 id="githubProjects"
                 rows={3}
-                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
+                className="w-full border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#0d1117] rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e88951] text-gray-900 dark:text-gray-200 shadow-sm"
                 placeholder="List your notable projects or contributions (URLs preferred)"
                 value={githubProjects}
                 onChange={(e) => setGithubProjects(e.target.value)}
@@ -212,7 +220,7 @@ export default function MentorApplicationPage() {
               <textarea
                 id="motivation"
                 rows={3}
-                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
+                className="w-full border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#0d1117] rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e88951] text-gray-900 dark:text-gray-200 shadow-sm"
                 placeholder="Tell us why you want to mentor others and what you hope to achieve"
                 value={motivation}
                 onChange={(e) => setMotivation(e.target.value)}
@@ -220,10 +228,10 @@ export default function MentorApplicationPage() {
               />
             </div>
             
-            <div className="flex justify-end">
+            <div className="flex justify-end pt-4">
               <button
                 type="submit"
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white rounded-md transition-colors font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm dark:shadow-none"
+                className="px-8 py-3 bg-[#e88951] hover:bg-[#d67840] text-white rounded-full transition-all font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:scale-105"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -243,5 +251,6 @@ export default function MentorApplicationPage() {
         </form>
       </div>
     </div>
+  </div>
   );
 }

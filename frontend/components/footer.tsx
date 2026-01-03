@@ -3,12 +3,12 @@ import { Github, Twitter, Linkedin, Mail, Heart } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-white dark:bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-white dark:supports-[backdrop-filter]:bg-background/60 mt-20 border-t border-gray-200 dark:border-border shadow-sm dark:shadow-none">
+    <footer className="bg-gray-50 dark:bg-[#0a0a0a] backdrop-blur supports-[backdrop-filter]:bg-gray-50 dark:supports-[backdrop-filter]:bg-[#0a0a0a]/60 border-t border-gray-200 dark:border-border shadow-sm dark:shadow-none">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-foreground mb-4">
+            <h2 className="text-xl font-bold bg-gradient-to-r from-[#e88951] via-[#f59e6c] to-[#e88951] bg-clip-text text-transparent mb-4">
               IssueMatch
             </h2>
             <p className="text-gray-600 dark:text-muted-foreground mb-4">
@@ -80,10 +80,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/leaderboard"
                   className="text-gray-600 dark:text-muted-foreground hover:text-blue-600 dark:hover:text-purple-400 transition-colors"
                 >
-                  Pricing
+                  Leaderboard
                 </Link>
               </li>
               <li>
@@ -182,7 +182,7 @@ export function Footer() {
 
         <div className="border-t border-gray-200 dark:border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-600 dark:text-muted-foreground text-sm">
-            © 2025 Open Source Contribution Matchmaker. All rights reserved.
+            © 2026 Avishkar Patil. All rights reserved.
           </p>
           <p className="text-gray-600 dark:text-muted-foreground text-sm flex items-center mt-4 md:mt-0">
             Made with <Heart className="w-4 h-4 text-red-500 mx-1" /> for open

@@ -1,20 +1,21 @@
 "use client"
 
 import Link from "next/link"
-import { Github, Zap, Code, BarChart2, ChevronDown, Users, GitPullRequest, GitMerge, GitBranch, Sparkles, GraduationCap, Trophy, MessageSquare, Share2, Star } from "lucide-react"
+import { Github, Zap, Code, BarChart2, ChevronDown, Users, GitPullRequest, GitMerge, GitBranch, Sparkles, GraduationCap, Trophy, MessageSquare, Share2, Star, ArrowRight } from "lucide-react"
 import { useEffect, useState } from "react"
 import FloatingNavbar from "../components/floating-navbar"
+import { TestimonialsSection } from "../components/testimonials"
+import { NewReleasePromo } from "../components/new-release-promo"
+import AnimatedCodeDemo from "../components/animated-code-demo"
 
 export default function LandingPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  // Check if user is logged in
   useEffect(() => {
-    // Check for authentication token or session
     const checkAuth = async () => {
       try {
         const response = await fetch("http://localhost:8000/api/v1/github/profile", {
-          credentials: "include", // Send cookies with the request
+          credentials: "include",
         })
 
         if (response.ok) {
@@ -31,7 +32,6 @@ export default function LandingPage() {
     checkAuth()
   }, [])
 
-  // Smooth scroll function
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -40,189 +40,187 @@ export default function LandingPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-[#0d1117] text-gray-900 dark:text-white">
-      {/* Hero Section */}
-      <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Animated background */}
-        <div className="absolute inset-0 bg-gray-50 dark:bg-[#0d1117] overflow-hidden">
-          <div className="absolute w-full h-full opacity-20">
-            {/* Animated code lines */}
-            <div className="absolute top-1/4 left-1/4 h-64 w-1 bg-gradient-to-b from-blue-500 to-transparent dark:from-purple-500 animate-pulse"></div>
-            <div className="absolute top-1/3 left-1/3 h-32 w-1 bg-gradient-to-b from-cyan-500 to-transparent animate-pulse delay-300"></div>
-            <div className="absolute top-1/2 left-2/3 h-48 w-1 bg-gradient-to-b from-blue-500 to-transparent dark:from-purple-500 animate-pulse delay-700"></div>
-            <div className="absolute top-3/4 left-1/5 h-24 w-1 bg-gradient-to-b from-cyan-500 to-transparent animate-pulse delay-500"></div>
-            
-            {/* Glowing orbs */}
-            <div className="absolute top-1/4 right-1/4 h-32 w-32 rounded-full bg-blue-600/10 dark:bg-purple-600/10 animate-pulse blur-xl"></div>
-            <div className="absolute bottom-1/3 left-1/3 h-40 w-40 rounded-full bg-cyan-600/10 animate-pulse delay-300 blur-xl"></div>
-          </div>
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10 py-20">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="md:w-1/2 text-center md:text-left">
-              <div className="inline-block mb-4 px-4 py-1 bg-blue-100 dark:bg-purple-900/30 rounded-full border border-blue-200 dark:border-purple-700/30 text-blue-700 dark:text-purple-300 text-sm font-medium">
-                Powered by AI & Vector Matching
+    <main className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white">
+      <section id="hero" className="relative overflow-hidden min-h-screen flex flex-col">
+        {/* Background with radial glow for both modes */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background: "radial-gradient(ellipse 80% 80% at 50% 20%, rgba(232, 137, 81, 0.08), transparent 70%), #ffffff",
+          }}
+        />
+        <div
+          className="absolute inset-0 z-0 dark:block hidden"
+          style={{
+            background: "radial-gradient(ellipse 80% 80% at 50% 20%, rgba(226, 232, 240, 0.15), transparent 70%), #000000",
+          }}
+        />
+        <div className="container mx-auto px-4 py-24 sm:py-32 relative z-10 flex-1 flex flex-col">
+          <div className="mx-auto max-w-4xl text-center flex-1 flex flex-col justify-center">
+            <div className="mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 text-sm bg-gray-100 dark:bg-secondary border border-gray-200 dark:border-border rounded-full">
+                <Sparkles className="h-4 w-4 text-gray-700 dark:text-white" />
+                <span className="text-gray-700 dark:text-white">Powered by AI & Vector Matching</span>
               </div>
-              
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-700 dark:from-purple-400 dark:via-cyan-400 dark:to-purple-500">
-                  Find Your Perfect
-                </span>
-                <br />
-                <span className="text-gray-900 dark:text-white">Open Source Match</span>
-              </h1>
-              
-              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-lg">
-                IssueMatch connects your skills with open source issues that need your expertise. Start making meaningful contributions today.
-              </p>
+            </div>
 
-              {isLoggedIn ? (
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link
-                    href="/match"
-                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-purple-600 dark:to-cyan-600 text-white font-medium py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-purple-500/20 hover:scale-105 shadow-md"
-                  >
-                    <Code className="w-5 h-5" />
-                    Find Issues Now
-                  </Link>
-                  <Link
-                    href="/mentor-hub"
-                    className="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-medium py-4 px-8 rounded-lg transition-all border border-gray-300 dark:border-gray-700 shadow-sm hover:shadow-md"
-                  >
-                    <GraduationCap className="w-5 h-5" />
-                    Connect with Mentors
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link
-                    href="/login"
-                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-purple-600 dark:to-cyan-600 text-white font-medium py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-purple-500/20 hover:scale-105 shadow-md"
-                  >
-                    <Github className="w-5 h-5" />
-                    Sign in with GitHub
-                  </Link>
-                  <button
-                    onClick={() => scrollToSection('how-it-works')}
-                    className="flex items-center justify-center gap-2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-medium py-4 px-8 rounded-lg transition-all border border-gray-300 dark:border-gray-700 shadow-sm hover:shadow-md"
-                  >
-                    Learn More
-                    <ChevronDown className="w-5 h-5" />
-                  </button>
-                </div>
-              )}
-              
-              <div className="mt-12 flex items-center gap-6">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-50 dark:border-[#0d1117] overflow-hidden shadow-sm">
-                      <div className={`w-full h-full bg-gradient-to-br ${i % 2 === 0 ? 'from-blue-500 to-cyan-500' : 'from-cyan-500 to-blue-500'}`}></div>
-                    </div>
-                  ))}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  <span className="text-gray-900 dark:text-white font-bold">3,500+</span> developers already matched
-                </div>
-              </div>
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl text-gray-700 dark:text-[#c1c1c1]">
+                Find <strong>Your Perfect</strong> <span>&</span> <br />
+                <strong>Open Source</strong> <em className="italic">Match</em>
+              </h1>
             </div>
-            
-            <div className="md:w-1/2 mt-10 md:mt-0 relative">
-              <div className="relative bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-1 shadow-xl dark:shadow-xl overflow-hidden backdrop-blur-sm">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500 dark:from-purple-500 dark:to-cyan-500"></div>
-                <div className="p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <div className="ml-2 text-xs text-gray-500 dark:text-gray-400">issue-match-finder.js</div>
-                  </div>
-                  
-                  <div className="space-y-2 font-mono text-sm">
-                    <div className="text-gray-600 dark:text-gray-400"><span className="text-cyan-600 dark:text-cyan-400">const</span> <span className="text-blue-600 dark:text-purple-400">developer</span> = <span className="text-orange-600 dark:text-orange-400">await</span> <span className="text-cyan-600 dark:text-cyan-400">github</span>.<span className="text-green-600 dark:text-green-400">getProfile</span>();</div>
-                    <div className="text-gray-600 dark:text-gray-400"><span className="text-cyan-600 dark:text-cyan-400">const</span> <span className="text-blue-600 dark:text-purple-400">skills</span> = <span className="text-orange-600 dark:text-orange-400">await</span> <span className="text-cyan-600 dark:text-cyan-400">analyzer</span>.<span className="text-green-600 dark:text-green-400">extractSkills</span>(developer);</div>
-                    <div className="text-gray-600 dark:text-gray-400"><span className="text-cyan-600 dark:text-cyan-400">const</span> <span className="text-blue-600 dark:text-purple-400">matches</span> = <span className="text-orange-600 dark:text-orange-400">await</span> <span className="text-cyan-600 dark:text-cyan-400">issueMatch</span>.<span className="text-green-600 dark:text-green-400">findBestMatches</span>(skills);</div>
-                    <div className="text-gray-600 dark:text-gray-400 pl-4">// Finding perfect matches...</div>
-                    <div className="text-gray-600 dark:text-gray-400 pl-4 flex items-center gap-2">
-                      <div className="w-4 h-4 rounded-full border-2 border-t-transparent border-cyan-500 animate-spin"></div>
-                      <span className="text-cyan-600 dark:text-cyan-400">Processing</span> <span className="text-gray-900 dark:text-white">98%</span>
+
+            <p className="mx-auto mb-12 max-w-2xl text-lg text-gray-600 dark:text-muted-foreground">
+              IssueMatch connects your skills with open source issues that need your expertise. Start making meaningful contributions today.
+            </p>
+
+            <div className="flex flex-col items-center gap-2">
+              <svg
+                width="100"
+                height="50"
+                viewBox="0 0 100 50"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-gray-900 dark:text-foreground mt-2"
+              >
+                <path d="M68.6958 5.40679C67.3329 12.7082 68.5287 20.1216 68.5197 27.4583C68.5189 29.5382 68.404 31.6054 68.1147 33.682C67.9844 34.592 69.4111 34.751 69.5414 33.8411C70.5618 26.5016 69.2488 19.104 69.4639 11.7325C69.5218 9.65887 69.7222 7.6012 70.0939 5.56265C70.1638 5.1949 69.831 4.81112 69.4601 4.76976C69.0891 4.72841 68.7689 5.01049 68.6958 5.40679Z"></path>
+                <path d="M74.0117 26.1349C73.2662 27.1206 72.5493 28.1096 72.0194 29.235C71.5688 30.167 71.2007 31.137 70.7216 32.0658C70.4995 32.5033 70.252 32.9091 69.9475 33.3085C69.8142 33.4669 69.6779 33.654 69.5161 33.8093C69.4527 33.86 68.9199 34.2339 68.9167 34.2624C68.9263 34.1768 69.0752 34.3957 69.0055 34.2434C68.958 34.1515 68.8534 34.0531 68.8058 33.9612C68.6347 33.6821 68.4637 33.403 68.264 33.1208L67.1612 31.3512C66.3532 30.0477 65.5199 28.7126 64.7119 27.4093C64.5185 27.0699 63.9701 27.0666 63.7131 27.2979C63.396 27.5514 63.4053 27.9858 63.6018 28.2966C64.3845 29.5683 65.1956 30.8431 65.9783 32.1149L67.1572 33.9796C67.5025 34.5093 67.8225 35.2671 68.428 35.5368C69.6136 36.0446 70.7841 34.615 71.3424 33.7529C71.9992 32.786 72.4085 31.705 72.9035 30.6336C73.4842 29.3116 74.2774 28.1578 75.1306 26.9818C75.7047 26.2369 74.5573 25.3868 74.0117 26.1349ZM55.1301 12.2849C54.6936 18.274 54.6565 24.3076 55.0284 30.3003C55.1293 31.987 55.2555 33.7056 55.4419 35.4019C55.5431 36.3087 56.9541 36.0905 56.8529 35.1837C56.2654 29.3115 56.0868 23.3982 56.2824 17.4978C56.3528 15.8301 56.4263 14.1339 56.5537 12.4725C56.6301 11.5276 55.2034 11.3686 55.1301 12.2849Z"></path>
+                <path d="M59.2642 30.6571C58.8264 31.475 58.36 32.2896 57.9222 33.1075C57.7032 33.5164 57.4843 33.9253 57.2369 34.3311C57.0528 34.6861 56.8656 35.0697 56.6278 35.3898C56.596 35.4152 56.5611 35.4691 56.5294 35.4944C56.4881 35.6054 56.5041 35.4627 56.5548 35.5261C56.7481 35.6055 56.8337 35.6151 56.7545 35.5484L56.6784 35.4533C56.6023 35.3581 56.5263 35.263 56.4534 35.1393C56.1778 34.7619 55.8734 34.3814 55.5946 34.0324C55.0146 33.2744 54.4315 32.545 53.8515 31.787C53.2685 31.0576 52.1584 31.945 52.7415 32.6744C53.4229 33.5592 54.1042 34.4441 54.7888 35.3004C55.1184 35.7127 55.4321 36.2677 55.8569 36.6039C56.3069 36.9719 56.884 36.9784 57.3533 36.6551C57.7624 36.3542 57.9845 35.9167 58.2067 35.4792C58.4636 34.9878 58.746 34.5282 59.003 34.0369C59.5423 33.0859 60.0563 32.1032 60.5957 31.1522C60.7765 30.8257 60.5104 30.3627 60.2092 30.2135C59.8161 30.112 59.4451 30.3305 59.2642 30.6571ZM44.5918 10.1569L42.2324 37.5406C42.0032 40.1151 41.8057 42.6641 41.5764 45.2386C41.5032 46.1549 42.9299 46.314 43.0032 45.3977L45.3626 18.014C45.5918 15.4396 45.7893 12.8905 46.0186 10.316C46.1235 9.37433 44.6968 9.21532 44.5918 10.1569Z"></path>
+                <path d="M48.101 37.7616C46.7404 38.8232 45.8267 40.2814 44.9163 41.7109C44.0407 43.0866 43.1365 44.4592 41.738 45.3434C42.1247 45.5019 42.5146 45.6321 42.9014 45.7908C42.1324 41.8051 41.04 37.8699 39.6781 34.0203C39.545 33.6589 39.0695 33.5191 38.7365 33.6553C38.3719 33.817 38.2385 34.2353 38.3716 34.5969C39.7209 38.3007 40.7404 42.1121 41.4904 46.009C41.6012 46.5703 42.1877 46.7512 42.6539 46.4565C45.5462 44.6124 46.3877 40.9506 49.0169 38.8748C49.7178 38.2884 48.8304 37.1784 48.101 37.7616ZM25.9671 13.1014C25.7028 16.2497 26.0758 19.3824 26.5091 22.4929C26.9645 25.6636 27.4166 28.863 27.872 32.0337C28.1346 33.8253 28.3971 35.6167 28.631 37.4051C28.7607 38.3151 30.1717 38.0968 30.042 37.1868C29.5866 34.016 29.1281 30.8738 28.7012 27.7062C28.2647 24.6242 27.7396 21.5612 27.449 18.4666C27.2943 16.7449 27.2283 15.0042 27.3653 13.2572C27.4671 12.3442 26.0404 12.1851 25.9671 13.1014Z"></path>
+                <path d="M30.5625 27.3357C29.9525 30.7343 29.3425 34.133 28.704 37.5284C29.1225 37.4018 29.5411 37.2751 29.9882 37.1516C28.6034 35.0617 27.2504 32.9465 25.8655 30.8565C25.6406 30.5425 25.1523 30.517 24.8669 30.7451C24.5497 30.9987 24.5305 31.4299 24.7555 31.7439C26.1403 33.8338 27.4933 35.9491 28.8781 38.039C29.2489 38.6003 30.0417 38.2265 30.1624 37.6621C30.7724 34.2635 31.3824 30.8648 32.0209 27.4694C32.0908 27.1016 31.758 26.7178 31.3871 26.6765C30.9559 26.6573 30.6324 26.9679 30.5625 27.3357Z"></path>
+              </svg>
+
+              <div className="flex items-center justify-center">
+                {isLoggedIn ? (
+                  <Link href="/match">
+                    <div className="group cursor-pointer border border-border bg-card gap-2 h-[60px] flex items-center p-[10px] rounded-full">
+                      <div className="border border-border bg-[#e88951] h-[40px] rounded-full flex items-center justify-center text-white">
+                        <p className="font-medium tracking-tight mr-3 ml-3 flex items-center gap-2 justify-center text-base">
+                          <Code className="w-5 h-5" />
+                          Find Issues Now
+                        </p>
+                      </div>
+                      <div className="text-muted-foreground group-hover:ml-4 ease-in-out transition-all size-[24px] flex items-center justify-center rounded-full border-2 border-border">
+                        <ArrowRight className="w-4 h-4 group-hover:rotate-180 ease-in-out transition-all" />
+                      </div>
                     </div>
-                    <div className="text-gray-600 dark:text-gray-400"><span className="text-green-600 dark:text-green-400">console</span>.<span className="text-cyan-600 dark:text-cyan-400">log</span>(<span className="text-orange-600 dark:text-orange-400">"Found 23 perfect matches!"</span>);</div>
-                  </div>
-                </div>
+                  </Link>
+                ) : (
+                  <Link href="/login">
+                    <div className="group cursor-pointer border border-border bg-card gap-2 h-[60px] flex items-center p-[10px] rounded-full">
+                      <div className="border border-border bg-[#e88951] h-[40px] rounded-full flex items-center justify-center text-white">
+                        <p className="font-medium tracking-tight mr-3 ml-3 flex items-center gap-2 justify-center text-base">
+                          <Github className="w-5 h-5" />
+                          Get started
+                        </p>
+                      </div>
+                      <div className="text-muted-foreground group-hover:ml-4 ease-in-out transition-all size-[24px] flex items-center justify-center rounded-full border-2 border-border">
+                        <ArrowRight className="w-4 h-4 group-hover:rotate-180 ease-in-out transition-all" />
+                      </div>
+                    </div>
+                  </Link>
+                )}
               </div>
-              
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-blue-600/30 dark:bg-purple-600/30 rounded-full blur-xl"></div>
-              <div className="absolute -top-4 -left-4 w-32 h-32 bg-cyan-600/20 rounded-full blur-xl"></div>
             </div>
           </div>
-        </div>
-        
-        {/* Scroll down arrow */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce">
-          <div 
-            onClick={() => scrollToSection('how-it-works')} 
-            className="w-12 h-12 rounded-full border-2 border-blue-500 dark:border-purple-500 flex items-center justify-center group hover:bg-blue-500/10 dark:hover:bg-purple-500/10 transition-all shadow-md"
-          >
-            <ChevronDown className="w-6 h-6 text-blue-500 dark:text-purple-400 group-hover:text-blue-600 dark:group-hover:text-purple-300" />
+
+          <div className="absolute bottom-16 left-1/2 -translate-x-1/2">
+            <div className="text-center">
+              <button
+                onClick={() => scrollToSection('how-it-works')}
+                className="mx-auto flex items-center justify-center w-8 h-14 rounded-full border border-gray-300 dark:border-white/20 hover:border-gray-400 dark:hover:border-white/40 transition-all cursor-pointer group"
+              >
+                <ChevronDown className="w-5 h-5 text-gray-600 dark:text-white/60 group-hover:text-gray-800 dark:group-hover:text-white/80 animate-bounce" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* How it Works Section */}
-      <section id="how-it-works" className="py-24 bg-white dark:bg-gradient-to-b dark:from-[#0a101c] dark:to-[#0d1117]">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center mb-16">
-            <div className="inline-block mb-3 px-4 py-1 bg-cyan-100 dark:bg-cyan-900/30 rounded-full border border-cyan-200 dark:border-cyan-700/30 text-cyan-700 dark:text-cyan-300 text-sm font-medium">
+      <section id="how-it-works" className="py-24 bg-gray-50 dark:bg-gradient-to-b dark:from-[#0a0a0a] dark:to-black relative overflow-hidden">
+        <div className="bg-primary absolute -top-10 left-1/2 h-16 w-44 -translate-x-1/2 rounded-full opacity-40 blur-3xl"></div>
+        <div className="via-primary/50 absolute top-0 left-1/2 h-px w-3/5 -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent"></div>
+        
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(148 163 184) 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 mb-4 px-6 py-2 rounded-full bg-[#e88951]/10 dark:bg-[#e88951]/20 border border-[#e88951]/20 dark:border-[#e88951]/30 text-[#e88951] text-sm font-semibold">
+              <Zap className="w-4 h-4" />
               Simple Process
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white">
-              How the <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-purple-400">AI Matchmaker</span> Works
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              From <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e88951] to-[#e88951]">Profile</span> to <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e88951] to-[#e88951]">Contribution</span>
             </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+              In three simple steps, we transform your GitHub profile into a personalized open source contribution journey.
+            </p>
           </div>
 
-          <div className="relative">
-            {/* Connection line */}
-            <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500/50 via-cyan-500/50 to-blue-500/50 dark:from-purple-500/50 dark:via-cyan-500/50 dark:to-purple-500/50 transform -translate-y-1/2 z-0"></div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-              <div className="bg-white dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-8 transition-all hover:shadow-lg hover:shadow-blue-500/10 dark:hover:shadow-purple-500/10 group shadow-md">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-cyan-600 dark:from-purple-600 dark:to-cyan-600 rounded-2xl flex items-center justify-center mb-6 mx-auto transform group-hover:rotate-6 transition-transform">
-                  <Github className="w-10 h-10 text-white" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            <div className="group relative bg-gradient-to-br from-white to-[#e88951]/5 dark:from-[#1a1a1a] dark:to-[#e88951]/5 backdrop-blur-sm border border-gray-200 dark:border-gray-900 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e88951]/20 hover:-translate-y-2 overflow-hidden">
+              <div className="absolute top-0 right-0 text-[120px] font-bold bg-gradient-to-br from-[#e88951]/10 to-[#e88951]/5 bg-clip-text text-transparent leading-none p-4">
+                01
+              </div>
+              <div className="relative">
+                <div className="mb-6 inline-flex p-4 rounded-xl bg-[#e88951]/10 text-[#e88951] transition-all duration-300">
+                  <Github className="h-8 w-8" />
                 </div>
-                <h3 className="text-xl font-semibold text-center mb-4 text-gray-900 dark:text-white">Connect GitHub</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-[#e88951] transition-colors">
+                  Connect GitHub
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                   Sign in with GitHub to analyze your repositories, contributions, and coding patterns using our secure AI system.
                 </p>
-                <div className="mt-6 flex justify-center">
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-semibold">1</span>
-                </div>
               </div>
+            </div>
 
-              <div className="bg-white dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-8 transition-all hover:shadow-lg hover:shadow-cyan-500/10 dark:hover:shadow-cyan-500/10 group shadow-md">
-                <div className="w-20 h-20 bg-gradient-to-br from-cyan-600 to-blue-600 dark:from-cyan-600 dark:to-purple-600 rounded-2xl flex items-center justify-center mb-6 mx-auto transform group-hover:rotate-6 transition-transform">
-                  <Zap className="w-10 h-10 text-white" />
+            <div className="hidden md:flex items-center justify-center absolute top-1/2 -translate-y-1/2 left-[29.5%] z-20">
+              <div className="bg-white dark:bg-[#1a1a1a] rounded-full p-2 shadow-lg border border-gray-200 dark:border-gray-900">
+                <ArrowRight className="h-6 w-6 text-[#e88951] animate-pulse" />
+              </div>
+            </div>
+
+            <div className="group relative bg-gradient-to-br from-white to-[#e88951]/5 dark:from-[#1a1a1a] dark:to-[#e88951]/5 backdrop-blur-sm border border-gray-200 dark:border-gray-900 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e88951]/20 hover:-translate-y-2 overflow-hidden">
+              <div className="absolute top-0 right-0 text-[120px] font-bold bg-gradient-to-br from-[#e88951]/10 to-[#e88951]/5 bg-clip-text text-transparent leading-none p-4">
+                02
+              </div>
+              <div className="relative">
+                <div className="mb-6 inline-flex p-4 rounded-xl bg-[#e88951]/10 text-[#e88951] transition-all duration-300">
+                  <Zap className="h-8 w-8" />
                 </div>
-                <h3 className="text-xl font-semibold text-center mb-4 text-gray-900 dark:text-white">AI Analysis</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-[#e88951] transition-colors">
+                  AI Analysis
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                   Our advanced AI analyzes your skills and creates a developer profile using vector embeddings to find perfect matches.
                 </p>
-                <div className="mt-6 flex justify-center">
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-semibold">2</span>
-                </div>
               </div>
+            </div>
 
-              <div className="bg-white dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-8 transition-all hover:shadow-lg hover:shadow-green-500/10 dark:hover:shadow-green-500/10 group shadow-md">
-                <div className="w-20 h-20 bg-gradient-to-br from-green-600 to-cyan-600 dark:from-green-600 dark:to-cyan-600 rounded-2xl flex items-center justify-center mb-6 mx-auto transform group-hover:rotate-6 transition-transform">
-                  <Code className="w-10 h-10 text-white" />
+            <div className="hidden md:flex items-center justify-center absolute top-1/2 -translate-y-1/2 left-[62.8%] z-20">
+              <div className="bg-white dark:bg-[#1a1a1a] rounded-full p-2 shadow-lg border border-gray-200 dark:border-gray-900">
+                <ArrowRight className="h-6 w-6 text-[#e88951] animate-pulse" />
+              </div>
+            </div>
+
+            <div className="group relative bg-gradient-to-br from-white to-[#e88951]/5 dark:from-[#1a1a1a] dark:to-[#e88951]/5 backdrop-blur-sm border border-gray-200 dark:border-gray-900 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e88951]/20 hover:-translate-y-2 overflow-hidden">
+              <div className="absolute top-0 right-0 text-[120px] font-bold bg-gradient-to-br from-[#e88951]/10 to-[#e88951]/5 bg-clip-text text-transparent leading-none p-4">
+                03
+              </div>
+              <div className="relative">
+                <div className="mb-6 inline-flex p-4 rounded-xl bg-[#e88951]/10 text-[#e88951] transition-all duration-300">
+                  <Code className="h-8 w-8" />
                 </div>
-                <h3 className="text-xl font-semibold text-center mb-4 text-gray-900 dark:text-white">Start Contributing</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-[#e88951] transition-colors">
+                  Start Contributing
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                   Get personalized issue recommendations that match your expertise, with mentorship options to help you succeed.
                 </p>
-                <div className="mt-6 flex justify-center">
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-semibold">3</span>
-                </div>
               </div>
             </div>
           </div>
@@ -230,255 +228,150 @@ export default function LandingPage() {
           <div className="mt-16 text-center">
             <Link
               href="/match"
-              className="inline-flex items-center gap-2 text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 font-medium transition-colors"
+              className="inline-flex items-center gap-2 text-[#e88951] hover:text-[#d67840] font-semibold transition-colors group"
             >
               See how it works in action
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="ml-1">
-                <path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
-              </svg>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section id="stats" className="py-20 bg-gray-100 dark:bg-[#0d1117] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/5 to-cyan-900/5 dark:from-purple-900/5 dark:to-cyan-900/5"></div>
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent dark:from-transparent dark:via-purple-500/50 dark:to-transparent"></div>
-        
+      <section id="stats" className="py-16 bg-white dark:bg-black relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col items-center mb-16">
-            <div className="inline-block mb-3 px-4 py-1 bg-blue-100 dark:bg-purple-900/30 rounded-full border border-blue-200 dark:border-purple-700/30 text-blue-700 dark:text-purple-300 text-sm font-medium">
-              Our Impact
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white">
-              Growing Community of Contributors
-            </h2>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center transition-all hover:border-blue-700/50 dark:hover:border-purple-700/50 shadow-md hover:shadow-lg group">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 dark:bg-purple-900/30 mb-4 group-hover:bg-blue-200 dark:group-hover:bg-purple-900/50 transition-colors">
-                <Users className="w-6 h-6 text-blue-600 dark:text-purple-400" />
-              </div>
-              <div className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1">3,560+</div>
-              <div className="text-gray-600 dark:text-gray-400">Developers</div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-gray-900 dark:text-white">
+                See it in <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e88951] to-[#e88951]">action</span>
+              </h2>
+              
+              <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+                Watch how IssueMatch analyzes your profile and finds the perfect issues for you.
+              </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center transition-all hover:border-cyan-700/50 dark:hover:border-cyan-700/50 shadow-md hover:shadow-lg group">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 mb-4 group-hover:bg-cyan-200 dark:group-hover:bg-cyan-900/50 transition-colors">
-                <GitPullRequest className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
-              </div>
-              <div className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1">23,504+</div>
-              <div className="text-gray-600 dark:text-gray-400">Issues Matched</div>
-            </div>
-            
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center transition-all hover:border-green-700/50 dark:hover:border-green-700/50 shadow-md hover:shadow-lg group">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 mb-4 group-hover:bg-green-200 dark:group-hover:bg-green-900/50 transition-colors">
-                <GitMerge className="w-6 h-6 text-green-600 dark:text-green-400" />
-              </div>
-              <div className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1">7,637+</div>
-              <div className="text-gray-600 dark:text-gray-400">Contributions Made</div>
-            </div>
-            
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 text-center transition-all hover:border-orange-700/50 dark:hover:border-orange-700/50 shadow-md hover:shadow-lg group">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-orange-100 dark:bg-orange-900/30 mb-4 group-hover:bg-orange-200 dark:group-hover:bg-orange-900/50 transition-colors">
-                <GitBranch className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-              </div>
-              <div className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1">994+</div>
-              <div className="text-gray-600 dark:text-gray-400">Repositories</div>
+            <div>
+              <AnimatedCodeDemo />
             </div>
           </div>
         </div>
       </section>
       
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-white dark:bg-gradient-to-b dark:from-[#0d1117] dark:to-[#0a101c]">
-        <div className="container mx-auto px-4">
+      <section id="features" className="py-24 bg-background relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[#e88951]/5 blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-[#e88951]/5 blur-3xl"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col items-center mb-16">
-            <div className="inline-block mb-3 px-4 py-1 bg-green-100 dark:bg-green-900/30 rounded-full border border-green-200 dark:border-green-700/30 text-green-700 dark:text-green-300 text-sm font-medium">
+            <div className="inline-block mb-3 px-6 py-1.5 bg-[#e88951]/10 dark:bg-[#e88951]/20 rounded-full border border-[#e88951]/20 dark:border-[#e88951]/30 text-[#e88951] text-sm font-medium">
               Key Features
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">
-              Everything You Need to Succeed
+            <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 dark:text-white mb-4">
+              Everything You Need to <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#e88951] to-[#e88951]">Succeed</span>
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-center max-w-2xl">
+            <p className="text-gray-600 dark:text-gray-400 text-center max-w-2xl text-lg">
               IssueMatch provides all the tools you need to find the perfect open source issues and make meaningful contributions.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 transition-all hover:shadow-lg hover:shadow-blue-500/5 dark:hover:shadow-purple-500/5 group shadow-md">
-              <div className="w-12 h-12 rounded-lg bg-blue-100 dark:bg-purple-900/30 flex items-center justify-center mb-4 group-hover:bg-blue-200 dark:group-hover:bg-purple-900/50 transition-colors">
-                <Sparkles className="w-6 h-6 text-blue-600 dark:text-purple-400" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="group relative bg-gradient-to-br from-white to-[#e88951]/5 dark:from-[#1a1a1a] dark:to-[#e88951]/5 backdrop-blur-sm border border-gray-200 dark:border-gray-900 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e88951]/10 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e88951]/0 to-[#e88951]/0 group-hover:from-[#e88951]/5 group-hover:to-[#e88951]/5 rounded-2xl transition-all duration-300"></div>
+              <div className="relative">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#e88951] to-[#e88951] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <Sparkles className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">AI-Powered Matching</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Our advanced AI analyzes your GitHub profile and coding patterns to find issues that perfectly match your skills and interests.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">AI-Powered Matching</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Our advanced AI analyzes your GitHub profile and coding patterns to find issues that perfectly match your skills and interests.
-              </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 transition-all hover:shadow-lg hover:shadow-cyan-500/5 dark:hover:shadow-cyan-500/5 group shadow-md">
-              <div className="w-12 h-12 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center mb-4 group-hover:bg-cyan-200 dark:group-hover:bg-cyan-900/50 transition-colors">
-                <GraduationCap className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
+            <div className="group relative bg-gradient-to-br from-white to-[#e88951]/5 dark:from-[#1a1a1a] dark:to-[#e88951]/5 backdrop-blur-sm border border-gray-200 dark:border-gray-900 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e88951]/10 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e88951]/0 to-[#e88951]/0 group-hover:from-[#e88951]/5 group-hover:to-[#e88951]/5 rounded-2xl transition-all duration-300"></div>
+              <div className="relative">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#e88951] to-[#e88951] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <GraduationCap className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Mentor Connection</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Connect with experienced mentors who can guide you through your open source journey and help you make successful contributions.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Mentor Connection</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Connect with experienced mentors who can guide you through your open source journey and help you make successful contributions.
-              </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 transition-all hover:shadow-lg hover:shadow-green-500/5 dark:hover:shadow-green-500/5 group shadow-md">
-              <div className="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4 group-hover:bg-green-200 dark:group-hover:bg-green-900/50 transition-colors">
-                <Trophy className="w-6 h-6 text-green-600 dark:text-green-400" />
+            <div className="group relative bg-gradient-to-br from-white to-[#e88951]/5 dark:from-[#1a1a1a] dark:to-[#e88951]/5 backdrop-blur-sm border border-gray-200 dark:border-gray-900 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e88951]/10 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e88951]/0 to-[#e88951]/0 group-hover:from-[#e88951]/5 group-hover:to-[#e88951]/5 rounded-2xl transition-all duration-300"></div>
+              <div className="relative">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#e88951] to-[#e88951] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <Trophy className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Gamified Leaderboard</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Track your progress on our interactive leaderboard and earn badges as you make more contributions to open source projects.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Gamified Leaderboard</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Track your progress on our interactive leaderboard and earn badges as you make more contributions to open source projects.
-              </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 transition-all hover:shadow-lg hover:shadow-orange-500/5 dark:hover:shadow-orange-500/5 group shadow-md">
-              <div className="w-12 h-12 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-4 group-hover:bg-orange-200 dark:group-hover:bg-orange-900/50 transition-colors">
-                <MessageSquare className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+            <div className="group relative bg-gradient-to-br from-white to-[#e88951]/5 dark:from-[#1a1a1a] dark:to-[#e88951]/5 backdrop-blur-sm border border-gray-200 dark:border-gray-900 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e88951]/10 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e88951]/0 to-[#e88951]/0 group-hover:from-[#e88951]/5 group-hover:to-[#e88951]/5 rounded-2xl transition-all duration-300"></div>
+              <div className="relative">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#e88951] to-[#e88951] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <MessageSquare className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">AI Assistant</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Get help understanding issues and planning your contributions with our built-in AI assistant powered by Google Gemini.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">AI Assistant</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Get help understanding issues and planning your contributions with our built-in AI assistant powered by Google Gemini.
-              </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 transition-all hover:shadow-lg hover:shadow-pink-500/5 dark:hover:shadow-pink-500/5 group shadow-md">
-              <div className="w-12 h-12 rounded-lg bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center mb-4 group-hover:bg-pink-200 dark:group-hover:bg-pink-900/50 transition-colors">
-                <Share2 className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+            <div className="group relative bg-gradient-to-br from-white to-[#e88951]/5 dark:from-[#1a1a1a] dark:to-[#e88951]/5 backdrop-blur-sm border border-gray-200 dark:border-gray-900 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e88951]/10 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e88951]/0 to-[#e88951]/0 group-hover:from-[#e88951]/5 group-hover:to-[#e88951]/5 rounded-2xl transition-all duration-300"></div>
+              <div className="relative">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#e88951] to-[#e88951] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <Share2 className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Referral Program</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Invite friends to join IssueMatch and earn rewards as they make contributions to the open source community.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Referral Program</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Invite friends to join IssueMatch and earn rewards as they make contributions to the open source community.
-              </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 transition-all hover:shadow-lg hover:shadow-blue-500/5 dark:hover:shadow-blue-500/5 group shadow-md">
-              <div className="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4 group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors">
-                <BarChart2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <div className="group relative bg-gradient-to-br from-white to-[#e88951]/5 dark:from-[#1a1a1a] dark:to-[#e88951]/5 backdrop-blur-sm border border-gray-200 dark:border-gray-900 rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-[#e88951]/10 hover:-translate-y-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e88951]/0 to-[#e88951]/0 group-hover:from-[#e88951]/5 group-hover:to-[#e88951]/5 rounded-2xl transition-all duration-300"></div>
+              <div className="relative">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#e88951] to-[#e88951] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <BarChart2 className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Skill Analytics</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Visualize your skills and track your growth as you contribute to different projects and technologies.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Skill Analytics</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Visualize your skills and track your growth as you contribute to different projects and technologies.
-              </p>
             </div>
           </div>
           
           <div className="mt-16 flex justify-center">
             <Link
               href="/login"
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-purple-600 dark:to-cyan-600 text-white font-medium py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-purple-500/20 shadow-md"
+              className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-[#e88951] to-[#e88951] text-white font-semibold py-4 px-10 rounded-full transition-all hover:shadow-2xl hover:shadow-[#e88951]/30 hover:scale-105 overflow-hidden"
             >
-              <Github className="w-5 h-5" />
-              Get Started with GitHub
+              <div className="absolute inset-0 bg-gradient-to-r from-[#d67840] to-[#d67840] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <Github className="w-5 h-5 relative z-10" />
+              <span className="relative z-10">Get Started with GitHub</span>
             </Link>
           </div>
         </div>
       </section>
       
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-24 bg-gray-50 dark:bg-[#0a101c] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-cyan-900/5 to-blue-900/5 dark:from-cyan-900/5 dark:to-purple-900/5"></div>
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent dark:from-transparent dark:via-cyan-500/50 dark:to-transparent"></div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col items-center mb-16">
-            <div className="inline-block mb-3 px-4 py-1 bg-blue-100 dark:bg-blue-900/30 rounded-full border border-blue-200 dark:border-blue-700/30 text-blue-700 dark:text-blue-300 text-sm font-medium">
-              Testimonials
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">
-              What Our Users Say
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-center max-w-2xl">
-              Hear from developers who have found their perfect open source matches and made meaningful contributions.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 transition-all hover:border-blue-700/50 dark:hover:border-purple-700/50 relative shadow-md hover:shadow-lg group">
-              <div className="absolute -top-3 -left-3 text-blue-500 dark:text-purple-500 text-5xl opacity-20">"</div>
-              <div className="mb-4 flex">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                ))}
-              </div>
-              <p className="text-gray-700 dark:text-gray-300 mb-6">
-                "IssueMatch helped me find the perfect issues to work on. The AI matching is incredibly accurate, and I've made 12 contributions to projects I care about in just two months!"
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 dark:from-purple-500 dark:to-cyan-500 shadow-sm"></div>
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Alex Chen</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Frontend Developer</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 transition-all hover:border-cyan-700/50 dark:hover:border-cyan-700/50 relative shadow-md hover:shadow-lg group">
-              <div className="absolute -top-3 -left-3 text-cyan-500 text-5xl opacity-20">"</div>
-              <div className="mb-4 flex">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                ))}
-              </div>
-              <p className="text-gray-700 dark:text-gray-300 mb-6">
-                "The mentor connection feature is a game-changer. I was paired with an experienced developer who guided me through my first open source contribution. Now I'm a regular contributor!"
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 dark:from-cyan-500 dark:to-purple-500 shadow-sm"></div>
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Priya Sharma</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Backend Developer</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white dark:bg-gray-900/30 backdrop-blur-sm border border-gray-200 dark:border-gray-800 rounded-xl p-6 transition-all hover:border-green-700/50 dark:hover:border-green-700/50 relative shadow-md hover:shadow-lg group">
-              <div className="absolute -top-3 -left-3 text-green-500 text-5xl opacity-20">"</div>
-              <div className="mb-4 flex">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                ))}
-              </div>
-              <p className="text-gray-700 dark:text-gray-300 mb-6">
-                "As a project maintainer, IssueMatch has brought quality contributors to our repository. The skill matching ensures we get developers who can actually solve our issues."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-cyan-500 dark:from-green-500 dark:to-cyan-500 shadow-sm"></div>
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Marcus Johnson</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Open Source Maintainer</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <TestimonialsSection />
       
-      {/*/!* CTA Section *!/*/}
-      {/*<section className="py-24 bg-gradient-to-b from-[#0a101c] to-[#0d1117] relative overflow-hidden">*/}
-      {/*  <div className="absolute inset-0">*/}
-      {/*    <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-600/10 blur-3xl"></div>*/}
-      {/*    <div className="absolute bottom-1/3 right-1/3 w-64 h-64 rounded-full bg-cyan-600/10 blur-3xl"></div>*/}
-      {/*  </div>*/}
-      {/*  */}
-      {/*  <div className="container mx-auto px-4 relative z-10">*/}
-      {/*    <div className="flex justify-center">*/}
-      {/*      <Link*/}
-      {/*        href="/login"*/}
-      {/*        className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-medium py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-purple-500/20 hover:scale-105"*/}
-      {/*      >*/}
-      {/*        <Github className="w-5 h-5" />*/}
-      {/*        Sign in with GitHub*/}
-      {/*      </Link>*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      {/*</section>*/}
+      <NewReleasePromo />
     </main>
   )
 }

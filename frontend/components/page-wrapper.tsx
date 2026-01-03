@@ -12,7 +12,7 @@ export default function PageWrapper({ children }: PageWrapperProps) {
   const isHomePage = pathname === '/'
   
   return (
-    <div className={isHomePage ? '' : 'pt-20'}>
+    <div>
       {children}
     </div>
   )

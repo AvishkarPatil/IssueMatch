@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Geist } from "next/font/google"
 import "./globals.css"
 import { Footer } from "@/components/footer"
 import { AuthProvider } from "@/context/auth-context"
@@ -8,8 +8,9 @@ import { Toaster } from "@/components/ui/toaster"
 import IssueMatchAI from "@/components/issue-match-ai"
 import FloatingNavbar from "@/components/floating-navbar"
 import PageWrapper from "@/components/page-wrapper"
+import CursorGlow from "@/components/cursor-glow"
 
-const inter = Inter({ subsets: ["latin"] })
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist" })
 
 export const metadata: Metadata = {
   title: "Open Source Contribution Matchmaker",
@@ -23,14 +24,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-background text-foreground`} suppressHydrationWarning>
+      <body className={`${geist.className} bg-background text-foreground antialiased`} suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          enableSystem={false}
           disableTransitionOnChange
         >
           <AuthProvider>
+            <CursorGlow />
             <FloatingNavbar />
             <PageWrapper>
               {children}

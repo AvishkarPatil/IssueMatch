@@ -46,45 +46,45 @@ export default function RequestModal({ mentor, isOpen, onClose, onSubmit }: Requ
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg dark:shadow-lg w-full max-w-md border border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Request Mentorship</h3>
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+      <div className="bg-white dark:bg-[#161b22] rounded-2xl shadow-2xl dark:shadow-none w-full max-w-lg border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-800">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">Request Mentorship</h3>
           <button 
             onClick={onClose}
-            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors p-2 hover:bg-gray-100 dark:hover:bg-[#0d1117] rounded-lg"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
         
-        <div className="p-4">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="p-6">
+          <div className="flex items-center gap-4 mb-6 p-4 bg-gray-50 dark:bg-[#0d1117] rounded-xl border border-gray-200 dark:border-gray-800">
             <img 
               src={mentor.avatarUrl} 
               alt={mentor.name} 
-              className="w-10 h-10 rounded-full border-2 border-blue-500/30 dark:border-purple-500/30"
+              className="w-12 h-12 rounded-full border-2 border-[#e88951]/30"
             />
             <div>
-              <span className="font-medium text-gray-900 dark:text-gray-100">{mentor.name}</span>
+              <span className="font-semibold text-gray-900 dark:text-white block">{mentor.name}</span>
               {mentor.timezone && (
-                <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  <Clock className="h-3 w-3" />
+                <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <Clock className="h-3.5 w-3.5 text-[#e88951]" />
                   <span>{mentor.timezone}</span>
                 </div>
               )}
             </div>
           </div>
           
-          <div className="flex border-b border-gray-200 dark:border-gray-700 mb-4">
+          <div className="flex border-b border-gray-200 dark:border-gray-800 mb-6">
             <button
-              className={`px-4 py-2 text-sm font-medium ${activeTab === 'details' ? 'text-blue-600 dark:text-purple-400 border-b-2 border-blue-600 dark:border-purple-400' : 'text-gray-500 dark:text-gray-400'}`}
+              className={`px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'details' ? 'text-[#e88951] border-b-2 border-[#e88951]' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
               onClick={() => setActiveTab('details')}
             >
               Request Details
             </button>
             <button
-              className={`px-4 py-2 text-sm font-medium ${activeTab === 'schedule' ? 'text-blue-600 dark:text-purple-400 border-b-2 border-blue-600 dark:border-purple-400' : 'text-gray-500 dark:text-gray-400'}`}
+              className={`px-4 py-3 text-sm font-medium transition-colors ${activeTab === 'schedule' ? 'text-[#e88951] border-b-2 border-[#e88951]' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
               onClick={() => setActiveTab('schedule')}
             >
               Schedule
@@ -104,7 +104,7 @@ export default function RequestModal({ mentor, isOpen, onClose, onSubmit }: Requ
                   <textarea
                     id="message"
                     rows={4}
-                    className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
+                    className="w-full border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#0d1117] rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e88951] text-gray-900 dark:text-gray-200 shadow-sm"
                     placeholder="Explain what you need help with..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
@@ -122,7 +122,7 @@ export default function RequestModal({ mentor, isOpen, onClose, onSubmit }: Requ
                   <input
                     type="text"
                     id="issueLink"
-                    className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
+                    className="w-full border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#0d1117] rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e88951] text-gray-900 dark:text-gray-200 shadow-sm"
                     placeholder="https://github.com/org/repo/issues/123"
                     value={issueLink}
                     onChange={(e) => setIssueLink(e.target.value)}
@@ -141,17 +141,17 @@ export default function RequestModal({ mentor, isOpen, onClose, onSubmit }: Requ
                   <input
                     type="text"
                     id="preferredTime"
-                    className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 text-gray-900 dark:text-gray-200 shadow-sm dark:shadow-none"
+                    className="w-full border border-gray-300 dark:border-gray-800 bg-white dark:bg-[#0d1117] rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#e88951] text-gray-900 dark:text-gray-200 shadow-sm"
                     placeholder="E.g., Weekdays after 6pm EST"
                     value={preferredTime}
                     onChange={(e) => setPreferredTime(e.target.value)}
                   />
                 </div>
                 
-                <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-md border border-gray-200 dark:border-gray-700 mb-4">
+                <div className="p-4 bg-[#e88951]/10 dark:bg-[#e88951]/20 rounded-xl border border-[#e88951]/30 mb-4">
                   <div className="flex items-start gap-2">
-                    <HelpCircle className="h-4 w-4 text-gray-500 dark:text-gray-400 mt-0.5" />
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <HelpCircle className="h-4 w-4 text-[#e88951] mt-0.5" />
+                    <p className="text-xs text-gray-700 dark:text-gray-300">
                       Mentors will try to accommodate your schedule, but availability may vary. 
                       You'll be able to coordinate specific times after your request is accepted.
                     </p>
@@ -160,18 +160,18 @@ export default function RequestModal({ mentor, isOpen, onClose, onSubmit }: Requ
               </>
             )}
             
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-3 mt-6">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shadow-sm dark:shadow-none"
+                className="px-6 py-2.5 border border-gray-300 dark:border-gray-800 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#0d1117] transition-colors font-medium shadow-sm"
                 disabled={isSubmitting}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 dark:bg-purple-600 text-white rounded-md hover:bg-blue-700 dark:hover:bg-purple-700 transition-colors flex items-center justify-center shadow-sm dark:shadow-none"
+                className="px-6 py-2.5 bg-[#e88951] text-white rounded-full hover:bg-[#d67840] transition-all flex items-center justify-center font-medium shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px]"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (

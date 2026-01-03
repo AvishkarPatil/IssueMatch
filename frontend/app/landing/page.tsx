@@ -1,11 +1,12 @@
 import Link from "next/link"
 import { Github, Zap, Code, BarChart2 } from "lucide-react"
+import AnimatedCodeDemo from "@/components/animated-code-demo"
 
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-[#0d1117] text-white">
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d1117] via-[#0d1117] to-[#0a101c] z-0"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-12">
@@ -17,7 +18,7 @@ export default function LandingPage() {
                 Our AI-driven platform matches developers with ideal GitHub issues based on your skills, history, and
                 interests. Contribute to projects that matter to you.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 mt-6">
                 <Link
                   href="/login"
                   className="flex items-center justify-center gap-2 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-medium py-3 px-6 rounded-lg transition-colors"
@@ -152,8 +153,23 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Code Demo Section */}
+      <section className="py-20 bg-[#0d1117]">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+              See it in <span className="text-[#0ea5e9]">action</span>
+            </h2>
+            <p className="text-gray-400 text-center mb-12">
+              Watch how IssueMatch analyzes your profile and finds the perfect issues for you.
+            </p>
+            <AnimatedCodeDemo />
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
-      <section className="py-16 bg-[#0d1117]">
+      <section className="py-16 bg-[#0a101c]">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>

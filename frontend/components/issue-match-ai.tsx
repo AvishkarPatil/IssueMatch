@@ -135,63 +135,71 @@ export default function IssueMatchAI() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-6 right-6 z-50">
       {isOpen ? (
-        <Card className="w-80 sm:w-96 h-[500px] flex flex-col shadow-lg border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-[#1a1f2a]">
-          <div className="bg-gray-50 dark:bg-[#242a38] p-3 flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
-            <div className="font-semibold text-gray-900 dark:text-white">IssueMatch AI</div>
-            <div className="flex gap-2">
-              <Button variant="ghost" size="icon" onClick={minimizeChat} className="h-8 w-8 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+        <Card className="w-[380px] h-[600px] flex flex-col shadow-2xl border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden bg-white dark:bg-[#161b22] backdrop-blur-sm">
+          <div className="bg-gradient-to-r from-[#e88951] to-[#f59e6c] p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <MessageCircle className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <div className="font-semibold text-white">IssueMatch AI</div>
+                <div className="text-xs text-white/80">Always here to help</div>
+              </div>
+            </div>
+            <div className="flex gap-1">
+              <Button variant="ghost" size="icon" onClick={minimizeChat} className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20 rounded-lg">
                 <Minimize2 className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={toggleChat} className="h-8 w-8 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+              <Button variant="ghost" size="icon" onClick={toggleChat} className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20 rounded-lg">
                 <X className="h-4 w-4" />
               </Button>
             </div>
           </div>
 
-          <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-white dark:bg-[#1a1f2a]">
+          <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-[#0d1117]">
             {messages.map((message) => (
               <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`flex items-start gap-2 max-w-[80%] ${message.role === "user" ? "flex-row-reverse" : ""}`}
+                  className={`flex items-start gap-2 max-w-[85%] ${message.role === "user" ? "flex-row-reverse" : ""}`}
                 >
-                  <Avatar className="h-8 w-8 mt-1">
+                  <Avatar className="h-8 w-8 mt-1 flex-shrink-0">
                     <div
-                      className={`h-full w-full flex items-center justify-center ${
-                        message.role === "user" ? "bg-purple-600" : "bg-gray-700"
+                      className={`h-full w-full flex items-center justify-center text-xs font-semibold ${
+                        message.role === "user" ? "bg-[#e88951] text-white" : "bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                       }`}
                     >
-                      {message.role === "user" ? "U" : "AI"}
+                      {message.role === "user" ? "You" : "AI"}
                     </div>
                   </Avatar>
                   <div
-                    className={`rounded-lg p-3 ${
+                    className={`rounded-2xl px-4 py-2.5 ${
                       message.role === "user" 
-                        ? "bg-blue-600 dark:bg-purple-600 text-white" 
-                        : "bg-gray-100 dark:bg-[#242a38] text-gray-900 dark:text-gray-200"
+                        ? "bg-[#e88951] text-white rounded-br-sm" 
+                        : "bg-white dark:bg-[#161b22] text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-800 rounded-bl-sm"
                     }`}
                   >
-                    {message.content}
+                    <p className="text-sm leading-relaxed">{message.content}</p>
                   </div>
                 </div>
               </div>
             ))}
             {isLoading && !messages.some((msg) => msg.id === "assistant-typing") && (
               <div className="flex justify-start">
-                <div className="flex items-start gap-2 max-w-[80%]">
-                  <Avatar className="h-8 w-8 mt-1">
-                    <div className="h-full w-full flex items-center justify-center bg-gray-700">AI</div>
+                <div className="flex items-start gap-2 max-w-[85%]">
+                  <Avatar className="h-8 w-8 mt-1 flex-shrink-0">
+                    <div className="h-full w-full flex items-center justify-center bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-semibold">AI</div>
                   </Avatar>
-                  <div className="rounded-lg p-3 bg-gray-100 dark:bg-[#242a38] text-gray-900 dark:text-gray-200">
-                    <div className="flex space-x-1">
-                      <div className="h-2 w-2 bg-blue-400 dark:bg-purple-400 rounded-full animate-bounce"></div>
+                  <div className="rounded-2xl rounded-bl-sm px-4 py-3 bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800">
+                    <div className="flex space-x-1.5">
+                      <div className="h-2 w-2 bg-[#e88951] rounded-full animate-bounce"></div>
                       <div
-                        className="h-2 w-2 bg-blue-400 dark:bg-purple-400 rounded-full animate-bounce"
+                        className="h-2 w-2 bg-[#e88951] rounded-full animate-bounce"
                         style={{ animationDelay: "0.2s" }}
                       ></div>
                       <div
-                        className="h-2 w-2 bg-blue-400 dark:bg-purple-400 rounded-full animate-bounce"
+                        className="h-2 w-2 bg-[#e88951] rounded-full animate-bounce"
                         style={{ animationDelay: "0.4s" }}
                       ></div>
                     </div>
@@ -201,18 +209,18 @@ export default function IssueMatchAI() {
             )}
           </div>
 
-          <form onSubmit={handleSubmit} className="p-3 border-t border-gray-200 dark:border-gray-700 flex gap-2 bg-gray-50 dark:bg-[#242a38]">
+          <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200 dark:border-gray-800 flex gap-2 bg-white dark:bg-[#161b22]">
             <Input
               value={input}
               onChange={handleInputChange}
-              placeholder="Type your message..."
-              className="flex-1 bg-white dark:bg-[#1a1f2a] border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
+              placeholder="Ask me anything..."
+              className="flex-1 bg-gray-50 dark:bg-[#0d1117] border-gray-300 dark:border-gray-800 rounded-full px-4 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-2 focus:ring-[#e88951]"
             />
             <Button
               type="submit"
               size="icon"
               disabled={isLoading || !input.trim()}
-              className="bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700"
+              className="bg-[#e88951] hover:bg-[#d67840] rounded-full h-10 w-10 shadow-lg disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
             </Button>
@@ -221,9 +229,9 @@ export default function IssueMatchAI() {
       ) : (
         <Button
           onClick={toggleChat}
-          className="h-14 w-14 rounded-full shadow-lg bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700 border-2 border-white dark:border-white"
+          className="h-16 w-16 rounded-full shadow-2xl bg-gradient-to-r from-[#e88951] to-[#f59e6c] hover:from-[#d67840] hover:to-[#e88951] border-4 border-white dark:border-gray-900 transition-all hover:scale-110 group"
         >
-          <MessageCircle className="h-6 w-6" />
+          <MessageCircle className="h-7 w-7 text-white group-hover:scale-110 transition-transform" />
         </Button>
       )}
     </div>
