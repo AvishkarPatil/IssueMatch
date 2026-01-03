@@ -1,186 +1,124 @@
-<h2 align="center">🎯 IssueMatch</h2>
-
-<h3 align="center">AI-Powered Open Source Contribution Matchmaker</h3>
-
-<p align="center"><b>IssueMatch</b> connects developers with open source issues that perfectly match their skills and interests using advanced AI and machine learning. Find meaningful contributions in seconds, not hours.</p>
-
-<p align="center"><em>Part of Social Winter of Code 2026</em></p><br>
-
-<div align="center"> 
-  
-  [![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-  [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-green?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-  [![Next.js](https://img.shields.io/badge/Next.js-15+-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
-  [![Firebase](https://img.shields.io/badge/Firebase-Latest-orange?style=for-the-badge&logo=firebase&logoColor=white)](https://firebase.google.com)
-  
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
-  [![SWoC 2026](https://img.shields.io/badge/SWoC-2026-orange?style=for-the-badge)](https://swoc.tech)
-  
-</div>
-<br>
-
 <div align="center">
 
-> Intelligent platform bridging developers with open source opportunities through AI-powered matching
+# 🤝 IssueMatch
+### AI-Powered Open Source Contribution Matchmaker
+
+[![SWoC 2026](https://img.shields.io/badge/SWoC-2026-blue?style=for-the-badge)](https://swoc.tech)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
+
+**IssueMatch** connects developers with open-source issues that perfectly match their skills using Gemini AI and FAISS vector search.
+
+[View Live Website](https://your-link-here.com) • [Report Bug](https://github.com/AvishkarPatil/IssueMatch/issues) • [Request Feature](https://github.com/AvishkarPatil/IssueMatch/issues)
 
 </div>
-<br>
 
 ---
 
-### ✨ Features
-
-### 🤖 AI-Powered Matching
-- **Smart Profile Analysis**: Automatically extracts skills from your GitHub profile using Google Natural Language API
-- **Vector Similarity Search**: FAISS-powered matching with 384-dimensional embeddings
-- **Intelligent Query Generation**: Gemini 2.0 Flash creates optimized GitHub search queries
-- **Real-time Learning**: ML system improves recommendations based on user feedback
-
-### 👤 User Experience
-- **GitHub OAuth**: Secure one-click authentication
-- **Interactive Skill Assessment**: Personalized skill evaluation system
-- **AI Chatbot Assistant**: Gemini-powered help for understanding issues
-- **Dark/Light Theme**: Modern, accessible UI with theme switching
-
-### 🎓 Mentorship & Growth
-- **Mentor Matching**: Connect with experienced developers
-- **Leaderboard System**: Track contributions and compete
-- **Referral Program**: Grow the community together
-- **Progress Analytics**: Visualize your open source journey
+## 🚀 Quick Overview (TL;DR)
+- **Problem:** Finding the right first issue takes hours of manual searching.
+- **Solution:** IssueMatch analyzes your GitHub profile and uses AI to recommend issues you can actually solve.
+- **Key Tech:** Next.js 15, FastAPI, Gemini 2.0 Flash, and FAISS.
 
 ---
 
-### 🛠️ Technology Stack
+## 🔄 How It Works
 
-### Backend
-- **Framework**: FastAPI (Python 3.9+)
-- **AI/ML**:
-  - Google AI Studio (Gemini 2.0 Flash Lite) - AI Chatbot
-  - FAISS (v1.7.x) - Vector similarity search
-  - Sentence Transformers (all-MiniLM-L6-v2) - Text embeddings
-- **APIs**: GitHub REST API (2022-11-28)
-- **Database**: Firebase Firestore
-
-### Frontend
-- **Framework**: Next.js 15+ (React 19)
-- **Language**: TypeScript 5.0+
-- **Styling**: TailwindCSS + Shadcn/ui
-- **State Management**: React Context API
-- **Theme**: next-themes
-
-### Authentication & Storage
-- **Auth**: GitHub OAuth 2.0
-- **Database**: Firebase Firestore
-- **Session**: Server-side sessions with FastAPI
+1. **GitHub Auth:** Secure one-click login.
+2. **AI Analysis:** Google Natural Language API extracts skills from your repositories.
+3. **Vector Matching:** FAISS performs similarity searches on 384-dimensional embeddings.
+4. **Smart Results:** Ranked issues appear based on your specific expertise.
 
 ---
 
-### 🚀 Quick Start
+## ✨ Key Features
 
-### Prerequisites
+<details>
+<summary>🤖 <b>AI & Matching Engine (Click to expand)</b></summary>
+
+- **Vector Similarity Search**: FAISS-powered matching for high accuracy.
+- **Intelligent Queries**: Gemini 2.0 Flash creates optimized GitHub search filters.
+- **Real-time Learning**: ML system improves recommendations based on your feedback.
+</details>
+
+<details>
+<summary>👤 <b>User Experience & Growth</b></summary>
+
+- **AI Chatbot**: Get help understanding complex issue descriptions.
+- **Progress Analytics**: Visualize your open-source journey with charts.
+- **Gamification**: Compete on the leaderboard and earn referrals.
+</details>
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Tech Stack |
+| :--- | :--- |
+| **Frontend** | Next.js 15 (React 19), TypeScript, TailwindCSS, Shadcn/ui |
+| **Backend** | FastAPI (Python 3.9+), Uvicorn |
+| **AI/ML** | Gemini 2.0 Flash, FAISS, Sentence Transformers |
+| **Database/Auth** | Firebase Firestore, GitHub OAuth 2.0 |
+
+---
+
+## 🏁 Getting Started (SWoC 2026)
+
+We are excited to have **SWoC 2026** contributors! Follow these steps to set up locally:
+
+### 1. Prerequisites
+- Python 3.9+, Node.js 18+, Git.
+
+### 2. Installation
 ```bash
-Python 3.9+
-Node.js 18+
-Git
-```
-
-### Installation
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/AvishkarPatil/IssueMatch.git
+# Clone the repo
+git clone [https://github.com/AvishkarPatil/IssueMatch.git](https://github.com/AvishkarPatil/IssueMatch.git)
 cd IssueMatch
 ```
 
-2. **Backend Setup**
-```bash
+# Setup Backend
+```
 cd backend
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env  # Configure your environment variables
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload
 ```
 
-3. **Frontend Setup**
-```bash
-cd frontend
+# Setup Frontend
+```
+cd ../frontend
 npm install
 npm run dev
 ```
+---
 
-4. **Access the application**
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Docs: http://localhost:8000/docs
+## 📋 Roadmap (SWoC '26 Tasks)
 
-For detailed setup instructions, see [SETUP.md](SETUP.md)
+Looking for something to contribute? Check these prioritized tasks:
+
+- **High:** Real-time leaderboard implementation 
+- **Medium:** Advanced analytics dashboard for user profiles 
+- **Medium:** Mobile responsiveness audit and fixes 
+- **Easy:** UI/UX design refinements for Dark Mode 
 
 ---
 
-### 🔄 How It Works
+## 🤝 Contributing
 
-```mermaid
-graph LR
-    A[GitHub Login] --> B[Profile Analysis]
-    B --> C[Skill Extraction]
-    C --> D[AI Query Generation]
-    D --> E[Issue Matching]
-    E --> F[Ranked Results]
-    F --> G[User Feedback]
-    G --> D
-```
+We welcome contributions from everyone! Follow these simple steps:
+1. **Explore Issues:** Look for issues with labels: `SWoC26`, `Good First Issue`.
+2. **Assignment:** Request assignment by commenting on the specific issue.
+3. **Guidelines:** Follow our **[CONTRIBUTING.md](./CONTRIBUTING.md)** for PR rules and coding standards.
 
-1. **Authenticate** with GitHub OAuth
-2. **Profile Analysis** extracts skills from your repositories
-3. **AI Processing** generates optimized search queries
-4. **Vector Matching** finds relevant issues using FAISS
-5. **Smart Ranking** orders results by relevance
-6. **Continuous Learning** improves from user interactions
-
----
-
-### 📋 To-Do List
-
-- [ ] Real-time leaderboard implementation
-- [ ] Dynamic profile statistics
-- [ ] Improved UI/UX design
-- [ ] Enhanced issue matching algorithm
-- [ ] Mentor-mentee matching system
-- [ ] Mobile responsive improvements
-- [ ] Advanced analytics dashboard
-- [ ] Gamification features
-
----
-
-### 🤝 Contributing
-
-We welcome contributions from developers of all skill levels! This project is part of **Social Winter of Code 2026**.
-
-### Getting Started
-1. Check [open issues](https://github.com/AvishkarPatil/IssueMatch/issues)
-2. Look for `SWoC26` and difficulty labels (`Easy`, `Medium`, `Hard`)
-3. Comment to request assignment
-4. Fork, code, and submit a PR
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
-### Contributors
+### Our Contributors
 <a href="https://github.com/AvishkarPatil/IssueMatch/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=AvishkarPatil/IssueMatch" />
 </a>
 
 ---
 
-### 📄 License
-
-This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
-
----
-
 <div align="center">
-  <p>Built with ❤️ by <a href="https://github.com/AvishkarPatil">Avishkar Patil</a></p>
-  <p>© 2026 IssueMatch. All rights reserved.</p>
+  <p>Built with ❤️ for the Open Source Community.</p>
+  <p>© 2026 IssueMatch. Licensed under <b>MIT License</b>.</p>
 </div>
