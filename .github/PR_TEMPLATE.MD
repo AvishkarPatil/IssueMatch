@@ -1,97 +1,95 @@
-## 📌 Description
+## Summary
 
-Please provide a clear and concise summary of what this pull request does.
+Provide a concise summary of this pull request.
 
-- What problem does it solve?
-- What changes were made?
-- Which part of the project is affected?
-
----
-
-## 🔗 Related Issue
-
-Link the issue this PR addresses (if applicable):
-
-Closes #<issue-number>
+- What problem does this PR address?
+- Why is this change needed for AI Career Advisor?
+- What is the high-level solution?
 
 ---
 
-## 🧩 Type of Change
+## Related Issue
 
-Please mark the relevant option(s):
+Link the issue this PR resolves or contributes to.
 
-- [ ] 🐛 Bug fix
-- [ ] ✨ New feature
-- [ ] 🔧 Enhancement / Improvement
-- [ ] 📝 Documentation update
-- [ ] 🧪 Tests
-- [ ] ⚙️ Refactor / Cleanup
-- [ ] 🚀 Performance improvement
-- [ ] Other (please specify):
+Closes #<issue-number>  
+Related to #<issue-number> (if applicable)
 
 ---
 
-## 🧠 Component(s) Affected
+## Nature of Change
 
-Select all that apply:
+Select the most appropriate option:
 
-- [ ] Frontend (Next.js / UI)
-- [ ] Backend (FastAPI)
-- [ ] AI / ML
-- [ ] Database (Firebase / Firestore)
-- [ ] Authentication (GitHub OAuth)
-- [ ] Documentation
-- [ ] DevOps / Tooling
-- [ ] Other:
-
----
-
-## 🛠️ Implementation Details
-
-Briefly explain **how** the solution was implemented.
-
-- Key files changed:
-- Important design decisions:
-- Trade-offs (if any):
+- [ ]Bug fix
+- [ ] New feature
+- [ ] Enhancement / improvement
+- [ ] Documentation update
+- [ ] Tests
+- [ ] Refactor / cleanup
+- [ ] Performance improvement
+- [ ] Other (please specify)
 
 ---
 
-## 🧪 Testing & Verification
+## Area(s) Impacted
 
-Describe how you tested your changes:
+Check all that apply:
 
-- [ ] Unit tests added/updated
-- [ ] Manual testing performed
-- [ ] Existing tests pass (`npm test`, `pytest`, etc.)
-
-Provide details if necessary:
-
-## Steps to test:
-+ 
-+ 
-+ 
-
+- Frontend (React / UI)
+- Backend (Node.js / FastAPI)
+- AI / Recommendation Logic
+- Database / Firebase
+- Authentication
+- Documentation
+- Tooling / Configuration
 
 ---
 
-## 📸 Screenshots / Demo (if applicable)
+## Implementation Details
 
-Add screenshots, screen recordings, or GIFs for UI-related changes.
+Explain **how** the solution was implemented.
+
+- Key files modified:
+- Important logic or architectural decisions:
+- Any assumptions or constraints considered:
+- Trade-offs made (if any):
 
 ---
 
-## 📋 Checklist (Required)
+## Testing Performed
 
-Please confirm the following before submitting:
+Describe how the changes were verified.
 
-- [ ] My code follows the project’s coding standards
-- [ ] I have tested my changes locally
-- [ ] I have linked the relevant issue
-- [ ] I have updated documentation where necessary
+- Manual testing (describe scenarios tested)
+- Automated tests (if added or updated)
+- Existing tests passing locally
+
+### Steps to test:
+1. 
+2. 
+3. 
+
+---
+
+## Screenshots / Demo (if applicable)
+
+Include screenshots or screen recordings for UI-related changes.
+
+---
+
+## Checklist
+
+Please confirm before requesting review:
+
+- [ ] Code follows the project’s conventions and structure
+- [ ] Changes are scoped only to the stated issue
+- [ ] I have tested the changes locally
+- [ ] Relevant documentation has been updated (if needed)
 - [ ] This PR is ready for review
 
 ---
 
-## 📝 Additional Notes
+## Additional Context
 
-Any extra context, considerations for reviewers, or future follow-ups.
+Add any notes for reviewers, limitations, or future improvements related to this change.
