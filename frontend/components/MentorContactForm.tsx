@@ -10,8 +10,6 @@ import {
   Home
 } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import Link from 'next/link';
 
 export function MentorConnectForm() {
@@ -41,15 +39,22 @@ export function MentorConnectForm() {
     setIsSubmitting(true);
 
     try {
-      const docRef = await addDoc(collection(db, 'mentorRequests'), {
-        issue_id: issueId,
-        name: name,
-        help_needed: helpType,
-        created_at: serverTimestamp(),
-        is_connected: false
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mentor/request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          mentorId: issueId,
+          message: `${name} needs help with: ${helpType}`
+        }),
       });
 
-      setRequestId(docRef.id);
+      if (!response.ok) {
+        throw new Error('Failed to send request');
+      }
+
+      const data = await response.json();
+      setRequestId(data.id);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error connecting to mentor:', error);

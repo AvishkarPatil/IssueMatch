@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/context/auth-context"
-import { getUserByGithubId, updateUserSkills } from "@/lib/firebase-utils"
 import WelcomeScreen from "@/components/skills/welcome-screen"
 import SkillsTest from "@/components/skills/skills-test"
 import ResultsScreen from "@/components/skills/results-screen"
-import { Progress } from "@/components/ui/progress"
 import { useToast } from "@/components/ui/use-toast"
 
 export default function SkillsPage() {
@@ -18,53 +16,38 @@ export default function SkillsPage() {
   const { user, isLoading: authLoading } = useAuth()
   const { toast } = useToast()
 
-  // Check if user has already taken the test
   useEffect(() => {
     const checkTestStatus = async () => {
       try {
-        // Wait for auth context to load
-        if (authLoading) {
-          return;
-        }
+        if (authLoading) return
 
         setLoading(true)
 
-        // If no user is authenticated, redirect to login
         if (!user) {
-          console.log("No authenticated user found, redirecting to login");
           router.push('/login')
           return
         }
 
-        console.log("User authenticated:", user);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/skills/status`, {
+          credentials: 'include',
+        })
 
-        // Check if user has already taken the test using Firebase
-        const userResult = await getUserByGithubId(user.id)
-        console.log("Firebase user data:", userResult);
-
-        if (userResult?.success && userResult.data?.test_taken) {
-          // User has already taken the test, redirect to home/dashboard
-          console.log("User has already taken the test, redirecting to home page");
-          toast({
-            title: "Welcome back!",
-            description: "You've already completed the skills assessment.",
-            duration: 3000,
-          })
-          router.push('/') // Redirect to root/home
-          return
+        if (response.ok) {
+          const data = await response.json()
+          if (data.skillsTestCompleted) {
+            toast({
+              title: "Welcome back!",
+              description: "You've already completed the skills assessment.",
+              duration: 3000,
+            })
+            router.push('/')
+            return
+          }
         }
 
-        console.log("User hasn't taken the test yet, showing test interface");
-        // User hasn't taken the test yet, show the test interface
         setLoading(false)
       } catch (error) {
         console.error("Error checking test status:", error)
-        toast({
-          title: "Error",
-          description: "There was a problem loading your profile. Please try again.",
-          variant: "destructive",
-          duration: 5000,
-        })
         setLoading(false)
       }
     }
@@ -72,7 +55,6 @@ export default function SkillsPage() {
     checkTestStatus()
   }, [router, toast, user, authLoading])
 
-  // Auto-transition from welcome to test screen
   useEffect(() => {
     if (!loading && currentScreen === "welcome") {
       const timer = setTimeout(() => {
@@ -89,51 +71,50 @@ export default function SkillsPage() {
 
   const handleGetStarted = async () => {
     if (!user) {
-      toast({
-        title: "Error",
-        description: "User not authenticated. Please log in again.",
-        variant: "destructive",
-        duration: 5000,
-      })
       router.push('/login')
       return
     }
 
     try {
-      // Save the skills to Firebase and mark test as taken
-      console.log("Saving skills to Firebase:", userSkills);
-      const result = await updateUserSkills(user.id, userSkills)
+      const referralCode = sessionStorage.getItem('referralCode')
+      const endpoint = referralCode 
+        ? `${process.env.NEXT_PUBLIC_API_URL}/skills/submit-with-referral?referralCode=${referralCode}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/skills/submit`
+      
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ skills: userSkills }),
+      })
 
-      if (result.success) {
-        console.log("Skills saved successfully");
+      if (response.ok) {
+        sessionStorage.removeItem('referralCode')
         toast({
           title: "Skills Saved",
           description: "Your skills have been saved successfully!",
           duration: 3000,
         })
-        // Redirect to home or match page
         router.push("/")
       } else {
-        console.error("Error saving skills:", result.error);
         toast({
           title: "Error",
-          description: "There was a problem saving your skills. Please try again.",
+          description: "There was a problem saving your skills.",
           variant: "destructive",
           duration: 5000,
         })
       }
     } catch (error) {
-      console.error("Error in handleGetStarted:", error);
+      console.error("Error saving skills:", error)
       toast({
         title: "Error",
-        description: "There was a problem saving your skills. Please try again.",
+        description: "There was a problem saving your skills.",
         variant: "destructive",
         duration: 5000,
       })
     }
   }
 
-  // Loading state - show while checking auth or loading user data
   if (loading || authLoading) {
     return (
       <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white flex items-center justify-center">
@@ -150,9 +131,7 @@ export default function SkillsPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white">
       {currentScreen === "welcome" && <WelcomeScreen />}
-
       {currentScreen === "test" && <SkillsTest onComplete={handleTestComplete} />}
-
       {currentScreen === "results" && <ResultsScreen skills={userSkills} onGetStarted={handleGetStarted} />}
     </div>
   )

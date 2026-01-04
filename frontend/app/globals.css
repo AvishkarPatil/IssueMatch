@@ -18,6 +18,40 @@ body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
   transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="%23e88951"><path d="M2 2 L2 16 L6 12 L9 18 L11 17 L8 11 L14 11 Z"/></svg>') 2 2, auto;
+}
+
+/* Custom cursor for clickable elements */
+a, button, [role="button"], input[type="submit"], input[type="button"] {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23e88951"><path d="M8 2 L8 14 L11 11 L14 18 L16 17 L13 10 L18 10 Z"/></svg>') 4 4, pointer;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(232, 137, 81, 0.3), rgba(214, 120, 64, 0.3));
+  border-radius: 6px;
+  border: 2px solid #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  border-color: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(232, 137, 81, 0.5), rgba(214, 120, 64, 0.5));
 }
 
 @layer utilities {

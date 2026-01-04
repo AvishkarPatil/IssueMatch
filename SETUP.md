@@ -7,8 +7,8 @@ Complete setup instructions for running IssueMatch locally.
 - Python 3.9 or higher
 - Node.js 18 or higher
 - Git
-- Firebase account
-- Google Cloud account (for AI APIs)
+- MongoDB Atlas account (free tier)
+- Google AI Studio API key
 - GitHub OAuth app
 
 ---
@@ -41,8 +41,8 @@ pip install -r requirements.txt
 Create `.env` file in `backend/` directory:
 
 ```env
-# Firebase
-FIREBASE_CREDENTIALS_PATH=app/services/keys.json
+# MongoDB
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/?appName=Cluster0
 
 # Google AI
 GOOGLE_AI_STUDIO_API_KEY=your_gemini_api_key
@@ -59,14 +59,7 @@ PROJECT_NAME="IssueMatch"
 API_V1_STR="/api/v1"
 ```
 
-### 5. Add Firebase Credentials
-
-Place your Firebase service account JSON file at:
-```
-backend/app/services/keys.json
-```
-
-### 6. Start Backend Server
+### 5. Start Backend Server
 ```bash
 uvicorn app.main:app --reload --port 8000
 ```
@@ -92,16 +85,11 @@ npm install
 Create `.env.local` file in `frontend/` directory:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-# Firebase Configuration
-NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+GOOGLE_AI_API_KEY=your_gemini_api_key
+GOOGLE_AI_MODEL=gemini-2.0-flash-lite
 ```
 
 ### 4. Start Development Server
@@ -130,44 +118,41 @@ Frontend will be available at: http://localhost:3000
 
 ---
 
-## Firebase Setup
+## MongoDB Setup
 
-### 1. Create Firebase Project
-1. Go to [Firebase Console](https://console.firebase.google.com)
-2. Create new project
-3. Enable Firestore Database
+### 1. Create MongoDB Atlas Account
+1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create free account
+3. Create new cluster (M0 free tier)
 
-### 2. Get Configuration
-1. Project Settings → General → Your apps
-2. Add web app
-3. Copy configuration values to `frontend/.env.local`
+### 2. Get Connection String
+1. Click "Connect" on your cluster
+2. Choose "Connect your application"
+3. Copy connection string
+4. Replace `<password>` with your database password
+5. Add to `backend/.env` as `MONGODB_URI`
 
-### 3. Get Service Account
-1. Project Settings → Service accounts
-2. Generate new private key
-3. Save as `backend/app/services/keys.json`
+### 3. Configure Network Access
+1. Network Access → Add IP Address
+2. Allow access from anywhere (0.0.0.0/0) for development
 
-### 4. Create Collections
-Create these Firestore collections:
-- `users`
-- `leaderboard_scores`
-- `mentors`
-- `referrals`
+### 4. Collections (Auto-created)
+These collections are created automatically:
+- `users` - User profiles and skills
+- `leaderboard` - Contribution rankings
+- `mentorship_requests` - Mentor requests
+- `referrals` - Referral tracking
+- `contributions` - User contributions
 
 ---
 
-## Google Cloud AI Setup
+## Google AI Studio Setup
 
-### 1. Enable APIs
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Enable these APIs:
-   - Cloud Natural Language API
-   - Vertex AI API
-
-### 2. Get API Key
-1. APIs & Services → Credentials
+### 1. Get API Key
+1. Go to [Google AI Studio](https://aistudio.google.com/apikey)
 2. Create API key
 3. Add to `backend/.env` as `GOOGLE_AI_STUDIO_API_KEY`
+4. Add to `frontend/.env.local` as `GOOGLE_AI_API_KEY`
 
 ---
 
@@ -197,9 +182,10 @@ Open http://localhost:3000 in browser
 pip install -r requirements.txt --upgrade
 ```
 
-**Firebase connection failed**
-- Check `keys.json` path
-- Verify Firebase credentials
+**MongoDB connection failed**
+- Check connection string format
+- Verify IP whitelist in Atlas
+- Check username/password
 
 **GitHub OAuth not working**
 - Verify callback URL matches exactly
@@ -215,12 +201,7 @@ npm install
 
 **Environment variables not loading**
 - Restart dev server after changing `.env.local`
-- Ensure variables start with `NEXT_PUBLIC_`
-
-**Build errors**
-```bash
-npm run build
-```
+- Ensure chatbot variables are set
 
 ---
 

@@ -3,8 +3,8 @@ uvicorn==0.29.0
 pydantic==2.11.3
 pydantic-settings==2.2.1
 itsdangerous==2.1.2
-firebase-admin==6.5.0
-google-cloud-language==2.13.4
+motor==3.3.2
+pymongo==4.6.1
 google-generativeai==0.8.5
 faiss-cpu==1.10.0
 sentence-transformers==4.1.0
@@ -15,4 +15,3 @@ starlette==0.37.2
 beautifulsoup4==4.13.0
 requests
 numpy
-vertexai

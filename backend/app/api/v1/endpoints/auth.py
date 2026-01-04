@@ -11,7 +11,7 @@ router = APIRouter()
 GITHUB_AUTH_URL = "https://github.com/login/oauth/authorize"
 GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token"
 GITHUB_CALLBACK_URL = f"http://localhost:8000{settings.API_V1_STR}/auth/callback"
-GITHUB_SCOPES = "read:user repo"  # Permissions needed for user data and repo access
+GITHUB_SCOPES = "read:user user:email repo"  # Permissions needed for user data and repo access
 FRONTEND_LOGIN_SUCCESS_URL = "http://localhost:3000/skills"  # Redirect after successful login
 FRONTEND_LOGIN_FAILURE_URL = "http://localhost:3000/login?error=auth_failed"
 FRONTEND_LOGOUT_REDIRECT_URL = "http://localhost:3000/login"

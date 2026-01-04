@@ -12,7 +12,7 @@
   [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-green?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
   [![Next.js](https://img.shields.io/badge/Next.js-15+-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
-  [![Firebase](https://img.shields.io/badge/Firebase-Latest-orange?style=for-the-badge&logo=firebase&logoColor=white)](https://firebase.google.com)
+  [![MongoDB](https://img.shields.io/badge/MongoDB-Latest-green?style=for-the-badge&logo=mongodb&logoColor=white)](https://mongodb.com)
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
   [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
@@ -33,22 +33,22 @@
 ### ✨ Features
 
 ### 🤖 AI-Powered Matching
-- **Smart Profile Analysis**: Automatically extracts skills from your GitHub profile using Google Natural Language API
+- **Smart Profile Analysis**: Extracts skills from GitHub profile
 - **Vector Similarity Search**: FAISS-powered matching with 384-dimensional embeddings
-- **Intelligent Query Generation**: Gemini 2.0 Flash creates optimized GitHub search queries
-- **Real-time Learning**: ML system improves recommendations based on user feedback
+- **Intelligent Query Generation**: AI creates optimized GitHub search queries
+- **Real-time Learning**: ML system improves recommendations based on feedback
 
 ### 👤 User Experience
 - **GitHub OAuth**: Secure one-click authentication
-- **Interactive Skill Assessment**: Personalized skill evaluation system
-- **AI Chatbot Assistant**: Gemini-powered help for understanding issues
-- **Dark/Light Theme**: Modern, accessible UI with theme switching
+- **Interactive Skill Assessment**: 10-question skill evaluation system
+- **AI Chatbot Assistant**: AI-powered help for understanding issues
+- **Dark/Light Theme**: Modern UI with theme switching
 
 ### 🎓 Mentorship & Growth
 - **Mentor Matching**: Connect with experienced developers
-- **Leaderboard System**: Track contributions and compete
-- **Referral Program**: Grow the community together
-- **Progress Analytics**: Visualize your open source journey
+- **Leaderboard System**: Contribution-based ranking (10/25/50 points)
+- **Referral Program**: Earn 5 points per referral
+- **Progress Analytics**: Track your open source journey
 
 ---
 
@@ -57,11 +57,11 @@
 ### Backend
 - **Framework**: FastAPI (Python 3.9+)
 - **AI/ML**:
-  - Google AI Studio (Gemini 2.0 Flash Lite) - AI Chatbot
+  - Google AI Studio - AI Chatbot
   - FAISS (v1.7.x) - Vector similarity search
   - Sentence Transformers (all-MiniLM-L6-v2) - Text embeddings
 - **APIs**: GitHub REST API (2022-11-28)
-- **Database**: Firebase Firestore
+- **Database**: MongoDB Atlas
 
 ### Frontend
 - **Framework**: Next.js 15+ (React 19)
@@ -72,7 +72,7 @@
 
 ### Authentication & Storage
 - **Auth**: GitHub OAuth 2.0
-- **Database**: Firebase Firestore
+- **Database**: MongoDB Atlas
 - **Session**: Server-side sessions with FastAPI
 
 ---

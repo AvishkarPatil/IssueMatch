@@ -13,28 +13,43 @@ export default function LoginPage() {
   const { isAuthenticated, user, checkAuth } = useAuth()
 
   useEffect(() => {
+    let mounted = true;
+    
     const checkAuthStatus = async () => {
-      const isAuth = await checkAuth()
-      if (isAuth && user) {
+      if (!mounted) return;
+      
+      const isAuth = await checkAuth();
+      if (isAuth && user && mounted) {
         if (user.test_taken) {
-          router.push('/match')
+          router.push('/match');
         } else {
-          router.push('/skills')
+          router.push('/skills');
         }
       }
-    }
-    checkAuthStatus()
+    };
+    
+    checkAuthStatus();
 
-    const urlParams = new URLSearchParams(window.location.search)
-    const errorParam = urlParams.get('error')
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorParam = urlParams.get('error');
+    const refParam = urlParams.get('ref');
+    
+    if (refParam) {
+      sessionStorage.setItem('referralCode', refParam);
+    }
+    
     if (errorParam) {
       setError(
         errorParam === 'auth_failed'
           ? "GitHub authentication failed. Please try again."
           : "An error occurred during login. Please try again."
-      )
+      );
     }
-  }, [router, checkAuth, user])
+    
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleGitHubLogin = () => {
     setIsLoading(true)

@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Avatar } from "@/components/ui/avatar"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
+import rehypeHighlight from "rehype-highlight"
+import "highlight.js/styles/github-dark.css"
 
 type Message = {
   id: string
@@ -180,7 +184,15 @@ export default function IssueMatchAI() {
                         : "bg-white dark:bg-[#161b22] text-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-800 rounded-bl-sm"
                     }`}
                   >
-                    <p className="text-sm leading-relaxed">{message.content}</p>
+                    {message.role === "user" ? (
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                    ) : (
+                      <div className="text-sm leading-relaxed prose prose-sm dark:prose-invert max-w-none prose-pre:bg-[#0d1117] prose-pre:border prose-pre:border-gray-800 prose-code:text-[#e88951] prose-code:bg-gray-100 dark:prose-code:bg-[#0d1117] prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+                          {message.content}
+                        </ReactMarkdown>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

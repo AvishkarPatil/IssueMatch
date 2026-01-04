@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
-    // Parse request body
     const body = await request.json();
-    const { mentorId, message, issueLink, preferredTime } = body;
+    const { mentorId, message } = body;
     
     if (!mentorId || !message) {
       return NextResponse.json(
@@ -13,12 +12,20 @@ export async function POST(request: Request) {
       );
     }
     
-    // For demo purposes, just return a success response
-    return NextResponse.json({
-      id: 'demo-request-' + Date.now(),
-      status: 'pending',
-      message: 'Mentorship request sent successfully'
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mentor/request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ mentorId, message }),
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return NextResponse.json({ error: error.detail || 'Failed to send request' }, { status: response.status });
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Error requesting mentor:', error);
     return NextResponse.json(

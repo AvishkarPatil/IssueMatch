@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
-from typing import Optional
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
-from app.services.firebase_service import get_firebase_admin
-from app.dependencies import get_current_user
-import uuid
+from app.services.mongodb_service import get_database
+import secrets
 from datetime import datetime
+from bson import ObjectId
 
 router = APIRouter(
     prefix="/referral",
@@ -22,144 +21,61 @@ class ReferralResponse(BaseModel):
     pointsAwarded: int
     createdAt: str
 
-@router.post("/validate", response_model=dict)
-async def validate_referral(
-    referral: ReferralCreate,
-    current_user: dict = Depends(get_current_user)
-):
-    """
-    Validate a referral code and return the referrer's information
-    """
-    try:
-        db = get_firebase_admin().firestore_client
-        
-        # Find the user with this referral code
-        users_ref = db.collection("users")
-        query = users_ref.where("referralCode", "==", referral.referralCode).limit(1)
-        results = query.get()
-        
-        if not results:
-            raise HTTPException(status_code=404, detail="Invalid referral code")
-            
-        referrer = results[0]
-        referrer_data = referrer.to_dict()
-        
-        # Don't allow self-referrals
-        if referrer.id == current_user["uid"]:
-            raise HTTPException(status_code=400, detail="Cannot use your own referral code")
-            
-        return {
-            "valid": True,
-            "referrerId": referrer.id,
-            "referrerName": referrer_data.get("displayName", "")
-        }
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to validate referral: {str(e)}")
+def generate_referral_code():
+    return secrets.token_urlsafe(6).upper().replace('-', '').replace('_', '')[:8]
 
-@router.post("/complete", response_model=ReferralResponse)
-async def complete_referral(
-    referral: ReferralCreate,
-    current_user: dict = Depends(get_current_user)
-):
-    """
-    Complete a referral after user signs up with a referral code
-    """
+async def get_github_user_id(request: Request) -> str:
+    token = request.session.get('github_token')
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    import httpx
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            "https://api.github.com/user",
+            headers={"Authorization": f"Bearer {token}"}
+        )
+        if response.status_code != 200:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        user_data = response.json()
+        return str(user_data["id"])
+
+@router.post("/generate-code", response_model=dict)
+async def generate_code(request: Request):
     try:
-        db = get_firebase_admin().firestore_client
+        user_id = await get_github_user_id(request)
+        db = get_database()
         
-        # Validate the referral code first
-        users_ref = db.collection("users")
-        query = users_ref.where("referralCode", "==", referral.referralCode).limit(1)
-        results = query.get()
+        user = await db.users.find_one({"githubId": user_id})
+        if user and user.get("referralCode"):
+            return {"referralCode": user["referralCode"]}
         
-        if not results:
-            raise HTTPException(status_code=404, detail="Invalid referral code")
-            
-        referrer = results[0]
+        referral_code = generate_referral_code()
         
-        # Don't allow self-referrals
-        if referrer.id == current_user["uid"]:
-            raise HTTPException(status_code=400, detail="Cannot use your own referral code")
+        while await db.users.find_one({"referralCode": referral_code}):
+            referral_code = generate_referral_code()
         
-        # Check if this user has already been referred
-        referrals_ref = db.collection("referrals")
-        existing_query = referrals_ref.where("referredUserId", "==", current_user["uid"]).limit(1)
-        existing_results = existing_query.get()
+        await db.users.update_one(
+            {"githubId": user_id},
+            {"$set": {"referralCode": referral_code}},
+            upsert=True
+        )
         
-        if existing_results:
-            raise HTTPException(status_code=400, detail="User has already been referred")
-        
-        # Create the referral record
-        referral_id = str(uuid.uuid4())
-        points_awarded = 50  # 50 points per successful referral
-        now = datetime.now().isoformat()
-        
-        referral_data = {
-            "referrerId": referrer.id,
-            "referredUserId": current_user["uid"],
-            "status": "completed",
-            "pointsAwarded": points_awarded,
-            "createdAt": now
-        }
-        
-        # Save to Firestore
-        referrals_ref.document(referral_id).set(referral_data)
-        
-        # Update the referrer's leaderboard score
-        leaderboard_ref = db.collection("leaderboard_scores").document(referrer.id)
-        leaderboard_doc = leaderboard_ref.get()
-        
-        if leaderboard_doc.exists:
-            leaderboard_data = leaderboard_doc.to_dict()
-            current_score = leaderboard_data.get("score", 0)
-            current_referrals = leaderboard_data.get("referrals", 0)
-            
-            leaderboard_ref.update({
-                "score": current_score + points_awarded,
-                "referrals": current_referrals + 1
-            })
-        else:
-            # Create a new leaderboard entry for the referrer
-            referrer_data = users_ref.document(referrer.id).get().to_dict()
-            
-            leaderboard_ref.set({
-                "username": referrer_data.get("displayName", ""),
-                "avatarUrl": referrer_data.get("photoURL", ""),
-                "score": points_awarded,
-                "contributions": 0,
-                "mentorships": 0,
-                "referrals": 1,
-                "skills": referrer_data.get("skills", []),
-                "updatedAt": now
-            })
-        
-        return {
-            "id": referral_id,
-            **referral_data
-        }
-    except HTTPException:
-        raise
+        return {"referralCode": referral_code}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to complete referral: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/stats", response_model=dict)
-async def get_referral_stats(
-    current_user: dict = Depends(get_current_user)
-):
-    """
-    Get referral statistics for the current user
-    """
+async def get_referral_stats(request: Request):
     try:
-        db = get_firebase_admin().firestore_client
-        referrals_ref = db.collection("referrals")
-        query = referrals_ref.where("referrerId", "==", current_user["uid"])
-        results = query.get()
+        user_id = await get_github_user_id(request)
+        db = get_database()
         
-        total_referrals = len(results)
-        successful_referrals = sum(1 for doc in results if doc.to_dict().get("status") == "completed")
-        points_earned = sum(doc.to_dict().get("pointsAwarded", 0) for doc in results)
+        referrals = await db.referrals.find({"referrerId": user_id}).to_list(None)
+        
+        total_referrals = len(referrals)
+        successful_referrals = sum(1 for r in referrals if r.get("status") == "completed")
+        points_earned = sum(r.get("pointsAwarded", 0) for r in referrals)
         
         return {
             "totalReferrals": total_referrals,
@@ -167,4 +83,73 @@ async def get_referral_stats(
             "pointsEarned": points_earned
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get referral stats: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/validate", response_model=dict)
+async def validate_referral(referral: ReferralCreate, request: Request):
+    try:
+        user_id = await get_github_user_id(request)
+        db = get_database()
+        
+        referrer = await db.users.find_one({"referralCode": referral.referralCode})
+        if not referrer:
+            raise HTTPException(status_code=404, detail="Invalid referral code")
+        
+        if referrer["githubId"] == user_id:
+            raise HTTPException(status_code=400, detail="Cannot use your own referral code")
+        
+        return {
+            "valid": True,
+            "referrerId": referrer["githubId"],
+            "referrerName": referrer.get("displayName", "")
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/complete", response_model=ReferralResponse)
+async def complete_referral(referral: ReferralCreate, request: Request):
+    try:
+        user_id = await get_github_user_id(request)
+        db = get_database()
+        
+        referrer = await db.users.find_one({"referralCode": referral.referralCode})
+        if not referrer:
+            raise HTTPException(status_code=404, detail="Invalid referral code")
+        
+        if referrer["githubId"] == user_id:
+            raise HTTPException(status_code=400, detail="Cannot use your own referral code")
+        
+        existing = await db.referrals.find_one({"referredUserId": user_id})
+        if existing:
+            raise HTTPException(status_code=400, detail="User has already been referred")
+        
+        now = datetime.utcnow().isoformat()
+        referral_data = {
+            "referrerId": referrer["githubId"],
+            "referredUserId": user_id,
+            "status": "completed",
+            "pointsAwarded": 50,
+            "createdAt": now
+        }
+        
+        result = await db.referrals.insert_one(referral_data)
+        
+        await db.leaderboard.update_one(
+            {"githubId": referrer["githubId"]},
+            {
+                "$inc": {"score": 50, "referrals": 1},
+                "$set": {"updatedAt": now}
+            },
+            upsert=True
+        )
+        
+        return {
+            "id": str(result.inserted_id),
+            **referral_data
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
