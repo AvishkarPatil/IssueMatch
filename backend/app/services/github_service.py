@@ -6,6 +6,11 @@ import os
 import traceback
 from fastapi import HTTPException, status
 from typing import Dict, List, Set, Optional, Any
+import time
+
+_STATS_CACHE: dict[str, dict] = {}
+CACHE_TTL_SECONDS = 60 * 60  # 1 hour
+
 
 # --- GitHub API Constants ---
 GITHUB_API_URL = "https://api.github.com"
@@ -208,3 +213,136 @@ async def get_profile_text_data(token: str, max_repos_for_readme: int = MAX_REPO
     }
     return final_result
 
+async def get_user_stats(token: str, username: str) -> Dict[str, Any]:
+    """
+    Fetches real-time stats for the user:
+    1. Pull Requests count (Search API)
+    2. Issues Closed count (Search API)
+    3. Total Stars (Sum of stars from user's repos)
+    4. Total Contriutions(Using GraphQL)
+    """
+
+    # Implementing in-memory cache
+    current_time = time.time()
+
+    cached = _STATS_CACHE.get(username)
+    if cached:
+        if current_time - cached["timestamp"] < CACHE_TTL_SECONDS:
+            print(f"DEBUG [GitHub Service]: Returning cached stats for {username}")
+            return cached["data"]
+
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, 
+            detail="GitHub token required for stats"
+        )
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github.v3+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+    }
+
+    graphql_headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+
+    async with httpx.AsyncClient() as client:
+        try:
+            # to get pull requests count
+            pr_url = f"{GITHUB_API_URL}/search/issues"
+            pr_params = {"q": f"author:{username} type:pr"}
+            
+            # Issues Closed Count
+            issues_url = f"{GITHUB_API_URL}/search/issues"
+            issues_params = {"q": f"author:{username} type:issue is:closed"}
+            
+            # Starred repos
+            repos_url = f"{GITHUB_API_URL}/users/{username}/repos"
+            repos_params = {"per_page": 100}
+
+            # To get the contributions
+            graphql_url = "https://api.github.com/graphql"
+            query = """ query($username: String!) {
+                        user(login: $username) {
+                            contributionsCollection {
+                            contributionCalendar {
+                                totalContributions
+                            }
+                            }
+                        }
+                    } """
+            payload = {"query": query, "variables": {"username": username} }
+            # Execute requests concurrently for performance
+            print(f"DEBUG [GitHub Service]: Fetching stats for {username}...")
+            responses = await asyncio.gather(
+                client.get(pr_url, headers=headers, params=pr_params),
+                client.get(issues_url, headers=headers, params=issues_params),
+                client.get(repos_url, headers=headers, params=repos_params),
+                client.post(graphql_url, json=payload, headers=graphql_headers),
+                return_exceptions=True
+            )
+
+            # Process PR Response
+            pr_res = responses[0]
+            total_prs = 0
+            if isinstance(pr_res, httpx.Response) and pr_res.status_code == 200:
+                total_prs = pr_res.json().get("total_count", 0)
+            else:
+                print(f"WARN [GitHub Service]: Failed to fetch PRs. {pr_res}")
+
+            # Process Issues Response
+            issues_res = responses[1]
+            closed_issues = 0
+            if isinstance(issues_res, httpx.Response) and issues_res.status_code == 200:
+                closed_issues = issues_res.json().get("total_count", 0)
+            else:
+                print(f"WARN [GitHub Service]: Failed to fetch Issues. {issues_res}")
+
+            # Process Repos/Stars Response
+            repos_res = responses[2]
+            total_stars = 0
+            if isinstance(repos_res, httpx.Response) and repos_res.status_code == 200:
+                repos_data = repos_res.json()
+                if isinstance(repos_data, list):
+                    total_stars = sum(repo.get("stargazers_count", 0) for repo in repos_data)
+            else:
+                print(f"WARN [GitHub Service]: Failed to fetch Repos. {repos_res}")
+
+            total_contributions = 0
+            graphql_res = responses[3]
+            if isinstance(graphql_res, httpx.Response) and graphql_res.status_code == 200:
+                try:
+                    total_contributions = (
+                        graphql_res.json()["data"]["user"]
+                        ["contributionsCollection"]["contributionCalendar"]
+                        ["totalContributions"]
+                    )
+                except (KeyError, TypeError):
+                    print("WARN [GitHub GraphQL]: Unexpected response", graphql_res.json())
+
+            stats = {
+                "contributions": total_contributions,
+                "pullRequests": total_prs,
+                "issuesClosed": closed_issues,
+                "stars": total_stars
+            }
+            
+            print(f"DEBUG [GitHub Service]: Stats fetched: {stats}")
+            _STATS_CACHE[username] = {
+                "data": stats,
+                "timestamp": current_time
+            }
+
+            return stats
+
+        except Exception as e:
+            print(f"ERROR [GitHub Service]: Unexpected error fetching stats: {str(e)}")
+            # Return 0s so the frontend doesn't break
+            return {
+                "contributions": 0,
+                "pullRequests": 0,
+                "issuesClosed": 0,
+                "stars": 0
+            }
