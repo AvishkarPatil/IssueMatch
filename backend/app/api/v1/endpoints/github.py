@@ -75,3 +75,19 @@ async def get_profile_text_data(
             detail=f"GitHub API error: {str(e)}"
         )
 
+@router.get("/stats/{username}")
+async def get_github_stats(username: str, token: str = Depends(get_github_token)):
+    """
+    Fetches real-time statistics for a specific GitHub user:
+    - Total Pull Requests
+    - Closed Issues
+    - Total Stars received
+    """
+    try:
+        stats = await github_service.get_user_stats(token, username)
+        return stats
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"GitHub API error fetching stats: {str(e)}"
+        )
