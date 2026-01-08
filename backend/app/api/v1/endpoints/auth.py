@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.responses import RedirectResponse
 from starlette.requests import Request
 from ....core.config import settings
+from ....middleware.rate_limit import limiter
 
 router = APIRouter()
 
@@ -17,6 +18,7 @@ FRONTEND_LOGIN_FAILURE_URL = "http://localhost:3000/login?error=auth_failed"
 FRONTEND_LOGOUT_REDIRECT_URL = "http://localhost:3000/login"
 
 @router.get("/login")
+@limiter.limit("10/minute")
 async def github_login_redirect(request: Request):
     """
     Initiates GitHub OAuth flow by redirecting to GitHub's authorization page.
@@ -35,6 +37,7 @@ async def github_login_redirect(request: Request):
 
 
 @router.get("/callback")
+@limiter.limit("10/minute")
 async def github_callback_handler(request: Request, code: str = None, state: str = None):
     """
     Handles the callback from GitHub after user authorization.

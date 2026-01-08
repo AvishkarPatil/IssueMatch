@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from ....services.github_service import get_profile_text_data
 from ....services.faiss_search import get_top_matched_issues
 from ...v1.endpoints.auth import get_github_token
+from ....middleware.rate_limit import limiter
 import logging
 
 # Set up logging
@@ -42,6 +43,7 @@ class MatchResponse(BaseModel):
     summary="Match Issues using FAISS + Sentence Transformers",
     tags=["Matching", "Recommendations"]
 )
+@limiter.limit("30/minute")
 async def match_issues(
         request: Request,
         keywords: List[str] = Query(default=[], description="Technical keywords/skills to match"),
