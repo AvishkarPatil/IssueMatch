@@ -120,8 +120,12 @@ export default function LoginPage() {
           {/* Terms */}
           <p className="text-center text-gray-500 dark:text-white/40 text-sm mt-8">
             By signing in, you agree to our{" "}
-            <Link href="#" className="text-[#e88951] hover:text-[#d67840] transition-colors">
+            <Link href="/terms" className="text-[#e88951] hover:text-[#d67840] transition-colors">
               Terms of Service
+            </Link>
+            {" "}and{" "}
+            <Link href="/privacy" className="text-[#e88951] hover:text-[#d67840] transition-colors">
+              Privacy Policy
             </Link>
           </p>
 
