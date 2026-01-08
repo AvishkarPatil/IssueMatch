@@ -4,11 +4,14 @@ from typing import Dict, List, Optional
 from ....services.vertex_ai_service import analyze_profile_text, generate_github_query_with_genai
 from ...v1.endpoints.auth import get_github_token
 from ....services.github_service import get_profile_text_data, get_user_profile
+from ....middleware.rate_limit import limiter
+from starlette.requests import Request as StarletteRequest
 
 router = APIRouter()
 
 
 @router.get("/analyze-profile", response_model=Dict[str, List[str]])
+@limiter.limit("20/minute")
 async def analyze_github_profile(request: Request, token: str = Depends(get_github_token)):
     """
     Analyzes the authenticated GitHub user's profile using Google Cloud Natural Language API.
@@ -90,6 +93,7 @@ async def analyze_github_profile(request: Request, token: str = Depends(get_gith
 
 
 @router.get("/generate-query", response_model=Dict[str, str])
+@limiter.limit("20/minute")
 async def generate_github_query(
         request: Request,
         token: str = Depends(get_github_token),

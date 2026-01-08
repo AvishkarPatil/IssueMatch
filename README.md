@@ -118,6 +118,14 @@ npm run dev
 
 For detailed setup instructions, see [SETUP.md](SETUP.md)
 
+### Running Tests
+
+```bash
+cd backend
+pip install -r requirements.txt
+pytest tests/ -v
+```
+
 ---
 
 ### 🔄 How It Works

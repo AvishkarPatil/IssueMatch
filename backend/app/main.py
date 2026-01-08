@@ -6,6 +6,9 @@ from contextlib import asynccontextmanager
 from .core.config import settings
 from .api.v1.router import api_router as api_router_v1
 from .services.mongodb_service import connect_to_mongo, close_mongo_connection
+from .middleware.rate_limit import limiter
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,6 +21,9 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     lifespan=lifespan
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 origins = [
     "http://localhost:3000",
