@@ -31,36 +31,52 @@ export default function SearchPageClient() {
 
   const [issues, setIssues] = useState<GitHubIssue[]>([])
   const [loading, setLoading] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [totalCount, setTotalCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
 
   useEffect(() => {
     if (!query) return
 
-    const fetchIssues = async () => {
-      setLoading(true)
+    const fetchIssues = async (page: number = 1, append: boolean = false) => {
+      if (page === 1) {
+        setLoading(true)
+      } else {
+        setLoadingMore(true)
+      }
       setError(null)
 
       try {
         const response = await fetch(
-          `http://localhost:8000/api/v1/github/search/issues?query=${encodeURIComponent(query)}`,
+          `http://localhost:8000/api/v1/github/search/issues?query=${encodeURIComponent(query)}&page=${page}&per_page=20`,
           {
             credentials: "include",
           }
         )
 
         if (!response.ok) {
-          throw new Error(`API error: ${response.status}`)
+          throw new Error(`API error: ${response.status}`)  
         }
 
         const data: SearchResponse = await response.json()
-        setIssues(data.items || [])
+        
+        if (append) {
+          setIssues(prev => [...prev, ...data.items])
+        } else {
+          setIssues(data.items || [])
+        }
+        
         setTotalCount(data.total_count || 0)
+        setCurrentPage(page)
+        setHasMore(data.items.length === 20 && (page * 20) < data.total_count)
       } catch (err) {
         console.error("Error fetching search results:", err)
         setError(err instanceof Error ? err.message : "Failed to fetch search results")
       } finally {
         setLoading(false)
+        setLoadingMore(false)
       }
     }
 
@@ -77,6 +93,37 @@ export default function SearchPageClient() {
     e.preventDefault()
     if (searchInput.trim()) {
       router.push(`/search?query=${encodeURIComponent(searchInput.trim())}`)
+      setCurrentPage(1)
+      setHasMore(false)
+    }
+  }
+
+  const loadMoreIssues = async () => {
+    const nextPage = currentPage + 1
+    setLoadingMore(true)
+    setError(null)
+
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/v1/github/search/issues?query=${encodeURIComponent(query)}&page=${nextPage}&per_page=20`,
+        {
+          credentials: "include",
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`)
+      }
+
+      const data: SearchResponse = await response.json()
+      setIssues(prev => [...prev, ...data.items])
+      setCurrentPage(nextPage)
+      setHasMore(data.items.length === 20 && ((nextPage + 1) * 20) < data.total_count)
+    } catch (err) {
+      console.error("Error fetching more search results:", err)
+      setError(err instanceof Error ? err.message : "Failed to fetch more search results")
+    } finally {
+      setLoadingMore(false)
     }
   }
 
@@ -228,6 +275,18 @@ export default function SearchPageClient() {
               )}
             </div>
           ))}
+          
+          {hasMore && (
+            <div className="text-center mt-8">
+              <button
+                onClick={loadMoreIssues}
+                disabled={loadingMore}
+                className="px-6 py-3 bg-[#e88951] hover:bg-[#d67840] disabled:bg-gray-400 text-white font-medium rounded-full transition-colors shadow-md disabled:cursor-not-allowed"
+              >
+                {loadingMore ? "Loading..." : "Load More Issues"}
+              </button>
+            </div>
+          )}
         </div>
       )}
 

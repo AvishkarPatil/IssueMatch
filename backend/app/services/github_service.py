@@ -53,15 +53,15 @@ async def get_user_repos(token: str, per_page: int = 30) -> List[Dict[str, Any]]
         except Exception as exc: print(f"ERROR [GitHub Service]: Unexpected error fetching user repos: {exc}"); print(traceback.format_exc()); raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An unexpected error occurred fetching user repos.") from exc
 
 
-async def search_issues(token: Optional[str], query: str) -> Dict[str, Any]:
+async def search_issues(token: Optional[str], query: str, page: int = 1, per_page: int = 20) -> Dict[str, Any]:
     """ Searches for issues on GitHub using the provided query string. """
     headers = {"Accept": "application/vnd.github.v3+json", "X-GitHub-Api-Version": "2022-11-28"}
     if token: headers["Authorization"] = f"Bearer {token}"
     else: print("WARN [GitHub Service]: Performing GitHub issue search without authentication. Rate limits are stricter.")
-    params = {"q": query, "per_page": 20}; url = f"{GITHUB_API_URL}/search/issues"
+    params = {"q": query, "per_page": per_page, "page": page}; url = f"{GITHUB_API_URL}/search/issues"
     async with httpx.AsyncClient() as client:
         try:
-            print(f"DEBUG [GitHub Service]: Searching issues with query: '{query}'")
+            print(f"DEBUG [GitHub Service]: Searching issues with query: '{query}' page: {page}, per_page: {per_page}")
             response = await client.get(url, headers=headers, params=params, timeout=20.0)
             response.raise_for_status(); search_results = response.json()
             print(f"DEBUG [GitHub Service]: Found {search_results.get('total_count', 0)} total issues matching query."); return search_results
