@@ -28,7 +28,7 @@ export default function FloatingNavbar() {
   ]
 
   const handleLogin = () => {
-    window.location.href = "http://localhost:8000/api/v1/auth/login"
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`
   }
 
   return (
@@ -90,7 +90,7 @@ export default function FloatingNavbar() {
               <button
                 onClick={(e) => {
                   e.preventDefault();
-                  window.location.href = "http://localhost:8000/api/v1/auth/logout";
+                  window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`;
                 }}
                 className="flex items-center justify-center w-9 h-9 rounded-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 transition-colors cursor-pointer"
                 title="Logout"
@@ -214,7 +214,7 @@ export default function FloatingNavbar() {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        window.location.href = "http://localhost:8000/api/v1/auth/logout";
+                        window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`;
                       }}
                       className="w-full flex items-center justify-center gap-2 px-4 py-3 text-base font-semibold text-red-500 hover:text-red-600 transition-colors rounded-lg hover:bg-red-500/10 cursor-pointer"
                     >

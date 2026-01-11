@@ -99,7 +99,7 @@ export default function ProfilePage() {
       try {
         // Fetch profile data from the backend API endpoint
         // Assumes backend handles authentication (e.g., via cookies)
-        const response = await fetch("http://localhost:8000/api/v1/github/profile", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/github/profile`, {
           credentials: "include", // Send cookies along with the request
         })
 
@@ -178,7 +178,7 @@ export default function ProfilePage() {
   const handleLogout = () => {
     // Redirects to the backend logout endpoint
     // Backend should handle clearing session/cookie and potentially redirecting back
-    window.location.href = "http://localhost:8000/api/v1/auth/logout" // Adjust if your logout URL is different
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/logout` // Adjust if your logout URL is different
   }
 
   // --- Render Loading State ---

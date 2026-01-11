@@ -50,19 +50,19 @@ export function IssuesList({ type }: IssuesListProps) {
       let endpoint = ""
       switch (type) {
         case "recommended":
-          endpoint = "http://localhost:8000/api/v1/match/match-issue?keywords=machine-learning&keywords=java&max_results=5"
+          endpoint = `${process.env.NEXT_PUBLIC_API_URL}/match/match-issue?keywords=machine-learning&keywords=java&max_results=5`
           break
         case "trending":
-          endpoint = "http://localhost:8000/api/v1/match/trending-issues"
+          endpoint = `${process.env.NEXT_PUBLIC_API_URL}/match/trending-issues`
           break
         case "favorite":
-          endpoint = "http://localhost:8000/api/v1/match/favorite-issues"
+          endpoint = `${process.env.NEXT_PUBLIC_API_URL}/match/favorite-issues`
           break
         case "recent":
-          endpoint = "http://localhost:8000/api/v1/match/recent-issues"
+          endpoint = `${process.env.NEXT_PUBLIC_API_URL}/match/recent-issues`
           break
         default:
-          endpoint = "http://localhost:8000/api/v1/match/match-issue?keywords=machine-learning&keywords=java&max_results=5"
+          endpoint = `${process.env.NEXT_PUBLIC_API_URL}/match/match-issue?keywords=machine-learning&keywords=java&max_results=5`
       }
 
       const response = await fetch(endpoint, {
