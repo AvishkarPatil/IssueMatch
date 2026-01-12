@@ -99,6 +99,7 @@ export default function SearchPageClient() {
   }
 
   const loadMoreIssues = async () => {
+    setLoadingMore(true)
     const nextPage = currentPage + 1
     await fetchIssues(nextPage, true)
   }
@@ -257,7 +258,7 @@ export default function SearchPageClient() {
               <button
                 onClick={loadMoreIssues}
                 disabled={loadingMore}
-                className="px-6 py-3 bg-[#e88951] hover:bg-[#d67840] disabled:bg-gray-400 text-white font-medium rounded-full transition-colors shadow-md disabled:cursor-not-allowed"
+                className="load-more-btn px-6 py-3 bg-[#e88951] hover:bg-[#d67840] disabled:bg-gray-400 text-white font-medium rounded-full transition-colors shadow-md disabled:cursor-not-allowed"
               >
                 {loadingMore ? "Loading..." : "Load More Issues"}
               </button>

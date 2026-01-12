@@ -2,91 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 255, 255, 255;
-}
+/* ==============================
+   Global Styles - globals.css
+   Refactored for readability,
+   maintainability, and dark mode support
+   ============================== */
 
-.dark {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
-  transition: background-color 0.3s ease, color 0.3s ease;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="%23e88951"><path d="M2 2 L2 16 L6 12 L9 18 L11 17 L8 11 L14 11 Z"/></svg>') 2 2, auto;
-}
-
-/* Custom cursor for clickable elements */
-a, button, [role="button"], input[type="submit"], input[type="button"] {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23e88951"><path d="M8 2 L8 14 L11 11 L14 18 L16 17 L13 10 L18 10 Z"/></svg>') 4 4, pointer;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(232, 137, 81, 0.3), rgba(214, 120, 64, 0.3));
-  border-radius: 6px;
-  border: 2px solid #f1f1f1;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  border-color: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(232, 137, 81, 0.5), rgba(214, 120, 64, 0.5));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
+/* Base Layer */
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 0 0% 9%;
+    /* ==============================
+       Typography
+       ============================== */
+    --font-sans: Arial, Helvetica, sans-serif;
+    --font-heading: "Segoe UI", sans-serif;
+
+    /* ==============================
+       General
+       ============================== */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+
+    /* ==============================
+       Component Colors
+       ============================== */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
+    --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    --popover-foreground: 0 0% 3.9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    /* ==============================
+       Semantic Colors
+       ============================== */
     --primary: 0 0% 9%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96%;
+    --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+
+    /* ==============================
+       Sidebar
+       ============================== */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -95,16 +59,35 @@ a, button, [role="button"], input[type="submit"], input[type="button"] {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* ==============================
+       Charts
+       ============================== */
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    /* ==============================
+       Border Radius
+       ============================== */
+    --radius: 0.5rem;
   }
+
+  /* ==============================
+     Dark Mode Overrides
+     ============================== */
   .dark {
-    --background: 0 0% 0%;
+    --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 10%;
+    --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 0%;
+    --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 20 78% 58%;
-    --primary-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
@@ -113,49 +96,47 @@ a, button, [role="button"], input[type="submit"], input[type="button"] {
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
+
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 20 78% 58%;
-    --chart-1: 20 78% 58%;
-    --chart-2: 24 90% 48%;
-    --chart-3: 24 85% 43%;
-    --chart-4: 24 80% 38%;
-    --chart-5: 24 75% 33%;
-    --sidebar-background: 0 0% 5%;
-    --sidebar-foreground: 0 0% 95.9%;
-    --sidebar-primary: 20 78% 58%;
+    --ring: 0 0% 83.1%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 0 0% 95.9%;
-    --sidebar-border: 0 0% 10%;
-    --sidebar-ring: 20 78% 58%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
+/* ==============================
+   Global Base Styles
+   ============================== */
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border focus:outline-none focus:ring-2 focus:ring-ring;
   }
+
   body {
-    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    @apply bg-background text-foreground transition-colors duration-300;
   }
 }
 
+/* ==============================
+   Components Layer
+   ============================== */
 @layer components {
-  .glass-effect {
-    @apply bg-background/80 backdrop-blur-md border border-border;
-  }
-  
-  /* Light mode specific improvements */
-  .light-mode-card {
-    @apply bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200;
-  }
-  
-  .light-mode-input {
-    @apply bg-white border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
-  }
-  
-  .light-mode-button {
-    @apply bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md transition-all duration-200;
+  .load-more-btn {
+    @apply px-6 py-3 bg-[#e88951] hover:bg-[#d67840] disabled:bg-gray-400 text-white font-medium rounded-full transition-colors shadow-md disabled:cursor-not-allowed;
   }
 }
