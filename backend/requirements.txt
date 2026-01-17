@@ -15,3 +15,4 @@ starlette==0.37.2
 beautifulsoup4==4.13.0
 requests
 numpy
+psutil==5.9.8
