@@ -1,8 +1,11 @@
 from fastapi import APIRouter
-from .endpoints import auth, github, ai, match
+from .endpoints import auth, github, ai, match, health
 from app.routers import leaderboard, referral, mentor, skills, contributions
 
 api_router = APIRouter()
+
+# Health check endpoints (no prefix for standard /health path)
+api_router.include_router(health.router, tags=["health"])
 
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 api_router.include_router(github.router, prefix="/github", tags=["github"])
