@@ -54,7 +54,7 @@ export default function LoginPage() {
   const handleGitHubLogin = () => {
     setIsLoading(true)
     setError("")
-    window.location.href = "http://localhost:8000/api/v1/auth/login"
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`
   }
 
   return (

@@ -40,12 +40,12 @@ const FloatingNavbar = () => {
 
   const handleLogin = () => {
     // Redirect to the backend login endpoint to start the GitHub OAuth flow
-    window.location.href = "http://localhost:8000/api/v1/auth/login";
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
   };
 
   const handleLogout = () => {
     // Redirect to the backend logout endpoint
-    window.location.href = "http://localhost:8000/api/v1/auth/logout";
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`;
   };
 
   return (

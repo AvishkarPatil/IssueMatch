@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       setIsLoading(true)
 
-      const response = await fetch("http://localhost:8000/api/v1/github/profile", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/github/profile`, {
         credentials: "include"
       });
 
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         name: githubUser.name
       }));
 
-      const skillsResponse = await fetch("http://localhost:8000/api/v1/skills/status", {
+      const skillsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/skills/status`, {
         credentials: "include"
       });
 
@@ -89,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.removeItem('github_user')
       setUser(null)
-      window.location.href = "http://localhost:8000/api/v1/auth/logout"
+      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`
     } catch (error) {
       console.error("Error during logout:", error)
       toast({

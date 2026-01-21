@@ -14,7 +14,7 @@ export default function LandingPage() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/v1/github/profile", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/github/profile`, {
           credentials: "include",
         })
 

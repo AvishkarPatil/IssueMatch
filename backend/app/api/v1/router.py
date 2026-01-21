@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from .endpoints import auth, github, ai, match
+from .endpoints import auth, github, match, ai
 from app.routers import leaderboard, referral, mentor, skills, contributions
 
 api_router = APIRouter()
