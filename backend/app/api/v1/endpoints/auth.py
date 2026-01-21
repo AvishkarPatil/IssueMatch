@@ -11,7 +11,7 @@ router = APIRouter()
 GITHUB_AUTH_URL = "https://github.com/login/oauth/authorize"
 GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token"
 GITHUB_CALLBACK_URL = f"http://localhost:8000{settings.API_V1_STR}/auth/callback"
-GITHUB_SCOPES = "read:user user:email repo"  # Permissions needed for user data and repo access
+GITHUB_SCOPES = "read:user,user:email,repo"  # Permissions needed for user data and repo access
 FRONTEND_LOGIN_SUCCESS_URL = "http://localhost:3000/skills"  # Redirect after successful login
 FRONTEND_LOGIN_FAILURE_URL = "http://localhost:3000/login?error=auth_failed"
 FRONTEND_LOGOUT_REDIRECT_URL = "http://localhost:3000/login"
@@ -68,7 +68,12 @@ async def github_callback_handler(request: Request, code: str = None, state: str
 
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.post(GITHUB_TOKEN_URL, data=payload, headers=headers)
+            response = await client.post(
+               GITHUB_TOKEN_URL,
+               data=payload,
+               headers=headers,
+               follow_redirects=False
+           )
             response.raise_for_status()
             token_data = response.json()
         except (httpx.RequestError, httpx.HTTPStatusError) as exc:
@@ -95,7 +100,7 @@ async def github_callback_handler(request: Request, code: str = None, state: str
     request.session['github_token_type'] = token_data.get("token_type", "bearer")
 
     # Redirect to the frontend page indicating successful login
-    return RedirectResponse(url=FRONTEND_LOGIN_SUCCESS_URL, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    return RedirectResponse(url=FRONTEND_LOGIN_SUCCESS_URL, status_code=status.HTTP_302_FOUND)
 
 @router.get("/logout")
 async def logout_user(request: Request):
@@ -103,7 +108,7 @@ async def logout_user(request: Request):
     Logs out the user by clearing their session.
     """
     request.session.clear()
-    return RedirectResponse(url=FRONTEND_LOGOUT_REDIRECT_URL, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    return RedirectResponse(url=FRONTEND_LOGOUT_REDIRECT_URL, status_code=status.HTTP_302_FOUND)
 
 # Dependency to extract GitHub token from session
 async def get_github_token(request: Request) -> str:
