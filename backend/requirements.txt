@@ -6,6 +6,7 @@ pydantic-settings==2.2.1
 itsdangerous==2.1.2
 motor==3.3.2
 pymongo==4.6.1
+certifi
 google-generativeai==0.8.5
 google-cloud-language==2.13.4
 google-cloud-aiplatform==1.60.0

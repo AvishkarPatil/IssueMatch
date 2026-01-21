@@ -139,4 +139,8 @@
   .load-more-btn {
     @apply px-6 py-3 bg-[#e88951] hover:bg-[#d67840] disabled:bg-gray-400 text-white font-medium rounded-full transition-colors shadow-md disabled:cursor-not-allowed;
   }
+
+  .load-more-btn {
+    @apply px-6 py-3 bg-[#e88951] hover:bg-[#d67840] disabled:bg-gray-400 text-white font-medium rounded-full transition-colors shadow-md disabled:cursor-not-allowed;
+  }
 }

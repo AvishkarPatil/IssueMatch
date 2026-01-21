@@ -1,5 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from typing import Optional
+import certifi
 
 class MongoDB:
     client: Optional[AsyncIOMotorClient] = None
@@ -17,7 +18,8 @@ async def connect_to_mongo():
             uri,
             serverSelectionTimeoutMS=5000,
             connectTimeoutMS=5000,
-            socketTimeoutMS=5000
+            socketTimeoutMS=5000,
+            tlsCAFile=certifi.where()
         )
         mongodb.db = mongodb.client.issuematch
         
