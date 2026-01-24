@@ -146,7 +146,6 @@ a, button, [role="button"], input[type="submit"], input[type="button"] {
     @apply bg-background/80 backdrop-blur-md border border-border;
   }
   
-  /* Light mode specific improvements */
   .light-mode-card {
     @apply bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200;
   }
@@ -157,5 +156,9 @@ a, button, [role="button"], input[type="submit"], input[type="button"] {
   
   .light-mode-button {
     @apply bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md transition-all duration-200;
+  }
+
+  .load-more-btn {
+    @apply px-6 py-3 bg-[#e88951] hover:bg-[#d67840] disabled:bg-gray-400 text-white font-medium rounded-full transition-colors shadow-md disabled:cursor-not-allowed;
   }
 }

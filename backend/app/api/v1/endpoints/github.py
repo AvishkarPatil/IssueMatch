@@ -40,13 +40,15 @@ async def get_github_repos(token: str = Depends(get_github_token)):
 @router.get("/search/issues")
 async def search_github_issues(
     query: str = Query(..., description="Search query for GitHub issues"),
+    page: int = Query(1, description="Page number for pagination", ge=1),
+    per_page: int = Query(20, description="Number of issues per page", ge=1, le=100),
     token: str = Depends(get_github_token)
 ):
     """
     Searches for issues on GitHub.
     """
     try:
-        issues = await github_service.search_issues(token, query)
+        issues = await github_service.search_issues(token, query, page, per_page)
         return issues
     except Exception as e:
         raise HTTPException(

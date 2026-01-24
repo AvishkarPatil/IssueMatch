@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
+import os
 
 
 class Settings(BaseSettings):
@@ -17,7 +18,7 @@ class Settings(BaseSettings):
     GOOGLE_AI_STUDIO_API_KEY: Optional[str] = None
 
     class Config:
-        env_file = ".env"
+        env_file = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
         case_sensitive = True
         extra = "ignore"
 
