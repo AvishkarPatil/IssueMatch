@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Code, ThumbsDown, ThumbsUp, Star, Lightbulb } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Code, ThumbsDown, ThumbsUp, Star, Lightbulb, Bookmark } from "lucide-react"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
 
@@ -18,14 +18,18 @@ interface Issue {
 
 interface IssueCardProps {
   issue: Issue
+  onSaveToggle?: (issueId: number, isSaved: boolean) => void
+  initialSaved?: boolean
 }
 
-export function IssueCard({ issue }: IssueCardProps) {
+export function IssueCard({ issue, onSaveToggle, initialSaved = false }: IssueCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isInterested, setIsInterested] = useState(null as boolean | null)
   const [isExpanded, setIsExpanded] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [isSaved, setIsSaved] = useState(initialSaved)
+  const [isSaving, setIsSaving] = useState(false)
   const router = useRouter()
 
   const getMatchColorClass = () => {
@@ -56,6 +60,75 @@ export function IssueCard({ issue }: IssueCardProps) {
     setIsFavorite(!isFavorite)
   }
 
+  const toggleSave = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    
+    if (isSaving) return
+    
+    setIsSaving(true)
+    
+    try {
+      if (isSaved) {
+        // Unsave the issue
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/issues/save/${issue.id}`,
+          {
+            method: "DELETE",
+            credentials: "include",
+          }
+        )
+        
+        if (response.ok) {
+          setIsSaved(false)
+          onSaveToggle?.(issue.id, false)
+        } else {
+          throw new Error("Failed to unsave issue")
+        }
+      } else {
+        // Save the issue
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/issues/save`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              issue: {
+                issue_id: issue.id.toString(),
+                title: issue.title,
+                repo: issue.repo,
+                url: issue.issueUrl,
+                labels: [],
+                description: issue.description,
+                skills: issue.skills,
+                skillMatch: issue.skillMatch,
+              },
+            }),
+          }
+        )
+        
+        if (response.ok) {
+          setIsSaved(true)
+          onSaveToggle?.(issue.id, true)
+        } else {
+          const data = await response.json()
+          throw new Error(data.detail || "Failed to save issue")
+        }
+      }
+    } catch (error) {
+      console.error("Error toggling save:", error)
+      // Optionally show a toast notification here
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  useEffect(() => {
+    setIsSaved(initialSaved)
+  }, [initialSaved])
+
   return (
     <div
       className={`bg-white dark:bg-[#161b22] rounded-lg overflow-hidden transition-all duration-300 border border-gray-200 dark:border-gray-800 shadow-md dark:shadow-none ${
@@ -76,6 +149,24 @@ export function IssueCard({ issue }: IssueCardProps) {
             {issue.title}
           </a>
           <div className="flex items-center gap-2">
+            <motion.button
+              className={`p-1.5 rounded-full transition-colors ${
+                isSaved 
+                  ? "text-blue-500 bg-blue-100 dark:text-blue-400 dark:bg-blue-400/10" 
+                  : "text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-400/10"
+              }`}
+              onClick={toggleSave}
+              disabled={isSaving}
+              whileTap={{ scale: 0.9 }}
+              animate={
+                isSaved
+                  ? { scale: [1, 1.2, 1], transition: { duration: 0.3 } }
+                  : {}
+              }
+              title={isSaved ? "Remove from saved" : "Save for later"}
+            >
+              <Bookmark className="w-4 h-4" fill={isSaved ? "currentColor" : "none"} />
+            </motion.button>
             <motion.button
               className={`p-1.5 rounded-full transition-colors ${
                 isFavorite 

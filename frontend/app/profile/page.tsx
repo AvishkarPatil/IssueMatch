@@ -66,6 +66,8 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<GitHubProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [savedIssues, setSavedIssues] = useState<any[]>([])
+  const [loadingSavedIssues, setLoadingSavedIssues] = useState(false)
 
   const mockData: { skills: Skill[]; stats: Stats; achievements: Achievement[]; resumeUploaded: boolean } = {
     skills: [
@@ -128,6 +130,50 @@ export default function ProfilePage() {
 
     fetchProfile()
   }, [router]) // Dependency array includes router for the push navigation
+
+  // Fetch saved issues
+  useEffect(() => {
+    const fetchSavedIssues = async () => {
+      if (!profile) return
+      
+      setLoadingSavedIssues(true)
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/issues/saved`, {
+          credentials: "include",
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          setSavedIssues(data.saved_issues || [])
+        }
+      } catch (err) {
+        console.error("Failed to fetch saved issues:", err)
+      } finally {
+        setLoadingSavedIssues(false)
+      }
+    }
+    
+    fetchSavedIssues()
+  }, [profile])
+
+  // Function to remove saved issue
+  const handleRemoveSavedIssue = async (issueId: string) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/issues/save/${issueId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      )
+      
+      if (response.ok) {
+        setSavedIssues((prev) => prev.filter((issue) => issue.issue_id !== issueId))
+      }
+    } catch (error) {
+      console.error("Error removing saved issue:", error)
+    }
+  }
 
   // Helper function to get skill level label
   const getSkillLevelLabel = (level: number): string => {
@@ -408,6 +454,22 @@ export default function ProfilePage() {
                   >
                     Contributions
                   </button>
+                  {/* Saved Issues Tab Button */}
+                  <button
+                    className={`px-4 sm:px-6 py-4 text-sm font-medium transition-colors relative ${
+                      activeTab === "saved"
+                        ? "text-black dark:text-white border-b-2 border-[#e88951]"
+                        : "text-gray-700 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    }`}
+                    onClick={() => setActiveTab("saved")}
+                  >
+                    Saved Issues
+                    {savedIssues.length > 0 && (
+                      <span className="ml-2 px-2 py-0.5 text-xs rounded-full bg-[#e88951] text-white">
+                        {savedIssues.length}
+                      </span>
+                    )}
+                  </button>
                   {/* Analytics Tab Button */}
                   <button
                     className={`px-4 sm:px-6 py-4 text-sm font-medium transition-colors ${
@@ -559,6 +621,100 @@ export default function ProfilePage() {
                     </div>
                   </div>
                 )} {/* End Contributions Tab Content */}
+
+                {/* Saved Issues Tab Content */}
+                {activeTab === "saved" && (
+                  <div>
+                    <h2 className="text-xl font-semibold text-black dark:text-white mb-4">
+                      Saved Issues
+                      {savedIssues.length > 0 && (
+                        <span className="ml-2 text-gray-600 dark:text-gray-400 text-sm font-normal">
+                          ({savedIssues.length} {savedIssues.length === 1 ? "issue" : "issues"})
+                        </span>
+                      )}
+                    </h2>
+                    
+                    {loadingSavedIssues ? (
+                      <div className="text-center py-8">
+                        <div className="text-gray-600 dark:text-gray-400 animate-pulse">Loading saved issues...</div>
+                      </div>
+                    ) : savedIssues.length === 0 ? (
+                      <div className="text-center py-12">
+                        <div className="w-16 h-16 rounded-full bg-gray-200 dark:bg-[#0d1117] flex items-center justify-center mx-auto mb-4">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                          </svg>
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-400 mb-2">No saved issues yet</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-500 mb-4">
+                          Issues you bookmark will appear here for easy access later
+                        </p>
+                        <Link 
+                          href="/match"
+                          className="inline-block px-4 py-2 bg-[#e88951] hover:bg-[#d67840] text-white rounded-lg text-sm transition-colors"
+                        >
+                          Find Issues to Save
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {savedIssues.map((issue) => (
+                          <div 
+                            key={issue.issue_id} 
+                            className="bg-gray-200 dark:bg-[#0d1117] rounded-lg p-4 hover:bg-gray-300 dark:hover:bg-[#161b22] transition-colors shadow-sm"
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <a
+                                href={issue.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium text-black dark:text-white text-sm leading-snug hover:text-[#e88951] dark:hover:text-[#e88951] transition-colors flex-1"
+                              >
+                                {issue.title}
+                              </a>
+                              <button
+                                onClick={() => handleRemoveSavedIssue(issue.issue_id)}
+                                className="ml-3 p-1.5 rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-100 dark:hover:bg-red-400/10 transition-colors flex-shrink-0"
+                                title="Remove from saved"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            </div>
+                            
+                            <div className="flex items-center gap-2 mb-2">
+                              <Code className="w-3 h-3 text-gray-600 dark:text-gray-400" />
+                              <span className="text-xs text-gray-700 dark:text-gray-400">{issue.repo}</span>
+                            </div>
+                            
+                            {issue.description && (
+                              <p className="text-gray-800 dark:text-gray-300 text-sm mb-3 line-clamp-2">
+                                {issue.description}
+                              </p>
+                            )}
+                            
+                            <div className="flex flex-wrap gap-2 items-center">
+                              {issue.skills && issue.skills.slice(0, 3).map((skill: string, index: number) => (
+                                <span 
+                                  key={index}
+                                  className="px-2 py-0.5 text-xs rounded-full bg-gray-300 dark:bg-[#161b22] text-gray-800 dark:text-gray-300"
+                                >
+                                  {skill}
+                                </span>
+                              ))}
+                              {issue.skillMatch && (
+                                <div className="ml-auto bg-[#e88951]/20 text-[#e88951] text-xs px-2 py-0.5 rounded-full">
+                                  {issue.skillMatch}% Match
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )} {/* End Saved Issues Tab Content */}
 
                 {/* Analytics Tab Content */}
                 {activeTab === "analytics" && (
