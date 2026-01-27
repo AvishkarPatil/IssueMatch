@@ -147,6 +147,23 @@ export default function ProfilePage() {
         if (response.ok) {
           const data = await response.json()
           setSavedIssues(data.saved_issues || [])
+        } else {
+          // Handle non-OK HTTP responses consistently with catch block
+          let errorBody: string | undefined
+          try {
+            errorBody = await response.text()
+          } catch {
+            // Ignore body parsing errors; we'll still log status info
+          }
+          console.error(
+            "Failed to fetch saved issues. Status:",
+            response.status,
+            response.statusText,
+            "Body:",
+            errorBody
+          )
+          setSavedIssuesError("Failed to load saved issues. Please try refreshing the page.")
+          toast.error("Failed to load saved issues")
         }
       } catch (err: any) {
         console.error("Failed to fetch saved issues:", err)
