@@ -6,6 +6,9 @@ from ....services.firebase_service import get_firebase_admin
 
 router = APIRouter()
 
+# Maximum saved issues per user to prevent Firebase document size issues (1MB limit)
+MAX_SAVED_ISSUES = 100
+
 class IssueMetadata(BaseModel):
     issue_id: str
     title: str
@@ -56,6 +59,13 @@ async def save_issue(
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Issue already saved"
+                )
+            
+            # Check if user has reached max limit
+            if len(saved_issues) >= MAX_SAVED_ISSUES:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Maximum saved issues limit ({MAX_SAVED_ISSUES}) reached. Please remove some issues first."
                 )
             
             # Add new issue to saved_issues array

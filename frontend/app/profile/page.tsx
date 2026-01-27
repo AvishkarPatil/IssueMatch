@@ -4,6 +4,7 @@ import {useState, useEffect, JSX} from "react"
 import Link from "next/link"
 import Image from "next/image";
 import { useRouter } from "next/navigation"
+import { toast } from "react-hot-toast"
 import { GitHubActivityGraph } from "@/components/github-activity-graph"
 import {
   User,
@@ -68,6 +69,7 @@ export default function ProfilePage() {
   const [error, setError] = useState("")
   const [savedIssues, setSavedIssues] = useState<any[]>([])
   const [loadingSavedIssues, setLoadingSavedIssues] = useState(false)
+  const [savedIssuesError, setSavedIssuesError] = useState<string>("")
 
   const mockData: { skills: Skill[]; stats: Stats; achievements: Achievement[]; resumeUploaded: boolean } = {
     skills: [
@@ -146,8 +148,10 @@ export default function ProfilePage() {
           const data = await response.json()
           setSavedIssues(data.saved_issues || [])
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Failed to fetch saved issues:", err)
+        setSavedIssuesError("Failed to load saved issues. Please try refreshing the page.")
+        toast.error("Failed to load saved issues")
       } finally {
         setLoadingSavedIssues(false)
       }
@@ -169,9 +173,13 @@ export default function ProfilePage() {
       
       if (response.ok) {
         setSavedIssues((prev) => prev.filter((issue) => issue.issue_id !== issueId))
+        toast.success("Issue removed from saved")
+      } else {
+        toast.error("Failed to remove issue")
       }
     } catch (error) {
       console.error("Error removing saved issue:", error)
+      toast.error("Failed to remove issue")
     }
   }
 
@@ -633,6 +641,14 @@ export default function ProfilePage() {
                         </span>
                       )}
                     </h2>
+                    
+                    {savedIssuesError && (
+                      <div className="mb-4 p-4 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-800 rounded-lg">
+                        <p className="text-red-700 dark:text-red-300 text-sm">
+                          {savedIssuesError}
+                        </p>
+                      </div>
+                    )}
                     
                     {loadingSavedIssues ? (
                       <div className="text-center py-8">

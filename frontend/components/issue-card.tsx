@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Code, ThumbsDown, ThumbsUp, Star, Lightbulb, Bookmark } from "lucide-react"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
+import { toast } from "react-hot-toast"
 
 interface Issue {
   id: number
@@ -81,6 +82,7 @@ export function IssueCard({ issue, onSaveToggle, initialSaved = false }: IssueCa
         if (response.ok) {
           setIsSaved(false)
           onSaveToggle?.(issue.id, false)
+          toast.success("Issue removed from saved")
         } else {
           throw new Error("Failed to unsave issue")
         }
@@ -112,14 +114,16 @@ export function IssueCard({ issue, onSaveToggle, initialSaved = false }: IssueCa
         if (response.ok) {
           setIsSaved(true)
           onSaveToggle?.(issue.id, true)
+          toast.success("Issue saved for later!")
         } else {
           const data = await response.json()
           throw new Error(data.detail || "Failed to save issue")
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error toggling save:", error)
-      // Optionally show a toast notification here
+      const errorMessage = error.message || (isSaved ? "Failed to remove issue" : "Failed to save issue")
+      toast.error(errorMessage)
     } finally {
       setIsSaving(false)
     }
