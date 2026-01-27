@@ -42,41 +42,48 @@ async def save_issue(
         # Reference to the user's document
         user_ref = db.collection("users").document(user_id)
         
-        # Get the current user document
-        user_doc = user_ref.get()
-        
         # Prepare issue data
         issue_data = request.issue.dict()
         issue_data["saved_at"] = firebase_admin.server_timestamp()
-        
-        if user_doc.exists:
-            # Update existing user document
-            user_data = user_doc.to_dict()
-            saved_issues = user_data.get("saved_issues", [])
-            
-            # Check if issue is already saved
-            if any(issue.get("issue_id") == request.issue.issue_id for issue in saved_issues):
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Issue already saved"
-                )
-            
-            # Check if user has reached max limit
-            if len(saved_issues) >= MAX_SAVED_ISSUES:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Maximum saved issues limit ({MAX_SAVED_ISSUES}) reached. Please remove some issues first."
-                )
-            
-            # Add new issue to saved_issues array
-            saved_issues.append(issue_data)
-            user_ref.update({"saved_issues": saved_issues})
-        else:
-            # Create new user document with saved issue
-            user_ref.set({
-                "user_id": user_id,
-                "saved_issues": [issue_data]
-            })
+
+        # Use a Firestore transaction to atomically read and update the user's saved issues
+        transaction = db.transaction()
+
+        def save_issue_transaction(transaction):
+            # Get the current user document within the transaction
+            user_doc = user_ref.get(transaction=transaction)
+
+            if user_doc.exists:
+                # Update existing user document
+                user_data = user_doc.to_dict()
+                saved_issues = user_data.get("saved_issues", [])
+
+                # Check if issue is already saved
+                if any(issue.get("issue_id") == request.issue.issue_id for issue in saved_issues):
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail="Issue already saved"
+                    )
+
+                # Check if user has reached max limit
+                if len(saved_issues) >= MAX_SAVED_ISSUES:
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=f"Maximum saved issues limit ({MAX_SAVED_ISSUES}) reached. Please remove some issues first."
+                    )
+
+                # Add new issue to saved_issues array
+                saved_issues.append(issue_data)
+                transaction.update(user_ref, {"saved_issues": saved_issues})
+            else:
+                # Create new user document with saved issue
+                transaction.set(user_ref, {
+                    "user_id": user_id,
+                    "saved_issues": [issue_data]
+                })
+
+        # Execute the transactional update
+        save_issue_transaction(transaction)
         
         return {
             "message": "Issue saved successfully",
