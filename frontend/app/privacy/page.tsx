@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { ArrowLeft, Shield, Lock, Eye, FileText } from "lucide-react"
+import { config } from "@/lib/config"
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-black dark:via-[#0d1117] dark:to-black">
+    <div className="min-h-screen bg-white dark:bg-black">
       <div className="container mx-auto px-4 py-12 pt-28 max-w-4xl">
         {/* Back Button */}
         <Link
@@ -25,7 +26,7 @@ export default function PrivacyPolicy() {
             </h1>
           </div>
           <p className="text-gray-600 dark:text-muted-foreground text-lg">
-            Last updated: January 8, 2026
+            Last updated: {config.lastUpdated}
           </p>
         </div>
 
@@ -205,10 +206,10 @@ export default function PrivacyPolicy() {
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                 If you have any questions about this Privacy Policy, please contact us at:{" "}
                 <a
-                  href="mailto:avishkarpatil2003@gmail.com"
+                  href={`mailto:${config.contactEmail}`}
                   className="text-[#e88951] hover:text-[#d67840] underline"
                 >
-                  avishkarpatil2003@gmail.com
+                  {config.contactEmail}
                 </a>
               </p>
             </section>
