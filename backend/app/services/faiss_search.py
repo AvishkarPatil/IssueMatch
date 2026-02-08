@@ -5,6 +5,8 @@ import numpy as np
 import json
 from typing import List, Dict, Any, Optional
 import logging
+from .ranking_service import create_default_ranker
+from .ranking_config_service import RankingConfigService
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -170,18 +172,21 @@ def format_issues_json(issues: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "user_login": issue.get("user", {}).get("login"),
             "labels": [label.get("name") for label in issue.get("labels", [])],
             "similarity_score": issue.get("similarity_score", 0.0),
+            "final_score": issue.get("final_score", 0.0),
             "short_description": short_description
         })
 
     return results
 
 
-def get_top_matched_issues(
+async def get_top_matched_issues(
         query_text: str,
         keywords: List[str],
         languages: List[str] = None,
         top_k: int = 10,
-        github_token: Optional[str] = None
+        github_token: Optional[str] = None,
+        user_id: Optional[str] = None,
+        user: Optional[Dict[str, Any]] = None
 ) -> Dict[str, Any]:
     """
     Get top matched issues for a query.
@@ -245,8 +250,12 @@ def get_top_matched_issues(
         # Search for similar issues
         top_matches = search_similar_issues(query_text, model, index, issues, top_k=top_k)
 
+        # Apply composite ranking using user's strategy or default
+        ranker = await RankingConfigService.get_ranker_for_user(user_id)
+        ranked_issues = ranker.rank_issues(top_matches, user=user)
+
         # Format issues for output
-        formatted_issues = format_issues_json(top_matches)
+        formatted_issues = format_issues_json(ranked_issues)
 
         return {
             "recommendations": formatted_issues,

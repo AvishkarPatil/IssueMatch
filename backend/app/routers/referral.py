@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from app.services.mongodb_service import get_database
 import secrets
-from datetime import datetime
+from datetime import datetime, timezone
 from bson import ObjectId
 
 router = APIRouter(
@@ -125,7 +125,7 @@ async def complete_referral(referral: ReferralCreate, request: Request):
         if existing:
             raise HTTPException(status_code=400, detail="User has already been referred")
         
-        now = datetime.utcnow().isoformat()
+        now = datetime.now(timezone.utc).isoformat()
         referral_data = {
             "referrerId": referrer["githubId"],
             "referredUserId": user_id,

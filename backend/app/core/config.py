@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     GOOGLE_AI_STUDIO_API_KEY: Optional[str] = None
 
     class Config:
-        env_file = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
+        env_file = os.path.join(os.path.dirname(__file__), "..", "..", "..", ".env")
         case_sensitive = True
         extra = "ignore"
 

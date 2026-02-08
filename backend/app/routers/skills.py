@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from typing import List
 from app.services.mongodb_service import get_database
-from datetime import datetime
+from datetime import datetime, timezone
 
 router = APIRouter(
     prefix="/skills",
@@ -52,7 +52,7 @@ async def submit_skills(skills_data: SkillsSubmit, request: Request):
             while await db.users.find_one({"referralCode": referral_code}):
                 referral_code = secrets.token_urlsafe(6).upper().replace('-', '').replace('_', '')[:8]
         
-        now = datetime.utcnow().isoformat()
+        now = datetime.now(timezone.utc).isoformat()
         
         user_data = {
             "githubId": user_id,
@@ -105,7 +105,7 @@ async def submit_skills_with_referral(skills_data: SkillsSubmit, request: Reques
                     "referredUserId": user_id,
                     "status": "completed",
                     "pointsAwarded": 5,
-                    "createdAt": datetime.utcnow().isoformat()
+                    "createdAt": datetime.now(timezone.utc).isoformat()
                 }
                 await db.referrals.insert_one(referral_data)
                 
@@ -118,7 +118,7 @@ async def submit_skills_with_referral(skills_data: SkillsSubmit, request: Reques
                     {"githubId": referrer["githubId"]},
                     {
                         "$inc": {"score": 5, "referrals": 1},
-                        "$set": {"updatedAt": datetime.utcnow().isoformat()}
+                        "$set": {"updatedAt": datetime.now(timezone.utc).isoformat()}
                     },
                     upsert=True
                 )

@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Request
 from app.services.mongodb_service import get_database
 from typing import List
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, timezone
 
 router = APIRouter(
     prefix="/mentor",
@@ -81,7 +81,7 @@ async def send_mentor_request(mentor_request: MentorshipRequest, request: Reques
         if existing:
             raise HTTPException(status_code=400, detail="Request already exists")
         
-        now = datetime.utcnow().isoformat()
+        now = datetime.now(timezone.utc).isoformat()
         
         request_data = {
             "mentorGithubId": mentor_request.mentorId,
@@ -156,7 +156,7 @@ async def update_request_status(request_id: str, status: str, request: Request):
             {
                 "$set": {
                     "status": status,
-                    "updatedAt": datetime.utcnow().isoformat()
+                    "updatedAt": datetime.now(timezone.utc).isoformat()
                 }
             }
         )

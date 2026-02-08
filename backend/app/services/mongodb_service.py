@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from motor.motor_asyncio import AsyncIOMotorClient
 from typing import Optional
 import certifi
@@ -18,8 +20,7 @@ async def connect_to_mongo():
             uri,
             serverSelectionTimeoutMS=5000,
             connectTimeoutMS=5000,
-            socketTimeoutMS=5000,
-            tlsCAFile=certifi.where()
+            socketTimeoutMS=5000
         )
         mongodb.db = mongodb.client.issuematch
         

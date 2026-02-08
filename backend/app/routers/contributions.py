@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from app.services.mongodb_service import get_database
-from datetime import datetime
+from datetime import datetime, timezone
 
 router = APIRouter(
     prefix="/contributions",

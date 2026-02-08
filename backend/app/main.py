@@ -6,10 +6,12 @@ from contextlib import asynccontextmanager
 from .core.config import settings
 from .api.v1.router import api_router as api_router_v1
 from .services.mongodb_service import connect_to_mongo, close_mongo_connection
+from .services.ranking_config_service import initialize_default_strategy
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await connect_to_mongo()
+    await initialize_default_strategy()
     yield
     await close_mongo_connection()
 

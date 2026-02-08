@@ -25,6 +25,8 @@ class IssueResult(BaseModel):
     user_login: Optional[str] = None
     labels: Optional[List[str]] = None
     similarity_score: Optional[float] = None
+    final_score: Optional[float] = None
+    dimension_scores: Optional[Dict[str, float]] = None
     short_description: Optional[str] = None
 
 
@@ -111,13 +113,23 @@ async def match_issues(
         if topics:
             all_keywords.extend(topics)
 
+        # Get user context for ranking
+        user_context = None
+        user_id = None
+        if token:
+            # Extract user_id from token or get from auth service
+            # For now, we'll pass None and use default ranking
+            pass
+
         # Get top matched issues
-        result = get_top_matched_issues(
+        result = await get_top_matched_issues(
             query_text=text_blob,
             keywords=all_keywords,
             languages=languages,
             top_k=max_results,
-            github_token=token
+            github_token=token,
+            user_id=user_id,
+            user=user_context
         )
 
         # Convert to response model
