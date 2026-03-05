@@ -16,7 +16,6 @@
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
   [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
-  [![SWoC 2026](https://img.shields.io/badge/SWoC-2026-orange?style=for-the-badge)](https://swoc.tech)
   
 </div>
 <br>
@@ -158,12 +157,6 @@ graph LR
 ### 🤝 Contributing
 
 We welcome contributions from developers of all skill levels! This project is part of **Social Winter of Code 2026**.
-
-### Getting Started
-1. Check [open issues](https://github.com/AvishkarPatil/IssueMatch/issues)
-2. Look for `SWoC26` and difficulty labels (`Easy`, `Medium`, `Hard`)
-3. Comment to request assignment
-4. Fork, code, and submit a PR
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
