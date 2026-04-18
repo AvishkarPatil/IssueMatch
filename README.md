@@ -4,8 +4,6 @@
 
 <p align="center"><b>IssueMatch</b> connects developers with open source issues that perfectly match their skills and interests using advanced AI and machine learning. Find meaningful contributions in seconds, not hours.</p>
 
-<p align="center"><em>Part of Social Winter of Code 2026</em></p><br>
-
 <div align="center"> 
   
   [![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
@@ -156,7 +154,7 @@ graph LR
 
 ### 🤝 Contributing
 
-We welcome contributions from developers of all skill levels! This project is part of **Social Winter of Code 2026**.
+We welcome contributions from developers of all skill levels!.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
