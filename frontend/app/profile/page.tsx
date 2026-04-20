@@ -66,8 +66,11 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<GitHubProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [stats, setStats] = useState<Stats | null>(null)
+  const [statsLoading, setStatsLoading] = useState(true)
+  const [statsError, setStatsError] = useState(false)
 
-  const mockData: { skills: Skill[]; stats: Stats; achievements: Achievement[]; resumeUploaded: boolean } = {
+  const mockData: { skills: Skill[]; achievements: Achievement[]; resumeUploaded: boolean } = {
     skills: [
       { name: "JavaScript", level: 5 },
       { name: "React", level: 4.2 },
@@ -75,12 +78,6 @@ export default function ProfilePage() {
       { name: "Node.js", level: 2 },
       { name: "CSS/Tailwind", level: 3 },
     ],
-    stats: {
-      contributions: 149,
-      pullRequests: 86,
-      issuesClosed: 53,
-      stars: 128,
-    },
     achievements: [
       { name: "First Contribution", icon: "GitMerge", date: "Feb 2022" },
       { name: "Pull Request Pro", icon: "GitPullRequest", date: "May 2022" },
@@ -128,6 +125,36 @@ export default function ProfilePage() {
 
     fetchProfile()
   }, [router]) // Dependency array includes router for the push navigation
+
+  useEffect(() => {
+    if (!profile) return
+
+    const fetchStats = async () => {
+      setStatsLoading(true)
+      setStatsError(false)
+      
+      try {
+        const res = await fetch(
+          `http://localhost:8000/api/v1/github/stats/${profile.login}`,
+          {
+            credentials: "include",
+          }
+        )
+
+        if (!res.ok) {
+          throw new Error("Stats request failed")
+        }
+
+        const data: Stats = await res.json()
+        setStats(data)
+      } catch (err) {
+        setStatsError(true)
+        setStats(null)
+      }
+    }
+
+    fetchStats()
+  }, [profile])
 
   // Helper function to get skill level label
   const getSkillLevelLabel = (level: number): string => {
@@ -204,6 +231,13 @@ export default function ProfilePage() {
       </div>
     )
   }
+
+  const StatSkeleton = () => (
+  <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md animate-pulse">
+    <div className="h-7 w-12 mx-auto bg-gray-300 dark:bg-gray-700 rounded mb-2"></div>
+    <div className="h-4 w-20 mx-auto bg-gray-300 dark:bg-gray-700 rounded"></div>
+  </div>
+)
 
   // --- Render Profile Page ---
   return (
@@ -353,10 +387,10 @@ export default function ProfilePage() {
           {/* Main Content Section */}
           <div className="lg:col-span-3">
             {/* Stats Cards Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
               {/* Contributions Stat */}
               <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md"> {/* Added shadow */}
-                <div className="text-2xl font-bold text-black dark:text-white">{mockData.stats.contributions}</div>
+                <div className="text-2xl font-bold text-black dark:text-white">{stats ? stats.contributions : 0}</div>
                 <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">Contributions</div> {/* Added mt-1 */}
               </div>
               {/* Repositories Stat */}
@@ -366,13 +400,18 @@ export default function ProfilePage() {
               </div>
               {/* Pull Requests Stat */}
               <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md">
-                <div className="text-2xl font-bold text-black dark:text-white">{mockData.stats.pullRequests}</div>
+                <div className="text-2xl font-bold text-black dark:text-white">{stats ? stats.pullRequests : 0}</div>
                 <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">Pull Requests</div>
               </div>
               {/* Issues Closed Stat */}
               <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md">
-                <div className="text-2xl font-bold text-black dark:text-white">{mockData.stats.issuesClosed}</div>
+                <div className="text-2xl font-bold text-black dark:text-white">{stats ? stats.issuesClosed : 0}</div>
                 <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">Issues Closed</div>
+              </div>
+              {/* Stars Stat*/}
+              <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md"> {/* Added shadow */}
+                <div className="text-2xl font-bold text-black dark:text-white">{stats ? stats.stars : 0}</div>
+                <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">Stars</div> {/* Added mt-1 */}
               </div>
               {/* Followers Stat */}
               <div className="bg-gray-100 dark:bg-[#161b22] rounded-xl p-4 text-center shadow-md">
